@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using BepInEx;
-using BepInEx.Logging;
+using BepInEx.Configuration;
 using HarmonyLib;
 
 namespace Nuclei;
@@ -11,25 +12,81 @@ namespace Nuclei;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class Nuclei : BaseUnityPlugin
 {
-    private new static ManualLogSource? Logger { get; set; }
     internal static Nuclei? Instance { get; private set; }
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
 
+    private ConfigEntry<int> _maxPlayers;
+    private ConfigEntry<string> _serverName;
+    private ConfigEntry<string> _serverMessageOfTheDay;
+    private ConfigEntry<List<string>> _missions;
+    private ConfigEntry<int> _missionDuration;
+    
+    private void InitSettings()
+    {
+        Logger.LogDebug("Loading settings...");
+        
+        _maxPlayers = Config.Bind("Settings", "MaxPlayers", 16, "The maximum number of players allowed in the server.");
+        Logger.LogDebug($"MaxPlayers: {_maxPlayers.Value}");
+        
+        _serverName = Config.Bind("Settings", "ServerName", "Dedicated Nuclei Server", "The name of the server.");
+        Logger.LogDebug($"ServerName: {_serverName.Value}");
+        
+        _serverMessageOfTheDay = Config.Bind("Settings", "ServerMessageOfTheDay", "Welcome to the server, [USERNAME]!", "The message of the day for the server. This is displayed when players join the server.");
+        Logger.LogDebug($"ServerMessageOfTheDay: {_serverMessageOfTheDay.Value}");
+        
+        _missions = Config.Bind("Settings", "Missions", new List<string> { "Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation" }, "The list of missions the server will cycle through.");
+        Logger.LogDebug($"Missions: {string.Join("; ", _missions.Value)}");
+        
+        _missionDuration = Config.Bind("Settings", "MissionDuration", 60, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
+        Logger.LogDebug($"MissionDuration: {_missionDuration.Value}");
+        
+        Logger.LogDebug("Loaded settings!");
+    }
+
+    private void ValidateSettings()
+    {
+        Logger.LogDebug("Validating settings...");
+        
+        if (_maxPlayers.Value < 1)
+        {
+            Logger.LogWarning("MaxPlayers must be at least 1! Resetting to default value.");
+            _maxPlayers.Value = 16;
+        }
+        
+        if (string.IsNullOrWhiteSpace(_serverName.Value))
+        {
+            Logger.LogWarning("ServerName cannot be empty! Resetting to default value.");
+            _serverName.Value = "Dedicated Nuclei Server";
+        }
+        
+        if (_missions.Value.Count == 0)
+        {
+            Logger.LogWarning("Missions cannot be empty! Resetting to default value.");
+            _missions.Value = new List<string> { "Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation" };
+        }
+        
+        if (_missionDuration.Value < 0)
+        {
+            _missionDuration.Value = 0;
+        }
+        
+        Logger.LogDebug("Settings validated!");
+    }
+
     private void Awake()
     {
         Instance = this;
-
-        // Init logger
-        Logger = base.Logger;
         
         Logger.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
+
+        InitSettings();
+        ValidateSettings();
 
         Harmony = new Harmony(PluginInfo.PLUGIN_GUID);
 
         PatchAll();
 
-        // Report plugin loaded
         if (IsPatched)
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         else
