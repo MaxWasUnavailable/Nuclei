@@ -55,7 +55,7 @@
         <PackageReference Include="UnityEngine.Modules" Version="2019.1.11" IncludeAssets="compile"/>
     </ItemGroup>
 
-    <!-- Sailwind-specific Assembly References -->
+    <!-- Nuclear Option-specific Assembly References -->
     <ItemGroup>
         <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
         <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False"/>

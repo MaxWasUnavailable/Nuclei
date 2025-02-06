@@ -6,7 +6,7 @@ using HarmonyLib;
 namespace Nuclei;
 
 /// <summary>
-///     Main plugin class for Tempest.
+///     Main plugin class for Nuclei.
 /// </summary>
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class Nuclei : BaseUnityPlugin
