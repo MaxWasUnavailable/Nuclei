@@ -22,6 +22,8 @@ public class Nuclei : BaseUnityPlugin
 
         // Init logger
         Logger = base.Logger;
+        
+        Logger.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
 
         Harmony = new Harmony(PluginInfo.PLUGIN_GUID);
 
