@@ -63,7 +63,7 @@ public class Nuclei : BaseUnityPlugin
         if (_missions.Value.Count == 0)
         {
             Logger.LogWarning("Missions cannot be empty! Resetting to default value.");
-            _missions.Value = new List<string> { "Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation" };
+            _missions.Value = ["Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation"];
         }
         
         if (_missionDuration.Value < 0)
