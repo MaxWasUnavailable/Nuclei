@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- General Project Information -->
+        <TargetFramework>net48</TargetFramework>
+        <AssemblyName>MaxWasUnavailable.Nuclei</AssemblyName>
+        <PackageId>MaxWasUnavailable.Nuclei</PackageId>
+        <Title>Nuclei</Title>
+        <Description>A dedicated server with built-in plugin support for Nuclear Option.</Description>
+        <Version>0.0.1</Version>
+        <Authors>MaxWasUnavailable</Authors>
+        <PackageTags>nuclear;option;bepinex</PackageTags>
+
+        <!-- Package Information -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/MaxWasUnavailable/Nuclei</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/MaxWasUnavailable/Nuclei</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+
+        <!-- Build Information -->
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <!-- NuGet Information -->
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+
+        <!-- Documentation -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+        <!-- Prevent Publicizer Warnings from Showing -->
+        <NoWarn>$(NoWarn);CS0436</NoWarn>
+    </PropertyGroup>
+
+    <!-- Include README and CHANGELOG in the package -->
+    <ItemGroup>
+        <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../CHANGELOG.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+    <!-- BepInEx Package References -->
+    <ItemGroup>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" ExcludeAssets="runtime"/>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
+    </ItemGroup>
+
+    <!-- Unity Package References -->
+    <ItemGroup>
+        <PackageReference Include="UnityEngine.Modules" Version="2019.1.11" IncludeAssets="compile"/>
+    </ItemGroup>
+
+    <!-- Sailwind-specific Assembly References -->
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False"/>
+    </ItemGroup>
+
+    <!-- Extra Package References -->
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+    </ItemGroup>
+</Project>
