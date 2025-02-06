@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using HarmonyLib;
 
 namespace Nuclei;
@@ -13,6 +14,7 @@ namespace Nuclei;
 public class Nuclei : BaseUnityPlugin
 {
     internal static Nuclei? Instance { get; private set; }
+    internal new static ManualLogSource? Logger { get; private set; }
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
 
@@ -78,6 +80,8 @@ public class Nuclei : BaseUnityPlugin
     private void Awake()
     {
         Instance = this;
+        
+        Logger = base.Logger;
         
         Logger.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
 
