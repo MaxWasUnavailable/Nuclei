@@ -68,6 +68,7 @@ public class Nuclei : BaseUnityPlugin
         
         if (_missionDuration.Value < 0)
         {
+            Logger.LogWarning("MissionDuration may not be negative! Setting to 0.");
             _missionDuration.Value = 0;
         }
         
