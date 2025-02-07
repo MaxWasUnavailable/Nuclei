@@ -32,6 +32,8 @@ public static class Server
     /// </summary>
     public static void EndMission()
     {
+        Nuclei.Logger?.LogInfo("Ending mission...");
+        
         if (!IsServerRunning)
         {
             Nuclei.Logger?.LogWarning("Server is not running.");
@@ -49,6 +51,8 @@ public static class Server
         Globals.NetworkManagerNuclearOptionInstance.Stop(false);
         
         GameManager.SetGameState(GameManager.GameState.Menu);
+        
+        Nuclei.Logger?.LogInfo("Mission ended.");
     }
 
     /// <summary>
