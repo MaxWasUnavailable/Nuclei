@@ -127,16 +127,6 @@ public class Nuclei : BaseUnityPlugin
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         else
             Logger?.LogError($"Plugin {PluginInfo.PLUGIN_GUID} failed to load correctly!");
-        
-        try
-        {
-            // TODO: should not be called here, since a number of instances won't be ready yet. Instead, patch the game to wait for the network manager to be ready before starting the server.
-            Server.StartServer();
-        }
-        catch (Exception e)
-        {
-            Logger?.LogError($"Aborting server launch: Failed to start the server. For more information, see this error trace:\n{e}");
-        }
     }
 
     private static void PatchAll()
