@@ -50,21 +50,17 @@
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
     </ItemGroup>
 
-    <!-- Unity Package References -->
-    <ItemGroup>
-        <PackageReference Include="UnityEngine.Modules" Version="2022.3.6f1" IncludeAssets="compile"/>
-    </ItemGroup>
-
     <!-- Nuclear Option-specific Assembly References -->
     <ItemGroup>
         <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
         <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False"/>
-        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False"/>
-        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False"/>
-        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False"/>
-        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False"/>
-        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False"/>
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
+        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
     </ItemGroup>
 
     <!-- Extra Package References -->
