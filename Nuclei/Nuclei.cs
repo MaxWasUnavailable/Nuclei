@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using Nuclei.Features;
 
 namespace Nuclei;
 
@@ -18,63 +20,80 @@ public class Nuclei : BaseUnityPlugin
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
 
-    private ConfigEntry<int> _maxPlayers;
-    private ConfigEntry<string> _serverName;
-    private ConfigEntry<string> _serverMessageOfTheDay;
-    private ConfigEntry<List<string>> _missions;
-    private ConfigEntry<int> _missionDuration;
+    internal ConfigEntry<int>? MaxPlayers;
+    internal const int DefaultMaxPlayers = 16;
+    
+    internal ConfigEntry<string>? ServerName;
+    internal const string DefaultServerName = "Dedicated Nuclei Server";
+    
+    internal ConfigEntry<string>? ServerMessageOfTheDay;
+    internal const string DefaultServerMessageOfTheDay = "Welcome to the server, [USERNAME]!";
+    
+    internal ConfigEntry<string>? Missions;
+    internal const string DefaultMissions = "Escalation;Domination;Confrontation;Breakout;Carrier Duel;Altercation";
+    
+    internal ConfigEntry<int>? MissionDuration;
+    internal const int DefaultMissionDuration = 60;
+    
+    private List<string> MissionsList => Missions!.Value.Split(';').ToList();
     
     private void InitSettings()
     {
-        Logger.LogDebug("Loading settings...");
+        Logger?.LogDebug("Loading settings...");
         
-        _maxPlayers = Config.Bind("Settings", "MaxPlayers", 16, "The maximum number of players allowed in the server.");
-        Logger.LogDebug($"MaxPlayers: {_maxPlayers.Value}");
+        MaxPlayers = Config.Bind("Settings", "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
+        Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");
         
-        _serverName = Config.Bind("Settings", "ServerName", "Dedicated Nuclei Server", "The name of the server.");
-        Logger.LogDebug($"ServerName: {_serverName.Value}");
+        ServerName = Config.Bind("Settings", "ServerName", DefaultServerName, "The name of the server.");
+        Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
-        _serverMessageOfTheDay = Config.Bind("Settings", "ServerMessageOfTheDay", "Welcome to the server, [USERNAME]!", "The message of the day for the server. This is displayed when players join the server.");
-        Logger.LogDebug($"ServerMessageOfTheDay: {_serverMessageOfTheDay.Value}");
+        ServerMessageOfTheDay = Config.Bind("Settings", "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This is displayed when players join the server.");
+        Logger?.LogDebug($"ServerMessageOfTheDay: {ServerMessageOfTheDay.Value}");
         
-        _missions = Config.Bind("Settings", "Missions", new List<string> { "Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation" }, "The list of missions the server will cycle through.");
-        Logger.LogDebug($"Missions: {string.Join("; ", _missions.Value)}");
+        Missions = Config.Bind("Settings", "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
+        Logger?.LogDebug($"Missions: {Missions.Value}");
         
-        _missionDuration = Config.Bind("Settings", "MissionDuration", 60, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
-        Logger.LogDebug($"MissionDuration: {_missionDuration.Value}");
+        MissionDuration = Config.Bind("Settings", "MissionDuration", DefaultMissionDuration, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
+        Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
         
-        Logger.LogDebug("Loaded settings!");
+        Logger?.LogDebug("Loaded settings!");
     }
 
     private void ValidateSettings()
     {
-        Logger.LogDebug("Validating settings...");
+        Logger?.LogDebug("Validating settings...");
         
-        if (_maxPlayers.Value < 1)
+        if (MaxPlayers!.Value < 1)
         {
-            Logger.LogWarning("MaxPlayers must be at least 1! Resetting to default value.");
-            _maxPlayers.Value = 16;
+            Logger?.LogWarning("MaxPlayers must be at least 1! Resetting to default value.");
+            MaxPlayers.Value = DefaultMaxPlayers;
         }
         
-        if (string.IsNullOrWhiteSpace(_serverName.Value))
+        if (string.IsNullOrWhiteSpace(ServerName!.Value))
         {
-            Logger.LogWarning("ServerName cannot be empty! Resetting to default value.");
-            _serverName.Value = "Dedicated Nuclei Server";
+            Logger?.LogWarning("ServerName cannot be empty! Resetting to default value.");
+            ServerName.Value = DefaultServerName;
         }
         
-        if (_missions.Value.Count == 0)
+        if (string.IsNullOrWhiteSpace(Missions!.Value))
         {
-            Logger.LogWarning("Missions cannot be empty! Resetting to default value.");
-            _missions.Value = ["Escalation", "Domination", "Confrontation", "Breakout", "Carrier Duel", "Altercation"];
+            Logger?.LogWarning("Missions cannot be empty! Resetting to default value.");
+            Missions.Value = DefaultMissions;
         }
         
-        if (_missionDuration.Value < 0)
+        if (MissionsList.Count == 0)
         {
-            Logger.LogWarning("MissionDuration may not be negative! Setting to 0.");
-            _missionDuration.Value = 0;
+            Logger?.LogWarning("Missions cannot be empty! Resetting to default value.");
+            Missions.Value = DefaultMissions;
         }
         
-        Logger.LogDebug("Settings validated!");
+        if (MissionDuration!.Value < 0)
+        {
+            Logger?.LogWarning("MissionDuration may not be negative! Setting to 0.");
+            MissionDuration.Value = 0;
+        }
+        
+        Logger?.LogDebug("Settings validated!");
     }
 
     private void Awake()
@@ -83,22 +102,44 @@ public class Nuclei : BaseUnityPlugin
         
         Logger = base.Logger;
         
-        Logger.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
+        Logger?.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
 
-        InitSettings();
-        ValidateSettings();
-
-        Harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+        try
+        {
+            InitSettings();
+            ValidateSettings();
+        }
+        catch (ArgumentException e)
+        {
+            Logger?.LogError(
+                $"Aborting server launch: Failed to load or validate settings. One of the settings might be the wrong type of value. For more information, see this error trace:\n{e}");
+            return;
+        }
+        catch (Exception e)
+        {
+            Logger?.LogError($"Aborting server launch: Failed to load or validate settings. For more information, see this error trace:\n{e}");
+            return;
+        }
 
         PatchAll();
 
         if (IsPatched)
-            Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         else
-            Logger.LogError($"Plugin {PluginInfo.PLUGIN_GUID} failed to load correctly!");
+            Logger?.LogError($"Plugin {PluginInfo.PLUGIN_GUID} failed to load correctly!");
+        
+        try
+        {
+            // TODO: should not be called here, since a number of instances won't be ready yet. Instead, patch the game to wait for the network manager to be ready before starting the server.
+            Server.StartServer();
+        }
+        catch (Exception e)
+        {
+            Logger?.LogError($"Aborting server launch: Failed to start the server. For more information, see this error trace:\n{e}");
+        }
     }
 
-    private void PatchAll()
+    private static void PatchAll()
     {
         if (IsPatched)
         {
@@ -118,12 +159,18 @@ public class Nuclei : BaseUnityPlugin
         }
         catch (Exception e)
         {
-            Logger?.LogError($"Failed to patch: {e}");
+            Logger?.LogError($"Aborting server launch: Failed to Harmony patch the game. For more information, see this error trace:\n{e}");
         }
     }
 
     private void UnpatchSelf()
     {
+        if (Harmony == null)
+        {
+            Logger?.LogError("Harmony instance is null!");
+            return;
+        }
+        
         if (!IsPatched)
         {
             Logger?.LogWarning("Already unpatched!");
