@@ -35,7 +35,7 @@ public class Nuclei : BaseUnityPlugin
     internal ConfigEntry<int>? MissionDuration;
     internal const int DefaultMissionDuration = 60;
     
-    private List<string> MissionsList => Missions!.Value.Split(';').ToList();
+    internal List<string> MissionsList => Missions!.Value.Split(';').ToList();
     
     private void InitSettings()
     {
