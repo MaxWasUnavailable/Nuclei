@@ -49,7 +49,7 @@ public static class Server
             return;
         }
         
-        ServerMessenger.SendHostEndedMessage();
+        MessageService.SendHostEndedMessage();
         
         Globals.NetworkManagerNuclearOptionInstance.Stop(false);
         
@@ -65,7 +65,7 @@ public static class Server
     {
         Nuclei.Logger?.LogInfo("Selecting random mission...");
 
-        var mission = ServerMissionManager.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
+        var mission = MissionService.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
         
         if (mission == null)
         {
@@ -96,7 +96,7 @@ public static class Server
             return;
         }
 
-        ServerMissionManager.SetMission(mission);
+        MissionService.SetMission(mission);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public static class Server
     /// <returns> The created <see cref="HostOptions" /> object. </returns>
     public static HostOptions CreateHostOptionsForCurrentMission()
     {
-        return CreateHostOptions(ServerMissionManager.CurrentMission!);
+        return CreateHostOptions(MissionService.CurrentMission!);
     }
 
     /// <summary>
@@ -181,9 +181,9 @@ public static class Server
         {
             Nuclei.Logger?.LogInfo("Already running, ending mission first...");
             EndMission();
-        } 
+        }
 
-        if (ServerMissionManager.TryGetConsumePreselectedMission(out var mission))
+        if (MissionService.TryGetConsumePreselectedMission(out var mission))
             SelectMission(mission!);
         else
             SelectRandomMission();
@@ -205,7 +205,7 @@ public static class Server
         
         Nuclei.Logger?.LogInfo("Starting server...");
 
-        if (!ServerMissionManager.ValidateMissionConfig())
+        if (!MissionService.ValidateMissionConfig())
         {
             Nuclei.Logger?.LogError("Failed to validate mission config! Aborting server launch.");
             return;
@@ -215,6 +215,4 @@ public static class Server
         
         Nuclei.Logger?.LogInfo("Server started.");
     }
-    
-    // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance?
 }

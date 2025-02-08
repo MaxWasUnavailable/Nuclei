@@ -8,7 +8,7 @@ namespace Nuclei.Features;
 /// <summary>
 ///     Manages server messaging.
 /// </summary>
-public static class ServerMessenger
+public static class MessageService
 {
     /// <summary>
     ///     Sends a message to all clients.

@@ -58,7 +58,9 @@
         <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
         <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
         <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
         <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
+        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
         <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
         <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
         <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>

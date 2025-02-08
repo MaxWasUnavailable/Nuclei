@@ -11,7 +11,7 @@ namespace Nuclei.Features;
 /// <summary>
 ///     Manages missions on the server.
 /// </summary>
-public static class ServerMissionManager
+public static class MissionService
 {
     /// <summary>
     ///     The last mission that was started.
