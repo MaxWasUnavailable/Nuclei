@@ -6,6 +6,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using Nuclei.Features;
+using Steamworks;
 
 namespace Nuclei;
 
@@ -19,6 +20,9 @@ public class Nuclei : BaseUnityPlugin
     internal new static ManualLogSource? Logger { get; private set; }
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
+    
+    internal const string GeneralSection = "General";
+    internal const string TechnicalSection = "Technical";
 
     internal ConfigEntry<int>? MaxPlayers;
     internal const int DefaultMaxPlayers = 16;
@@ -35,26 +39,50 @@ public class Nuclei : BaseUnityPlugin
     internal ConfigEntry<int>? MissionDuration;
     internal const int DefaultMissionDuration = 60;
     
+    internal ConfigEntry<bool>? AllowRepeatMission;
+    internal const bool DefaultAllowRepeatMission = true;
+    
+    internal ConfigEntry<int>? UdpPort;
+    internal const int DefaultUdpPort = 7777;
+    
+    internal ConfigEntry<bool>? UseSteamSocket;
+    internal const bool DefaultUseSteamSocket = true;
+    
+    internal ConfigEntry<ELobbyType>? LobbyType;
+    internal const ELobbyType DefaultLobbyType = ELobbyType.k_ELobbyTypePublic;
+    
     internal List<string> MissionsList => Missions!.Value.Split(';').ToList();
     
     private void InitSettings()
     {
         Logger?.LogDebug("Loading settings...");
         
-        MaxPlayers = Config.Bind("Settings", "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
+        MaxPlayers = Config.Bind(GeneralSection, "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
         Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");
         
-        ServerName = Config.Bind("Settings", "ServerName", DefaultServerName, "The name of the server.");
+        ServerName = Config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
         Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
-        ServerMessageOfTheDay = Config.Bind("Settings", "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This is displayed when players join the server.");
+        ServerMessageOfTheDay = Config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This is displayed when players join the server.");
         Logger?.LogDebug($"ServerMessageOfTheDay: {ServerMessageOfTheDay.Value}");
         
-        Missions = Config.Bind("Settings", "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
+        Missions = Config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
         Logger?.LogDebug($"Missions: {Missions.Value}");
         
-        MissionDuration = Config.Bind("Settings", "MissionDuration", DefaultMissionDuration, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
+        MissionDuration = Config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
         Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
+        
+        AllowRepeatMission = Config.Bind(GeneralSection, "AllowRepeatMission", DefaultAllowRepeatMission, "Whether to allow the same mission to be selected more than once in a row. Does not work if there is only one mission in the list.");
+        Logger?.LogDebug($"AllowRepeatMission: {AllowRepeatMission.Value}");
+        
+        UdpPort = Config.Bind(TechnicalSection, "UdpPort", DefaultUdpPort, "The UDP port the server will listen on. Only change this if you know what you're doing.");
+        Logger?.LogDebug($"UdpPort: {UdpPort.Value}");
+        
+        UseSteamSocket = Config.Bind(TechnicalSection, "UseSteamSocket", DefaultUseSteamSocket, "Whether to use the Steam socket type. Only change this if you know what you're doing.");
+        Logger?.LogDebug($"UseSteamSocket: {UseSteamSocket.Value}");
+        
+        LobbyType = Config.Bind(TechnicalSection, "LobbyType", DefaultLobbyType, "The type of lobby to create when starting a Steam lobby.");
+        Logger?.LogDebug($"LobbyType: {LobbyType.Value}");
         
         Logger?.LogDebug("Loaded settings!");
     }
@@ -81,16 +109,28 @@ public class Nuclei : BaseUnityPlugin
             Missions.Value = DefaultMissions;
         }
         
+        if (MissionDuration!.Value < 0)
+        {
+            Logger?.LogWarning("MissionDuration may not be negative! Setting to 0.");
+            MissionDuration.Value = 0;
+        }
+        
         if (MissionsList.Count == 0)
         {
             Logger?.LogWarning("Missions cannot be empty! Resetting to default value.");
             Missions.Value = DefaultMissions;
         }
         
-        if (MissionDuration!.Value < 0)
+        if (MissionsList.Count == 1 && !AllowRepeatMission!.Value)
         {
-            Logger?.LogWarning("MissionDuration may not be negative! Setting to 0.");
-            MissionDuration.Value = 0;
+            Logger?.LogWarning("AllowRepeatMission is disabled, but there is only one mission in the list! Enabling AllowRepeatMission.");
+            AllowRepeatMission.Value = true;
+        }
+        
+        if (UdpPort!.Value < 0 || UdpPort.Value > 65535)
+        {
+            Logger?.LogWarning("UdpPort must be between 0 and 65535! Resetting to default value.");
+            UdpPort.Value = DefaultUdpPort;
         }
         
         Logger?.LogDebug("Settings validated!");
