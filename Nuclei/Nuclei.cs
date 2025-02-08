@@ -6,6 +6,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using Steamworks;
+using UnityEngine;
 
 namespace Nuclei;
 
@@ -128,6 +129,11 @@ public class Nuclei : BaseUnityPlugin
         
         Logger?.LogDebug("Settings validated!");
     }
+    
+    private static bool IsServerDedicated()
+    {
+        return Application.isBatchMode;
+    }
 
     private void Awake()
     {
@@ -136,6 +142,12 @@ public class Nuclei : BaseUnityPlugin
         Logger = base.Logger;
         
         Logger?.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
+        
+        if (!IsServerDedicated())
+        {
+            Logger?.LogError("This plugin is intended for dedicated servers only! Aborting server initialisation. To run a dedicated server, use the -batchmode and -nographics command line arguments.");
+            return;
+        }
 
         try
         {
