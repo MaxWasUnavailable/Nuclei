@@ -22,6 +22,11 @@ public static class Globals
     ///     Gets the instance of the <see cref="ChatManager" /> class.
     /// </summary>
     public static ChatManager ChatManagerInstance => ChatManager.i ?? throw new NullReferenceException("ChatManager instance is null.");
+    
+    /// <summary>
+    ///     Gets the instance of the <see cref="SteamLobby" /> class.
+    /// </summary>
+    public static SteamLobby SteamLobbyInstance => SteamLobby.instance ?? throw new NullReferenceException("SteamLobby instance is null.");
 
     /// <summary>
     ///     Gets the local player. (The host / server)
