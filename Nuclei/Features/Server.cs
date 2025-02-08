@@ -173,6 +173,24 @@ public static class Server
     }
 
     /// <summary>
+    ///     Starts or restarts the lobby, selecting a random mission first.
+    /// </summary>
+    public static void StartOrRestartLobby()
+    {
+        if (IsServerRunning) EndMission();
+
+        if (ServerMissionManager.TryGetConsumePreselectedMission(out var mission))
+        {
+            SelectMission(mission!);
+        }
+        else
+            SelectRandomMission();
+        
+        StartMission();
+        StartSteamLobby();
+    }
+
+    /// <summary>
     ///     Starts the dedicated server.
     /// </summary>
     public static void StartServer()
@@ -191,9 +209,7 @@ public static class Server
             return;
         }
         
-        SelectRandomMission();
-        StartMission();
-        StartSteamLobby();
+        StartOrRestartLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
     }
