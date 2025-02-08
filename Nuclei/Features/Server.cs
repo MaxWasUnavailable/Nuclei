@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
 using Nuclei.Helpers;
@@ -137,9 +138,9 @@ public static class Server
             return;
         }
         
-        if (GameManager.gameState == GameManager.GameState.Multiplayer)
+        if (SteamMatchmaking.GetLobbyByIndex(0) != CSteamID.Nil)
         {
-            Nuclei.Logger?.LogWarning("Cannot start new lobby while in game.");
+            Nuclei.Logger?.LogWarning("Steam lobby already exists.");
             return;
         }
         
@@ -177,7 +178,11 @@ public static class Server
     /// </summary>
     public static void StartOrRestartLobby()
     {
-        if (IsServerRunning) EndMission();
+        if (IsServerRunning)
+        {
+            Nuclei.Logger?.LogInfo("Already running, ending mission first...");
+            EndMission();
+        } 
 
         if (ServerMissionManager.TryGetConsumePreselectedMission(out var mission))
         {
@@ -212,6 +217,9 @@ public static class Server
         StartOrRestartLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
+        
+        // For testing purposes, restart the lobby after 1 minute
+        Task.Delay(60000).ContinueWith(_ => StartOrRestartLobby());
     }
     
     // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance?
