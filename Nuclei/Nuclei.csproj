@@ -34,6 +34,9 @@
 
         <!-- Prevent Publicizer Warnings from Showing -->
         <NoWarn>$(NoWarn);CS0436</NoWarn>
+        
+        <!-- Mod Destination -->
+        <ModDestination>$(NUCLEAR_OPTION_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
     </PropertyGroup>
 
     <!-- Include README and CHANGELOG in the package -->
@@ -67,4 +70,21 @@
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>
+    
+    <Target Name="PostBuild" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' AND '$(ModDestination)' != ''">
+        <!-- Create an item for all .dll files in the output directory -->
+        <CreateItem Include="$(OutDir)*.dll">
+            <Output TaskParameter="Include" ItemName="DllFiles"/>
+        </CreateItem>
+
+        <!-- Copy the build output -->
+        <Message Text="Copying build output assemblies from $(OutDir)*.dll to $(ModDestination)\$(AssemblyName)" Importance="high"/>
+        <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
+
+        <!-- Copy README & CHANGELOG -->
+        <Message Text="Copying README from $(ProjectDir)..\README.md to $(ModDestination)\$(AssemblyName)" Importance="high"/>
+        <Copy SourceFiles="$(ProjectDir)..\README.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
+        <Message Text="Copying CHANGELOG from $(ProjectDir)..\CHANGELOG.md to $(ModDestination)" Importance="high"/>
+        <Copy SourceFiles="$(ProjectDir)..\CHANGELOG.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
+    </Target>
 </Project>
