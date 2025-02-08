@@ -19,6 +19,11 @@ public static class ServerMissionManager
     public static Mission? LastMission { get; private set; }
 
     /// <summary>
+    ///     The preselected mission key.
+    /// </summary>
+    public static MissionGroup.MissionKey? PreselectedMissionKey { get; private set; }
+
+    /// <summary>
     ///     The current mission.
     /// </summary>
     public static Mission? CurrentMission => MissionManager.CurrentMission;
@@ -121,5 +126,22 @@ public static class ServerMissionManager
             valid = false;
         }
         return valid;
+    }
+
+    /// <summary>
+    ///     Return preselected mission if it exists, and clear it.
+    /// </summary>
+    /// <param name="mission"> The mission to return. </param>
+    /// <returns> Whether the mission was found. </returns>
+    public static bool TryGetConsumePreselectedMission(out Mission? mission)
+    {
+        if (PreselectedMissionKey == null)
+        {
+            mission = null;
+            return false;
+        }
+        mission = GetMission(PreselectedMissionKey.Value)!;
+        PreselectedMissionKey = null;
+        return true;
     }
 }
