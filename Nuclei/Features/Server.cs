@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
 using Nuclei.Helpers;
@@ -185,9 +184,7 @@ public static class Server
         } 
 
         if (ServerMissionManager.TryGetConsumePreselectedMission(out var mission))
-        {
             SelectMission(mission!);
-        }
         else
             SelectRandomMission();
         
@@ -217,9 +214,6 @@ public static class Server
         StartOrRestartLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
-        
-        // For testing purposes, restart the lobby after 1 minute
-        Task.Delay(60000).ContinueWith(_ => StartOrRestartLobby());
     }
     
     // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance?
