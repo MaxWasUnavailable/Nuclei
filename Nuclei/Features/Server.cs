@@ -193,8 +193,7 @@ public static class Server
         
         SelectRandomMission();
         StartMission();
-        if (Nuclei.Instance!.UseSteamSocket!.Value)
-            StartSteamLobby();
+        StartSteamLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
     }
