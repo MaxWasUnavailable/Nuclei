@@ -5,7 +5,6 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
-using Nuclei.Features;
 using Steamworks;
 
 namespace Nuclei;
@@ -24,8 +23,8 @@ public class Nuclei : BaseUnityPlugin
     internal const string GeneralSection = "General";
     internal const string TechnicalSection = "Technical";
 
-    internal ConfigEntry<int>? MaxPlayers;
-    internal const int DefaultMaxPlayers = 16;
+    internal ConfigEntry<ushort>? MaxPlayers;
+    internal const ushort DefaultMaxPlayers = 16;
     
     internal ConfigEntry<string>? ServerName;
     internal const string DefaultServerName = "Dedicated Nuclei Server";
@@ -36,14 +35,14 @@ public class Nuclei : BaseUnityPlugin
     internal ConfigEntry<string>? Missions;
     internal const string DefaultMissions = "Escalation;Domination;Confrontation;Breakout;Carrier Duel;Altercation";
     
-    internal ConfigEntry<int>? MissionDuration;
-    internal const int DefaultMissionDuration = 60;
+    internal ConfigEntry<uint>? MissionDuration;
+    internal const uint DefaultMissionDuration = 60;
     
     internal ConfigEntry<bool>? AllowRepeatMission;
     internal const bool DefaultAllowRepeatMission = true;
     
-    internal ConfigEntry<int>? UdpPort;
-    internal const int DefaultUdpPort = 7777;
+    internal ConfigEntry<ushort>? UdpPort;
+    internal const ushort DefaultUdpPort = 7777;
     
     internal ConfigEntry<bool>? UseSteamSocket;
     internal const bool DefaultUseSteamSocket = true;
@@ -109,12 +108,6 @@ public class Nuclei : BaseUnityPlugin
             Missions.Value = DefaultMissions;
         }
         
-        if (MissionDuration!.Value < 0)
-        {
-            Logger?.LogWarning("MissionDuration may not be negative! Setting to 0.");
-            MissionDuration.Value = 0;
-        }
-        
         if (MissionsList.Count == 0)
         {
             Logger?.LogWarning("Missions cannot be empty! Resetting to default value.");
@@ -127,7 +120,7 @@ public class Nuclei : BaseUnityPlugin
             AllowRepeatMission.Value = true;
         }
         
-        if (UdpPort!.Value < 0 || UdpPort.Value > 65535)
+        if (UdpPort!.Value > 65535 && !UseSteamSocket!.Value)
         {
             Logger?.LogWarning("UdpPort must be between 0 and 65535! Resetting to default value.");
             UdpPort.Value = DefaultUdpPort;
