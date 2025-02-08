@@ -95,12 +95,6 @@ public static class Server
             Nuclei.Logger?.LogWarning("Server is already running.");
             return;
         }
-        
-        if (GameManager.gameState == GameManager.GameState.Multiplayer)
-        {
-            Nuclei.Logger?.LogWarning("Cannot start mission while in game.");
-            return;
-        }
 
         MissionService.SetMission(mission);
     }
@@ -133,7 +127,7 @@ public static class Server
     /// <summary>
     ///     Starts a mission on the server, using the currently selected mission.
     /// </summary>
-    public static void StartMission()
+    public async static UniTask StartMission()
     {
         Nuclei.Logger?.LogInfo("Starting mission...");
         
@@ -143,13 +137,7 @@ public static class Server
             return;
         }
         
-        if (GameManager.gameState == GameManager.GameState.Multiplayer)
-        {
-            Nuclei.Logger?.LogWarning("Cannot start new mission while in game.");
-            return;
-        }
-        
-        Globals.NetworkManagerNuclearOptionInstance.StartHost(CreateHostOptionsForCurrentMission());
+        await Globals.NetworkManagerNuclearOptionInstance.StartHostAsync(CreateHostOptionsForCurrentMission());
         
         Nuclei.Logger?.LogInfo("Mission started.");
     }
@@ -164,6 +152,8 @@ public static class Server
             Nuclei.Logger?.LogInfo("Already running, ending mission first...");
             EndMission();
         }
+        
+        GameManager.SetGameState(GameManager.GameState.Multiplayer);
 
         if (MissionService.TryGetConsumePreselectedMission(out var mission))
             SelectMission(mission!);
@@ -171,7 +161,7 @@ public static class Server
             SelectRandomMission();
 
         await SteamLobbyService.StartSteamLobby();
-        StartMission();
+        await StartMission();
 
         Resources.UnloadUnusedAssets();
     }
