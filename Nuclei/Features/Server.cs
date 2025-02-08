@@ -1,5 +1,5 @@
-using System;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
 using Nuclei.Helpers;
@@ -29,9 +29,11 @@ public static class Server
         
         EndMission();
         
-        Nuclei.Logger?.LogInfo("Server stopped.");
-        
-        Application.Quit();
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            Nuclei.Logger?.LogInfo("Server stopped.");
+            Application.Quit();
+        });
     }
 
     /// <summary>
@@ -129,24 +131,6 @@ public static class Server
     }
 
     /// <summary>
-    ///     Starts a Steam lobby.
-    /// </summary>
-    public static void StartSteamLobby()
-    {
-        Nuclei.Logger?.LogInfo("Starting Steam lobby...");
-        
-        if (SteamMatchmaking.GetLobbyByIndex(0) != CSteamID.Nil)
-        {
-            Nuclei.Logger?.LogWarning("Steam lobby already exists.");
-            return;
-        }
-        
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, Nuclei.Instance!.MaxPlayers!.Value);
-        
-        Nuclei.Logger?.LogInfo("Steam lobby started.");
-    }
-
-    /// <summary>
     ///     Starts a mission on the server, using the currently selected mission.
     /// </summary>
     public static void StartMission()
@@ -173,7 +157,7 @@ public static class Server
     /// <summary>
     ///     Starts or restarts the lobby, selecting a random mission first.
     /// </summary>
-    public static void StartOrRestartLobby()
+    public async static UniTask StartOrRestartLobby()
     {
         if (IsServerRunning)
         {
@@ -185,8 +169,8 @@ public static class Server
             SelectMission(mission!);
         else
             SelectRandomMission();
-        
-        StartSteamLobby();
+
+        await SteamLobbyService.StartSteamLobby();
         StartMission();
 
         Resources.UnloadUnusedAssets();
@@ -215,7 +199,7 @@ public static class Server
     /// <summary>
     ///     Starts the dedicated server.
     /// </summary>
-    public static void StartServer()
+    public static async UniTask StartServer()
     {
         if (IsServerRunning)
         {
@@ -231,7 +215,7 @@ public static class Server
             return;
         }
         
-        StartOrRestartLobby();
+        await StartOrRestartLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
     }

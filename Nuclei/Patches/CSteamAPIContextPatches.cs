@@ -16,7 +16,7 @@ internal static class CSteamAPIContextPatches
     {
         try
         {
-            Server.StartServer();
+            _ = Server.StartServer();
         }
         catch (Exception e)
         {
