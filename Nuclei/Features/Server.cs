@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
 using Nuclei.Helpers;
-using Steamworks;
 using UnityEngine;
 using UnityEngine.Audio;
 using Object = UnityEngine.Object;
@@ -127,7 +126,7 @@ public static class Server
     /// <summary>
     ///     Starts a mission on the server, using the currently selected mission.
     /// </summary>
-    public async static UniTask StartMission()
+    public static async UniTask StartMission()
     {
         Nuclei.Logger?.LogInfo("Starting mission...");
         
@@ -145,7 +144,7 @@ public static class Server
     /// <summary>
     ///     Starts or restarts the lobby, selecting a random mission first.
     /// </summary>
-    public async static UniTask StartOrRestartLobby()
+    public static async UniTask StartOrRestartLobby()
     {
         if (IsServerRunning)
         {
