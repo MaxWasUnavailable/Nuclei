@@ -19,6 +19,11 @@ public static class Globals
     public static MissionManager MissionManagerInstance => MissionManager.i ?? throw new NullReferenceException("MissionManager instance is null.");
 
     /// <summary>
+    ///     Gets the instance of the <see cref="ChatManager" /> class.
+    /// </summary>
+    public static ChatManager ChatManagerInstance => ChatManager.i ?? throw new NullReferenceException("ChatManager instance is null.");
+
+    /// <summary>
     ///     Gets the local player. (The host / server)
     /// </summary>
     public static Player LocalPlayer => GameManager.LocalPlayer ?? throw new NullReferenceException("Local player is null.");

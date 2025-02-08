@@ -1,8 +1,12 @@
+using System;
+using System.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
 using Nuclei.Helpers;
 using Steamworks;
 using UnityEngine;
+using UnityEngine.Audio;
+using Object = UnityEngine.Object;
 
 namespace Nuclei.Features;
 
@@ -131,12 +135,6 @@ public static class Server
     {
         Nuclei.Logger?.LogInfo("Starting Steam lobby...");
         
-        if (!IsServerRunning)
-        {
-            Nuclei.Logger?.LogWarning("Server is not running.");
-            return;
-        }
-        
         if (SteamMatchmaking.GetLobbyByIndex(0) != CSteamID.Nil)
         {
             Nuclei.Logger?.LogWarning("Steam lobby already exists.");
@@ -188,8 +186,30 @@ public static class Server
         else
             SelectRandomMission();
         
-        StartMission();
         StartSteamLobby();
+        StartMission();
+
+        Resources.UnloadUnusedAssets();
+    }
+    
+    private static void DisableAudio()
+    {
+        Nuclei.Logger?.LogDebug("Disabling audio...");
+        
+        Object.FindObjectOfType<AudioMixer>()?.SetFloat("MasterVolume", -80f);
+
+        Nuclei.Logger?.LogDebug("Audio disabled.");
+    }
+    
+    private static void SetupLocalPlayer()
+    {
+        Nuclei.Logger?.LogDebug("Setting up local player...");
+        
+        Globals.LocalPlayer.PlayerName = "Server";
+        Globals.LocalPlayer.SteamID = 0;
+        Globals.LocalPlayer.CmdSetPlayerName("Server");
+        
+        Nuclei.Logger?.LogDebug("Local player set up.");
     }
 
     /// <summary>
