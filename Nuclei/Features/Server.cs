@@ -64,18 +64,6 @@ public static class Server
     public static void SelectRandomMission()
     {
         Nuclei.Logger?.LogInfo("Starting random mission...");
-        
-        if (!IsServerRunning)
-        {
-            Nuclei.Logger?.LogWarning("Server is not running.");
-            return;
-        }
-        
-        if (GameManager.gameState != GameManager.GameState.Menu)
-        {
-            Nuclei.Logger?.LogWarning("Cannot start mission while in game.");
-            return;
-        }
 
         var mission = ServerMissionManager.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
         
@@ -98,13 +86,13 @@ public static class Server
     {
         Nuclei.Logger?.LogInfo($"Starting mission: {mission.Name}");
         
-        if (!IsServerRunning)
+        if (IsServerRunning)
         {
-            Nuclei.Logger?.LogWarning("Server is not running.");
+            Nuclei.Logger?.LogWarning("Server is already running.");
             return;
         }
         
-        if (GameManager.gameState != GameManager.GameState.Menu)
+        if (GameManager.gameState == GameManager.GameState.Multiplayer)
         {
             Nuclei.Logger?.LogWarning("Cannot start mission while in game.");
             return;
@@ -145,15 +133,15 @@ public static class Server
     {
         Nuclei.Logger?.LogInfo("Starting Steam lobby...");
         
-        if (IsServerRunning)
+        if (!IsServerRunning)
         {
-            Nuclei.Logger?.LogWarning("Server is already running.");
+            Nuclei.Logger?.LogWarning("Server is not running.");
             return;
         }
         
-        if (GameManager.gameState != GameManager.GameState.Menu)
+        if (GameManager.gameState == GameManager.GameState.Multiplayer)
         {
-            Nuclei.Logger?.LogWarning("Cannot start new mission while in game.");
+            Nuclei.Logger?.LogWarning("Cannot start new lobby while in game.");
             return;
         }
         
@@ -175,7 +163,7 @@ public static class Server
             return;
         }
         
-        if (GameManager.gameState != GameManager.GameState.Menu)
+        if (GameManager.gameState == GameManager.GameState.Multiplayer)
         {
             Nuclei.Logger?.LogWarning("Cannot start new mission while in game.");
             return;
