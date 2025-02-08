@@ -14,9 +14,9 @@ namespace Nuclei.Features;
 public static class ServerMissionManager
 {
     /// <summary>
-    ///     Mission Key of the last mission that was started.
+    ///     The last mission that was started.
     /// </summary>
-    public static MissionGroup.MissionKey? LastMission { get; } = null;
+    public static Mission? LastMission { get; private set; }
 
     /// <summary>
     ///     The current mission.
@@ -91,9 +91,35 @@ public static class ServerMissionManager
             Nuclei.Logger?.LogWarning("No missions found. This should not happen.");
             return null;
         }
-        if (!allowRepeat && missions.Length > 1 && LastMission.HasValue) 
-            missions = missions.Where(m => m.Name != LastMission.Value.Name).ToArray();
+        if (!allowRepeat && missions.Length > 1 && LastMission != null)
+            missions = missions.Where(m => m.Name != LastMission.Name).ToArray();
 
         return GetMission(missions[Random.Range(0, missions.Length)]);
+    }
+
+    /// <summary>
+    ///     Select the given mission on the server.
+    /// </summary>
+    /// <param name="mission"> The mission to start. </param>
+    /// <param name="checkIfSame"> Whether to check if the mission is the same as the current mission. </param>
+    public static void SetMission(Mission mission, bool checkIfSame = false)
+    {
+        MissionManager.SetMission(mission, checkIfSame);
+        LastMission = mission;
+        Nuclei.Logger?.LogDebug($"Set mission: {mission.Name}");
+    }
+
+    /// <summary>
+    ///     Validates that the configured missions actually exist.
+    /// </summary>
+    public static bool ValidateMissionConfig()
+    {
+        var valid = true;
+        foreach (var missionName in Nuclei.Instance!.MissionsList.Where(missionName => AllMissionKeys.All(k => k.Name != missionName)))
+        {
+            Nuclei.Logger?.LogError($"Mission '{missionName}' not found.");
+            valid = false;
+        }
+        return valid;
     }
 }
