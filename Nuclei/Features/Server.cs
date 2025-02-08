@@ -1,4 +1,7 @@
+using NuclearOption.Networking;
+using NuclearOption.SavedMission;
 using Nuclei.Helpers;
+using Steamworks;
 using UnityEngine;
 
 namespace Nuclei.Features;
@@ -56,6 +59,134 @@ public static class Server
     }
 
     /// <summary>
+    ///     Select a random mission on the server, based on the server config.
+    /// </summary>
+    public static void SelectRandomMission()
+    {
+        Nuclei.Logger?.LogInfo("Starting random mission...");
+        
+        if (!IsServerRunning)
+        {
+            Nuclei.Logger?.LogWarning("Server is not running.");
+            return;
+        }
+        
+        if (GameManager.gameState != GameManager.GameState.Menu)
+        {
+            Nuclei.Logger?.LogWarning("Cannot start mission while in game.");
+            return;
+        }
+
+        var mission = ServerMissionManager.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
+        
+        if (mission == null)
+        {
+            Nuclei.Logger?.LogWarning("Failed to get a random mission.");
+            return;
+        }
+        
+        Nuclei.Logger?.LogInfo($"Selected mission: {mission.Name}");
+        
+        SelectMission(mission);
+    }
+
+    /// <summary>
+    ///     Select the given mission on the server.
+    /// </summary>
+    /// <param name="mission"> The mission to start. </param>
+    public static void SelectMission(Mission mission)
+    {
+        Nuclei.Logger?.LogInfo($"Starting mission: {mission.Name}");
+        
+        if (!IsServerRunning)
+        {
+            Nuclei.Logger?.LogWarning("Server is not running.");
+            return;
+        }
+        
+        if (GameManager.gameState != GameManager.GameState.Menu)
+        {
+            Nuclei.Logger?.LogWarning("Cannot start mission while in game.");
+            return;
+        }
+
+        ServerMissionManager.SetMission(mission);
+    }
+
+    /// <summary>
+    ///     Creates a <see cref="HostOptions" /> object based on the server config and the currently selected mission.
+    /// </summary>
+    /// <returns> The created <see cref="HostOptions" /> object. </returns>
+    public static HostOptions CreateHostOptionsForCurrentMission()
+    {
+        return CreateHostOptions(ServerMissionManager.CurrentMission!);
+    }
+
+    /// <summary>
+    ///     Creates a <see cref="HostOptions" /> object based on the server config and a given mission.
+    /// </summary>
+    /// <param name="mission"> The mission to create the <see cref="HostOptions" /> object for. </param>
+    /// <returns> The created <see cref="HostOptions" /> object. </returns>
+    public static HostOptions CreateHostOptions(Mission mission)
+    {
+        return new HostOptions
+        {
+            SocketType = Nuclei.Instance!.UseSteamSocket!.Value ? SocketType.Steam : SocketType.UDP,
+            MaxConnections = Nuclei.Instance!.MaxPlayers!.Value,
+            Map = mission.MapKey,
+            UdpPort = Nuclei.Instance!.UseSteamSocket!.Value ? null : Nuclei.Instance!.UdpPort!.Value
+        };
+    }
+
+    /// <summary>
+    ///     Starts a Steam lobby.
+    /// </summary>
+    public static void StartSteamLobby()
+    {
+        Nuclei.Logger?.LogInfo("Starting Steam lobby...");
+        
+        if (IsServerRunning)
+        {
+            Nuclei.Logger?.LogWarning("Server is already running.");
+            return;
+        }
+        
+        if (GameManager.gameState != GameManager.GameState.Menu)
+        {
+            Nuclei.Logger?.LogWarning("Cannot start new mission while in game.");
+            return;
+        }
+        
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, Nuclei.Instance!.MaxPlayers!.Value);
+        
+        Nuclei.Logger?.LogInfo("Steam lobby started.");
+    }
+
+    /// <summary>
+    ///     Starts a mission on the server, using the currently selected mission.
+    /// </summary>
+    public static void StartMission()
+    {
+        Nuclei.Logger?.LogInfo("Starting mission...");
+        
+        if (IsServerRunning)
+        {
+            Nuclei.Logger?.LogWarning("Server is already running.");
+            return;
+        }
+        
+        if (GameManager.gameState != GameManager.GameState.Menu)
+        {
+            Nuclei.Logger?.LogWarning("Cannot start new mission while in game.");
+            return;
+        }
+        
+        Globals.NetworkManagerNuclearOptionInstance.StartHost(CreateHostOptionsForCurrentMission());
+        
+        Nuclei.Logger?.LogInfo("Mission started.");
+    }
+
+    /// <summary>
     ///     Starts the dedicated server.
     /// </summary>
     public static void StartServer()
@@ -67,13 +198,20 @@ public static class Server
         }
         
         Nuclei.Logger?.LogInfo("Starting server...");
+
+        if (!ServerMissionManager.ValidateMissionConfig())
+        {
+            Nuclei.Logger?.LogError("Failed to validate mission config! Aborting server launch.");
+            return;
+        }
         
-        // TODO: remove this. It's a temporary test to see if the list of missions is being populated correctly.
-        foreach (var missionKey in ServerMissionManager.AllMissions) 
-            Nuclei.Logger?.LogInfo($"Found mission: {missionKey}");
-        
-        // TODO: Implement server startup logic here.
+        SelectRandomMission();
+        StartMission();
+        if (Nuclei.Instance!.UseSteamSocket!.Value)
+            StartSteamLobby();
         
         Nuclei.Logger?.LogInfo("Server started.");
     }
+    
+    // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance
 }
