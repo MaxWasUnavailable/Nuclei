@@ -63,7 +63,7 @@ public static class Server
     /// </summary>
     public static void SelectRandomMission()
     {
-        Nuclei.Logger?.LogInfo("Starting random mission...");
+        Nuclei.Logger?.LogInfo("Selecting random mission...");
 
         var mission = ServerMissionManager.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
         
@@ -72,8 +72,6 @@ public static class Server
             Nuclei.Logger?.LogWarning("Failed to get a random mission.");
             return;
         }
-        
-        Nuclei.Logger?.LogInfo($"Selected mission: {mission.Name}");
         
         SelectMission(mission);
     }
@@ -84,7 +82,7 @@ public static class Server
     /// <param name="mission"> The mission to start. </param>
     public static void SelectMission(Mission mission)
     {
-        Nuclei.Logger?.LogInfo($"Starting mission: {mission.Name}");
+        Nuclei.Logger?.LogInfo($"Selected mission: {mission.Name}");
         
         if (IsServerRunning)
         {
@@ -201,5 +199,5 @@ public static class Server
         Nuclei.Logger?.LogInfo("Server started.");
     }
     
-    // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance
+    // TODO: patch lights, animators, particle systems, and cameras, and set them to disabled after awake to help with server performance?
 }
