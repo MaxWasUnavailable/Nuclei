@@ -31,7 +31,13 @@ public class Nuclei : BaseUnityPlugin
     internal const string DefaultServerName = "Dedicated Nuclei Server";
     
     internal ConfigEntry<string>? ServerMessageOfTheDay;
-    internal const string DefaultServerMessageOfTheDay = "Welcome to the server, [USERNAME]!";
+    internal const string DefaultServerMessageOfTheDay = "Default message of the day.";
+    
+    internal ConfigEntry<uint>? MotDFrequency;
+    internal const uint DefaultMotDFrequency = 30;
+    
+    internal ConfigEntry<string>? WelcomeMessage;
+    internal const string DefaultWelcomeMessage = "Welcome to the server, {username}!";
     
     internal ConfigEntry<string>? Missions;
     internal const string DefaultMissions = "Escalation;Domination;Confrontation;Breakout;Carrier Duel;Altercation";
@@ -63,8 +69,14 @@ public class Nuclei : BaseUnityPlugin
         ServerName = Config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
         Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
-        ServerMessageOfTheDay = Config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This is displayed when players join the server.");
+        ServerMessageOfTheDay = Config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
         Logger?.LogDebug($"ServerMessageOfTheDay: {ServerMessageOfTheDay.Value}");
+        
+        MotDFrequency = Config.Bind(GeneralSection, "MotDFrequency", DefaultMotDFrequency, "The frequency in minutes at which the message of the day is displayed. Set to 0 to disable the message of the day.");
+        Logger?.LogDebug($"MotDFrequency: {MotDFrequency.Value}");
+        
+        WelcomeMessage = Config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. Use {username} to insert the player's name.");
+        Logger?.LogDebug($"WelcomeMessage: {WelcomeMessage.Value}");
         
         Missions = Config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
         Logger?.LogDebug($"Missions: {Missions.Value}");
@@ -145,7 +157,7 @@ public class Nuclei : BaseUnityPlugin
         
         if (!IsServerDedicated())
         {
-            Logger?.LogError("This plugin is intended for dedicated servers only! Aborting server initialisation. To run a dedicated server, use the -batchmode and -nographics command line arguments.");
+            Logger?.LogError("This plugin is intended for dedicated servers only! Aborting server initialisation. To run a dedicated server, use the -batchmode and -nographics command line arguments. If you're running the game as a player, you can safely ignore this message.");
             return;
         }
 
