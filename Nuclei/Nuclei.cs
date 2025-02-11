@@ -3,6 +3,8 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using Nuclei.Features;
+using Nuclei.Features.Commands;
+using Nuclei.Features.Commands.DefaultCommands;
 using UnityEngine;
 
 namespace Nuclei;
@@ -55,6 +57,8 @@ public class Nuclei : BaseUnityPlugin
         }
 
         PatchAll();
+        
+        CommandService.RegisterCommand(new SayCommand());
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
