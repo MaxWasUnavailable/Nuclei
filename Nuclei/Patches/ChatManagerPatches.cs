@@ -1,4 +1,7 @@
 using HarmonyLib;
+using Mirage;
+using Nuclei.Features.Commands;
+using Nuclei.Helpers;
 
 namespace Nuclei.Patches;
 
@@ -7,11 +10,21 @@ namespace Nuclei.Patches;
 [HarmonyWrapSafe]
 internal static class ChatManagerPatches
 {
-    [HarmonyPostfix]
-    [HarmonyPatch(nameof(ChatManager.TargetReceiveMessage))]
-    private static void TargetReceiveMessagePostfix(string message)
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(ChatManager.UserCode_CmdSendChatMessage_1323305531))]
+    private static bool UserCode_CmdSendChatMessage_1323305531Prefix(string message, bool allChat, INetworkPlayer sender)
     {
-        // TODO: Add player name & reformat log message
-        Nuclei.Logger?.LogInfo($"Received message: {message}");
+        if (!PlayerUtils.TryGetPlayer(sender, out var player)) 
+            Nuclei.Logger?.LogWarning("Player component is null");
+
+        if (message.StartsWith("/") && message.Length > 1)
+            if (CommandService.TryExecuteCommand(player!, message.Remove(0, 1)))
+                return false;
+
+        Nuclei.Logger?.LogInfo(allChat
+            ? $"{player!.PlayerName} sent message: {message}"
+            : $"{player!.PlayerName} sent message in {player.HQ.faction.factionName} chat: {message}");
+
+        return true;
     }
 }
