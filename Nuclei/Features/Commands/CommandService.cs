@@ -69,11 +69,11 @@ public static class CommandService
         if (command.Validate(player, args))
         {
             command.Execute(player, args);
-            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully with argument {args}");
+            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully with argument(s): {string.Join(", ", args)}");
         }
         else
         {
-            Nuclei.Logger?.LogWarning($"Validation for command {commandName} failed with argument {args}");
+            Nuclei.Logger?.LogWarning($"Validation for command {commandName} failed with argument(s): {string.Join(", ", args)}");
             return false;
         }
         return true;
