@@ -9,7 +9,7 @@ public class SayCommand : ICommand
     public string Name { get; } = "say";
     public string Description { get; } = "Broadcast a message to all players from the server.";
     public string Usage { get; } = "say <message>";
-    public ushort PermissionLevel { get; } = 0; // TODO: replace with actual permission level
+    public PermissionLevel PermissionLevel { get; } = PermissionLevel.Moderator;
     public bool Validate(Player player, string[] args)
     {
         return args.Length > 0;

@@ -23,7 +23,7 @@ public interface ICommand
     /// <summary>
     ///     The command permission level. Users with levels higher than this can execute the command.
     /// </summary>
-    ushort PermissionLevel { get; }
+    PermissionLevel PermissionLevel { get; }
 
     /// <summary>
     ///     Validate the command arguments.

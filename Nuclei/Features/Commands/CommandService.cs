@@ -24,12 +24,12 @@ public static class CommandService
     /// </summary>
     /// <param name="player"> The player. </param>
     /// <returns> The permission level of the player. </returns>
-    public static ushort GetPlayerPermissionLevel(Player player)
+    public static PermissionLevel GetPlayerPermissionLevel(Player player)
     {
         if (player.IsHost)
-            return ushort.MaxValue;
+            return PermissionLevel.Admin;
 
-        return 0; // TODO: Implement permission levels
+        return 0; // TODO: Implement permission levels from config (?)
     }
 
     /// <summary>
