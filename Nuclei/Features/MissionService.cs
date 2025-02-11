@@ -69,7 +69,7 @@ public static class MissionService
     /// <returns> The list of mission keys. </returns>
     public static MissionGroup.MissionKey[] GetConfigMissionKeys()
     {
-        return Nuclei.Instance!.MissionsList.Select(m => AllMissionKeys.First(k => k.Name == m)).ToArray();
+        return NucleiConfig.MissionsList.Select(m => AllMissionKeys.First(k => k.Name == m)).ToArray();
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public static class MissionService
     public static bool ValidateMissionConfig()
     {
         var valid = true;
-        foreach (var missionName in Nuclei.Instance!.MissionsList.Where(missionName => AllMissionKeys.All(k => k.Name != missionName)))
+        foreach (var missionName in NucleiConfig.MissionsList.Where(missionName => AllMissionKeys.All(k => k.Name != missionName)))
         {
             Nuclei.Logger?.LogError($"Mission '{missionName}' not found.");
             valid = false;

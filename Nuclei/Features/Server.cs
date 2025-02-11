@@ -70,7 +70,7 @@ public static class Server
     {
         Nuclei.Logger?.LogInfo("Selecting random mission...");
 
-        var mission = MissionService.GetRandomMission(Nuclei.Instance!.AllowRepeatMission!.Value);
+        var mission = MissionService.GetRandomMission(NucleiConfig.AllowRepeatMission!.Value);
         
         if (mission == null)
         {
@@ -116,10 +116,10 @@ public static class Server
     {
         return new HostOptions
         {
-            SocketType = Nuclei.Instance!.UseSteamSocket!.Value ? SocketType.Steam : SocketType.UDP,
-            MaxConnections = Nuclei.Instance!.MaxPlayers!.Value,
+            SocketType = NucleiConfig.UseSteamSocket!.Value ? SocketType.Steam : SocketType.UDP,
+            MaxConnections = NucleiConfig.MaxPlayers!.Value,
             Map = mission.MapKey,
-            UdpPort = Nuclei.Instance!.UseSteamSocket!.Value ? null : Nuclei.Instance!.UdpPort!.Value
+            UdpPort = NucleiConfig.UseSteamSocket!.Value ? null : NucleiConfig.UdpPort!.Value
         };
     }
 

@@ -23,8 +23,8 @@ public static class SteamLobbyService
     {
         Nuclei.Logger?.LogInfo("Starting Steam lobby...");
 
-        var result = await Globals.SteamLobbyInstance.Steam_CreateLobbyAsync(Nuclei.Instance!.LobbyType!.Value,
-            Nuclei.Instance!.MaxPlayers!.Value);
+        var result = await Globals.SteamLobbyInstance.Steam_CreateLobbyAsync(NucleiConfig.LobbyType!.Value,
+            NucleiConfig.MaxPlayers!.Value);
         
         if (result.m_eResult != EResult.k_EResultOK)
         {
@@ -42,7 +42,7 @@ public static class SteamLobbyService
     private static void SetLobbyData()
     {
         SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyHostAddress, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyName, Nuclei.Instance!.ServerName!.Value);
+        SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyName, NucleiConfig.ServerName!.Value);
         SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyVersion, Application.version);
     }
     
