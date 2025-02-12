@@ -27,10 +27,8 @@ framework, and hence requires a BepInEx installation to run.
 1. [Install BepInEx](https://docs.bepinex.dev/articles/user_guide/installation/index.html)
 2. Download the latest release of Nuclei from the [releases page](https://github.com/MaxWasUnavailable/Nuclei/releases)
 3. Extract the contents of the archive into the `BepInEx/plugins` folder in your Nuclear Option installation directory
-4. Copy the `run_server.bat` (if on Windows) or `run_server.sh` (if on Linux) file from the `Nuclei` folder to the root
-   of your Nuclear Option installation directory
-5. Run the copied script to start the server once, and then close it. This will generate a
-   `MaxWasUnavailable.Nuclei.cfg`
+4. Copy the `run_server.bat` file from the `Nuclei` folder to the root of your Nuclear Option installation directory
+5. Run the copied script to start the server once, and then close it. This will generate a`MaxWasUnavailable.Nuclei.cfg`
    file in the `BepInEx/config` folder, which you can edit to configure the server
 6. After configuring the server, run the script whenever you want to start the server
 
