@@ -16,7 +16,7 @@ public static class ServerEvents
     {
         ServerStarted?.Invoke();
     }
-    
+
     /// <summary>
     ///     Event handler for when the server stops.
     /// </summary>
