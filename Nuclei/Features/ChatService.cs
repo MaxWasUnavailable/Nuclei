@@ -40,9 +40,11 @@ public static class ChatService
     /// <returns></returns>
     public static string FillChatMessageVariables(string message, Player? player = null)
     {
-        if (player != null) message = message.Replace("{username}", player.PlayerName);
-
-        return message;
+        if (player != null) 
+            message = message.Replace("{username}", player.PlayerName);
+        
+        // We need to trim any leading slashes in case someone tries to send a command through the server.
+        return message.TrimStart('/');
     }
 
     /// <summary>

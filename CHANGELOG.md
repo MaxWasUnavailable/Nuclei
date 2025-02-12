@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-02-12
+
+### Changed
+
+- Filter out any leading slashes from ChatService's message sending, to prevent using e.g. the Say command to send
+  commands as the server.
+
 ## [1.0.0] - 2025-02-12
 
 Notice: All work up to this point has been consolidated into a single release for the sake of simplicity. This
