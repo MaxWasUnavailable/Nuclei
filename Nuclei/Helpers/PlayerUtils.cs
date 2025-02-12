@@ -29,7 +29,7 @@ public static class PlayerUtils
     /// <returns></returns>
     public static bool TryFindPlayer(string playerName, out Player? playerObject)
     {
-        playerObject = FactionHQ.playersCache.FirstOrDefault(p => string.Equals(p.PlayerName, playerName, StringComparison.CurrentCultureIgnoreCase));
+        playerObject = Globals.NetworkManagerNuclearOptionInstance.GamePlayers.FirstOrDefault(p => string.Equals(p.PlayerName, playerName, StringComparison.CurrentCultureIgnoreCase));
         return playerObject != null;
     }
     
