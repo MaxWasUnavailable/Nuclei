@@ -71,10 +71,10 @@ public static class NucleiConfig
         ServerName = config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
         Nuclei.Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
-        MessageOfTheDay = config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
+        MessageOfTheDay = config.Bind(GeneralSection, "MessageOfTheDay", DefaultMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
         Nuclei.Logger?.LogDebug($"MessageOfTheDay: {MessageOfTheDay.Value}");
         
-        MotDFrequency = config.Bind(GeneralSection, "MotDFrequency", DefaultMotDFrequency, "The frequency in seconds at which the message of the day is displayed. Set to 0 to disable the message of the day.");
+        MotDFrequency = config.Bind(GeneralSection, "MotDFrequency", DefaultMotDFrequency, "The frequency in seconds at which the message of the day is displayed. Set to 0 to disable the message of the day. Checks are done every minute.");
         Nuclei.Logger?.LogDebug($"MotDFrequency: {MotDFrequency.Value}");
         
         WelcomeMessage = config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. Use {username} to insert the player's name.");
@@ -83,7 +83,7 @@ public static class NucleiConfig
         Missions = config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
         Nuclei.Logger?.LogDebug($"Missions: {Missions.Value}");
         
-        MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
+        MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching. Checks are done every minute.");
         Nuclei.Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
         
         AllowRepeatMission = config.Bind(GeneralSection, "AllowRepeatMission", DefaultAllowRepeatMission, "Whether to allow the same mission to be selected more than once in a row. Does not work if there is only one mission in the list.");
