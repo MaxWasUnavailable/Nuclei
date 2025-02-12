@@ -10,6 +10,8 @@ using Object = UnityEngine.Object;
 
 namespace Nuclei.Features;
 
+// TODO: implement message of the day system / service
+
 /// <summary>
 ///     Server functionality for Nuclei.
 /// </summary>
@@ -208,6 +210,8 @@ public static class Server
         }
         
         await StartOrRestartLobby();
+        
+        TimeService.Initialize();
         
         Nuclei.Logger?.LogInfo("Server started.");
     }
