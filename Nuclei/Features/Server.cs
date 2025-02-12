@@ -2,15 +2,13 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NuclearOption.Networking;
 using NuclearOption.SavedMission;
+using Nuclei.Events;
 using Nuclei.Helpers;
-using Steamworks;
 using UnityEngine;
 using UnityEngine.Audio;
 using Object = UnityEngine.Object;
 
 namespace Nuclei.Features;
-
-// TODO: implement message of the day system / service
 
 /// <summary>
 ///     Server functionality for Nuclei.
@@ -21,6 +19,47 @@ public static class Server
     ///     Indicates whether the server is currently running.
     /// </summary>
     public static bool IsServerRunning => Globals.NetworkManagerNuclearOptionInstance.Server?.Active ?? false;
+    
+    /// <summary>
+    ///     The current mission time, calculated from the server's perspective.
+    /// </summary>
+    public static double MissionTime => Globals.LocalPlayer.NetworkTime.Time;
+    
+    private static int _lastMotDSent;
+    
+    private static void CheckSendMotD()
+    {
+        if (Time.time - _lastMotDSent < NucleiConfig.MotDFrequency!.Value && _lastMotDSent > 0)
+            return;
+        
+        ChatService.SendMotD();
+        _lastMotDSent = (int) Time.time;
+    }
+
+    private static void CheckMissionOverTime()
+    {
+        if (MissionTime >= NucleiConfig.MissionDuration!.Value)
+            _ = HandleMissionOverTime();
+    }
+    
+    private static async UniTask HandleMissionOverTime()
+    {
+        Nuclei.Logger?.LogInfo("Mission over time reached, ending mission and starting a new one...");
+        
+        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 30 seconds...");
+        
+        await Task.Delay(10000);
+        
+        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 20 seconds...");
+        
+        await Task.Delay(10000);
+        
+        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 10 seconds...");
+        
+        await Task.Delay(10000);
+
+        await StartOrRestartLobby();
+    }
 
     /// <summary>
     ///     Stops the dedicated server.
@@ -212,6 +251,9 @@ public static class Server
         await StartOrRestartLobby();
         
         TimeService.Initialize();
+        
+        TimeEvents.EveryMinute += CheckSendMotD;
+        TimeEvents.EveryMinute += CheckMissionOverTime;
         
         Nuclei.Logger?.LogInfo("Server started.");
     }

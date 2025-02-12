@@ -19,11 +19,11 @@ public static class NucleiConfig
     internal static ConfigEntry<string>? ServerName;
     internal const string DefaultServerName = "Dedicated Nuclei Server";
     
-    internal static ConfigEntry<string>? ServerMessageOfTheDay;
-    internal const string DefaultServerMessageOfTheDay = "Default message of the day.";
+    internal static ConfigEntry<string>? MessageOfTheDay;
+    internal const string DefaultMessageOfTheDay = "Default message of the day.";
     
     internal static ConfigEntry<uint>? MotDFrequency;
-    internal const uint DefaultMotDFrequency = 30;
+    internal const uint DefaultMotDFrequency = 900;
     
     internal static ConfigEntry<string>? WelcomeMessage;
     internal const string DefaultWelcomeMessage = "Welcome to the server, {username}!";
@@ -32,7 +32,7 @@ public static class NucleiConfig
     internal const string DefaultMissions = "Escalation;Domination;Confrontation;Breakout;Carrier Duel;Altercation";
     
     internal static ConfigEntry<uint>? MissionDuration;
-    internal const uint DefaultMissionDuration = 60;
+    internal const uint DefaultMissionDuration = 3600;
     
     internal static ConfigEntry<bool>? AllowRepeatMission;
     internal const bool DefaultAllowRepeatMission = true;
@@ -71,10 +71,10 @@ public static class NucleiConfig
         ServerName = config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
         Nuclei.Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
-        ServerMessageOfTheDay = config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultServerMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
-        Nuclei.Logger?.LogDebug($"ServerMessageOfTheDay: {ServerMessageOfTheDay.Value}");
+        MessageOfTheDay = config.Bind(GeneralSection, "ServerMessageOfTheDay", DefaultMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
+        Nuclei.Logger?.LogDebug($"MessageOfTheDay: {MessageOfTheDay.Value}");
         
-        MotDFrequency = config.Bind(GeneralSection, "MotDFrequency", DefaultMotDFrequency, "The frequency in minutes at which the message of the day is displayed. Set to 0 to disable the message of the day.");
+        MotDFrequency = config.Bind(GeneralSection, "MotDFrequency", DefaultMotDFrequency, "The frequency in seconds at which the message of the day is displayed. Set to 0 to disable the message of the day.");
         Nuclei.Logger?.LogDebug($"MotDFrequency: {MotDFrequency.Value}");
         
         WelcomeMessage = config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. Use {username} to insert the player's name.");
@@ -83,7 +83,7 @@ public static class NucleiConfig
         Missions = config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
         Nuclei.Logger?.LogDebug($"Missions: {Missions.Value}");
         
-        MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in minutes. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
+        MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching.");
         Nuclei.Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
         
         AllowRepeatMission = config.Bind(GeneralSection, "AllowRepeatMission", DefaultAllowRepeatMission, "Whether to allow the same mission to be selected more than once in a row. Does not work if there is only one mission in the list.");
@@ -144,7 +144,7 @@ public static class NucleiConfig
             AllowRepeatMission.Value = true;
         }
         
-        if (UdpPort!.Value > 65535 && !UseSteamSocket!.Value)
+        if (UdpPort!.Value > 65535)
         {
             Nuclei.Logger?.LogWarning("UdpPort must be between 0 and 65535! Resetting to default value.");
             UdpPort.Value = DefaultUdpPort;

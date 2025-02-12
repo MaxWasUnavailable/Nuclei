@@ -76,4 +76,18 @@ public static class ChatService
 
         Globals.ChatManagerInstance.TargetReceiveMessage(player.Owner, message, player, true);
     }
+
+    /// <summary>
+    ///     Sends the message of the day to all clients.
+    /// </summary>
+    public static void SendMotD()
+    {
+        if (string.IsNullOrWhiteSpace(NucleiConfig.MessageOfTheDay!.Value))
+        {
+            Nuclei.Logger?.LogWarning("Cannot send empty message of the day.");
+            return;
+        }
+
+        Globals.ChatManagerInstance.CmdSendChatMessage(FillChatMessageVariables(NucleiConfig.MessageOfTheDay!.Value), true);
+    }
 }
