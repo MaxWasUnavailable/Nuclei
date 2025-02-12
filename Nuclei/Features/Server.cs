@@ -58,6 +58,15 @@ public static class Server
     }
 
     /// <summary>
+    ///     Gets the current server FPS.
+    /// </summary>
+    /// <returns> The current server FPS. </returns>
+    public static double GetServerFPS()
+    {
+        return 1 / Time.unscaledDeltaTime;
+    }
+
+    /// <summary>
     ///     Stops the dedicated server.
     /// </summary>
     public static void StopServer()
