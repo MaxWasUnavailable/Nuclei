@@ -6,8 +6,8 @@
         <AssemblyName>MaxWasUnavailable.Nuclei</AssemblyName>
         <PackageId>MaxWasUnavailable.Nuclei</PackageId>
         <Title>Nuclei</Title>
-        <Description>A dedicated server with built-in plugin support for Nuclear Option.</Description>
-        <Version>0.0.1</Version>
+        <Description>A flexible and powerful dedicated server solution for Nuclear Option.</Description>
+        <Version>1.0.1</Version>
         <Authors>MaxWasUnavailable</Authors>
         <PackageTags>nuclear;option;bepinex</PackageTags>
 
