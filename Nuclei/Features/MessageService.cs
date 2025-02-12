@@ -6,7 +6,8 @@ using Nuclei.Helpers;
 namespace Nuclei.Features;
 
 /// <summary>
-///     Manages server messaging.
+///     Manages server messaging. Not to be confused with chat messages: for functionality surrounding that, see
+///     <see cref="ChatService" />.
 /// </summary>
 public static class MessageService
 {
