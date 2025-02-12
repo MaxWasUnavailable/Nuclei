@@ -251,6 +251,6 @@ public static class Server
         TimeEvents.EveryMinute += CheckSendMotD;
         TimeEvents.EveryMinute += CheckMissionOverTime;
         
-        Nuclei.Logger?.LogInfo("Server started.");
+        Nuclei.Logger?.LogInfo($"Server started. (Took {Time.time} seconds)");
     }
 }
