@@ -18,5 +18,10 @@ public enum PermissionLevel
     /// <summary>
     ///     Only admins can execute the command.
     /// </summary>
-    Admin = 2
+    Admin = 2,
+    
+    /// <summary>
+    ///     Only the owner can execute the command.
+    /// </summary>
+    Owner = 3
 }

@@ -27,6 +27,9 @@ public static class CommandService
     /// <returns> The permission level of the player. </returns>
     public static PermissionLevel GetPlayerPermissionLevel(Player player)
     {
+        if (NucleiConfig.Owner!.Value == player.SteamID.ToString())
+            return PermissionLevel.Admin;
+        
         if (NucleiConfig.AdminsList.Contains(player.SteamID.ToString()))
             return PermissionLevel.Admin;
         

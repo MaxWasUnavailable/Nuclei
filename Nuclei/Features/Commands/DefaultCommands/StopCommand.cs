@@ -22,5 +22,5 @@ public class StopCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         Server.StopServer();
     }
     
-    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;
+    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;
 }

@@ -52,6 +52,9 @@ public static class NucleiConfig
     internal static ConfigEntry<string>? Admins;
     internal const string DefaultAdmins = "";
     
+    internal static ConfigEntry<string>? Owner;
+    internal const string DefaultOwner = "";
+    
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').ToList();
     
     internal static List<string> AdminsList => Admins!.Value.Split(';').ToList();
@@ -100,6 +103,9 @@ public static class NucleiConfig
         
         Admins = config.Bind(GeneralSection, "Admins", DefaultAdmins, "A list of admins who have access to admin commands. Separate steam IDs with a semicolon.");
         Nuclei.Logger?.LogDebug($"Admins: {Admins.Value}");
+        
+        Owner = config.Bind(GeneralSection, "Owner", DefaultOwner, "The Steam ID of the server owner. This player has access to all commands, and cannot be removed from the admin list.");
+        Nuclei.Logger?.LogDebug($"Owner: {Owner.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
