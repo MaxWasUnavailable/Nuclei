@@ -43,6 +43,7 @@
     <ItemGroup>
         <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/"/>
         <None Include="$(ProjectDir)../CHANGELOG.md" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../run_server.bat" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
     <!-- BepInEx Package References -->
