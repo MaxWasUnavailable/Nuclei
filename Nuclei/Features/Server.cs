@@ -44,19 +44,17 @@ public static class Server
     
     private static async UniTask HandleMissionOverTime()
     {
-        Nuclei.Logger?.LogInfo("Mission over time reached, ending mission and starting a new one...");
+        Nuclei.Logger?.LogInfo("Mission over time reached, notifying players...");
         
         ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 30 seconds...");
         
-        await Task.Delay(10000);
-        
-        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 20 seconds...");
-        
-        await Task.Delay(10000);
+        await Task.Delay(20000);
         
         ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 10 seconds...");
         
         await Task.Delay(10000);
+        
+        Nuclei.Logger?.LogInfo("Ending mission and starting a new one...");
 
         await StartOrRestartLobby();
     }
