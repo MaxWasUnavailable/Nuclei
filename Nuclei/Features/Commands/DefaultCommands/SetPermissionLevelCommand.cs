@@ -51,5 +51,5 @@ public class SetPermissionLevelCommand(ConfigFile config) : PermissionConfigurab
         }
     }
     
-    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;
+    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;
 }
