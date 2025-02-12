@@ -128,6 +128,12 @@ public static class NucleiConfig
             UdpPort.Value = DefaultUdpPort;
         }
         
+        if (MotDFrequency!.Value > MissionDuration!.Value && MotDFrequency!.Value != 0)
+        {
+            Nuclei.Logger?.LogWarning("MotDFrequency must be less than or equal to MissionDuration! Otherwise, the message of the day will never be displayed. Setting MotDFrequency to 0 (disabled).");
+            MotDFrequency.Value = 0;
+        }
+        
         Nuclei.Logger?.LogDebug("Settings validated!");
     }
 }
