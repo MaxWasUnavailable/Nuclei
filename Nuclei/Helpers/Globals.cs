@@ -35,6 +35,11 @@ public static class Globals
     public static Player LocalPlayer => GameManager.LocalPlayer ?? throw new NullReferenceException("Local player is null.");
 
     /// <summary>
+    ///     Gets the instance of the <see cref="AudioMixerVolume" /> class.
+    /// </summary>
+    public static AudioMixerVolume AudioMixerVolumeInstance => AudioMixerVolume.i ?? throw new NullReferenceException("AudioMixerVolume instance is null.");
+
+    /// <summary>
     ///     Gets the name of the local player. (The host / server)
     /// </summary>
     public static string HostName => LocalPlayer.PlayerName;

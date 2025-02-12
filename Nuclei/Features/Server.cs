@@ -205,26 +205,17 @@ public static class Server
         SteamLobbyService.SetLobbyData();
 
         Resources.UnloadUnusedAssets();
+        
+        DisableAudio();
     }
     
     private static void DisableAudio()
     {
         Nuclei.Logger?.LogDebug("Disabling audio...");
         
-        Object.FindObjectOfType<AudioMixer>()?.SetFloat("MasterVolume", -80f);
+        Globals.AudioMixerVolumeInstance.ChangeMixerVolume(AudioMixerVolume.Master, 0);
 
         Nuclei.Logger?.LogDebug("Audio disabled.");
-    }
-    
-    private static void SetupLocalPlayer()
-    {
-        Nuclei.Logger?.LogDebug("Setting up local player...");
-        
-        Globals.LocalPlayer.PlayerName = "Server";
-        Globals.LocalPlayer.SteamID = 0;
-        Globals.LocalPlayer.CmdSetPlayerName("Server");
-        
-        Nuclei.Logger?.LogDebug("Local player set up.");
     }
 
     /// <summary>
