@@ -20,7 +20,7 @@ public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(confi
     public override void Execute(Player player, string[] args)
     {
         var message = string.Join(" ", args);
-        ChatManager.SendChatMessage($"{message}", true);
+        ChatService.SendChatMessage($"{message}");
     }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;

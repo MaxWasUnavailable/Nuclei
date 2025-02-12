@@ -15,7 +15,7 @@ public static class ChatService
             Nuclei.Logger?.LogWarning("Cannot send empty chat message.");
             return false;
         }
-        if (Globals.ChatManagerInstance == null)
+        if (!Globals.ChatManagerInstance)
         {
             Nuclei.Logger?.LogWarning("Chat manager instance is null.");
             return false;
@@ -40,8 +40,8 @@ public static class ChatService
     /// <returns></returns>
     public static string FillChatMessageVariables(string message, Player? player = null)
     {
-        if (player != null) 
-            message = message.Replace("{username}", player.PlayerName);
+        if (player) 
+            message = message.Replace("{username}", player!.PlayerName);
         
         // We need to trim any leading slashes in case someone tries to send a command through the server.
         return message.TrimStart('/');
@@ -51,7 +51,7 @@ public static class ChatService
     ///     Sends a chat message to all clients.
     /// </summary>
     /// <param name="message"> The message to send. </param>
-    /// <param name="player"> The player sending the message. </param>
+    /// <param name="player"> Player to use for chat message variables </param>
     public static void SendChatMessage(string message, Player? player = null)
     {
         if (!CanSend(message))
