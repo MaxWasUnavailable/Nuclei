@@ -1,3 +1,5 @@
+using BepInEx.Configuration;
+
 namespace Nuclei.Features.Commands;
 
 /// <summary>
@@ -21,7 +23,7 @@ public interface ICommand
     string Usage { get; }
 
     /// <summary>
-    ///     The command permission level. Users with levels higher than this can execute the command.
+    ///     The default command permission level required to execute the command.
     /// </summary>
     PermissionLevel PermissionLevel { get; }
 

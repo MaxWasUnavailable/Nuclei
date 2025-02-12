@@ -58,7 +58,7 @@ public class Nuclei : BaseUnityPlugin
 
         PatchAll();
         
-        CommandService.RegisterCommand(new SayCommand());
+        CommandService.RegisterCommand(new SayCommand(Config));
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
