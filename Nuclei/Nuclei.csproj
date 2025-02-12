@@ -65,6 +65,8 @@
         <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
         <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
         <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
         <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
     </ItemGroup>
 

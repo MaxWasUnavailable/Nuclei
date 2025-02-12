@@ -14,8 +14,6 @@ public static class SteamLobbyService
     private const string KeyName = "name";
     private const string KeyVersion = "version";
 
-    private static CSteamID? _lobbyId;
-
     /// <summary>
     ///     Starts a Steam lobby.
     /// </summary>
@@ -32,18 +30,16 @@ public static class SteamLobbyService
             return;
         }
         
-        _lobbyId = new CSteamID(result.m_ulSteamIDLobby);
-        
-        SetLobbyData();
+        SetLobbyData(new CSteamID(result.m_ulSteamIDLobby));
         
         Nuclei.Logger?.LogInfo("Steam lobby started.");
     }
 
-    private static void SetLobbyData()
+    internal static void SetLobbyData(CSteamID lobbyId)
     {
-        SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyHostAddress, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyName, NucleiConfig.ServerName!.Value);
-        SteamMatchmaking.SetLobbyData(_lobbyId!.Value, KeyVersion, Application.version);
+        SteamMatchmaking.SetLobbyData(lobbyId, KeyHostAddress, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(lobbyId, KeyName, NucleiConfig.ServerName!.Value);
+        SteamMatchmaking.SetLobbyData(lobbyId, KeyVersion, Application.version);
     }
     
 }
