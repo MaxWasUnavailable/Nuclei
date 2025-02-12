@@ -31,7 +31,7 @@ public static class ChatService
             return false;
         }
     }
-    
+
     /// <summary>
     ///     Fills chat message variables.
     /// </summary>
@@ -40,11 +40,8 @@ public static class ChatService
     /// <returns></returns>
     public static string FillChatMessageVariables(string message, Player? player = null)
     {
-        if (player != null)
-        {
-            message = message.Replace("{username}", player.PlayerName);
-        }
-        
+        if (player != null) message = message.Replace("{username}", player.PlayerName);
+
         return message;
     }
 
@@ -62,5 +59,21 @@ public static class ChatService
         }
         
         Globals.ChatManagerInstance.CmdSendChatMessage(FillChatMessageVariables(message, player), true);
+    }
+
+    /// <summary>
+    ///     Sends a private chat message to a player.
+    /// </summary>
+    /// <param name="message"> The message to send. </param>
+    /// <param name="player"> The player to send the message to. </param>
+    public static void SendPrivateChatMessage(string message, Player player)
+    {
+        if (!CanSend(message))
+        {
+            Nuclei.Logger?.LogWarning("Cannot send private chat message.");
+            return;
+        }
+
+        Globals.ChatManagerInstance.TargetReceiveMessage(player.Owner, message, player, true);
     }
 }
