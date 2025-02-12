@@ -23,12 +23,12 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
     {
         var target = args[0];
 
-        try
+        if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
         {
-            var targetPlayer = FactionHQ.playersCache.First(p => p.PlayerName == target);
             Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
-        } catch
+        }
+        else
         {
             ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
             Nuclei.Logger?.LogWarning($"Player {target} not found.");
