@@ -10,6 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Disable server process' audio on server start, to prevent annoyance in case of running the server on a local machine
+- Added help command
+- Added GetServerFPS method in Server.cs
+- Log startup time
+- Log SendPrivateChatMessage calls since these are not logged by the chat manager patch
+- Send usage information for commands when validation fails
+
+### Changed
+
+### Fixed
+
+- Incorrect docstring for ChatService's SendChatMessage method
+- General code cleanup
+
+### Removed
 
 ## [1.0.1] - 2025-02-12
 
