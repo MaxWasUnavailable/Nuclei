@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Nuclei.Events;
 using Nuclei.Features;
 
 namespace Nuclei.Patches;
@@ -14,6 +15,8 @@ internal static class MessageManagerPatches
     {
         Nuclei.Logger?.LogInfo($"{joinedPlayer.PlayerName} joined the game");
         ChatService.SendChatMessage(NucleiConfig.DefaultWelcomeMessage, joinedPlayer);
+        
+        PlayerEvents.OnPlayerJoined(joinedPlayer);
     }
     
     [HarmonyPostfix]
@@ -21,5 +24,7 @@ internal static class MessageManagerPatches
     private static void DisconnectedMessagePostfix(Player player)
     {
         Nuclei.Logger?.LogInfo($"{player.PlayerName} left the game");
+        
+        PlayerEvents.OnPlayerLeft(player);
     }
 }
