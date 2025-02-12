@@ -6,12 +6,8 @@ namespace Nuclei.Features.Commands.DefaultCommands;
 /// <summary>
 ///     Command to broadcast a message to all players from the server.
 /// </summary>
-public class SayCommand : PermissionConfigurableCommand
+public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {
-    public SayCommand(ConfigFile config) : base(config)
-    {
-    }
-
     public override string Name { get; } = "say";
     public override string Description { get; } = "Broadcast a message to all players from the server.";
     public override string Usage { get; } = "say <message>";
