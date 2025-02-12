@@ -84,6 +84,5 @@ public class TimeService : MonoBehaviour
         {
             TimeEvents.OnEvery30Seconds();
         }
-        Nuclei.Logger?.LogDebug($"Current time: {currentTime}");
     }
 }
