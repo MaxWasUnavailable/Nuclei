@@ -64,16 +64,15 @@ public static class CommandService
             Nuclei.Logger?.LogWarning($"Player {player.PlayerName} does not have permission to execute command {commandName}");
             return false;
         }
-
         
         if (command.Validate(player, args))
         {
             command.Execute(player, args);
-            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully with argument(s): {string.Join(", ", args)}");
+            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully by {player.PlayerName} with argument(s): {string.Join(", ", args)}");
         }
         else
         {
-            Nuclei.Logger?.LogWarning($"Validation for command {commandName} failed with argument(s): {string.Join(", ", args)}");
+            Nuclei.Logger?.LogWarning($"Validation for command {commandName} ran by {player.PlayerName} failed with argument(s): {string.Join(", ", args)}");
             return false;
         }
         return true;

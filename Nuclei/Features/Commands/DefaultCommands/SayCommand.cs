@@ -4,14 +4,13 @@ using BepInEx.Configuration;
 namespace Nuclei.Features.Commands.DefaultCommands;
 
 /// <summary>
-///     Command to broadcast a message to all players from the server.
+///     Command to broadcast a message to all players, through the server account.
 /// </summary>
 public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {
     public override string Name { get; } = "say";
-    public override string Description { get; } = "Broadcast a message to all players from the server.";
+    public override string Description { get; } = "Broadcast a message to all players, through the server account.";
     public override string Usage { get; } = "say <message>";
-    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 
     public override bool Validate(Player player, string[] args)
     {
@@ -23,4 +22,6 @@ public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(confi
         var message = string.Join(" ", args);
         ChatManager.SendChatMessage($"{message}", true);
     }
+    
+    public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }
