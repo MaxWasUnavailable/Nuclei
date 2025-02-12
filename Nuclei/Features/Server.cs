@@ -5,8 +5,6 @@ using NuclearOption.SavedMission;
 using Nuclei.Events;
 using Nuclei.Helpers;
 using UnityEngine;
-using UnityEngine.Audio;
-using Object = UnityEngine.Object;
 
 namespace Nuclei.Features;
 
@@ -19,7 +17,7 @@ public static class Server
     ///     Indicates whether the server is currently running.
     /// </summary>
     public static bool IsServerRunning => Globals.NetworkManagerNuclearOptionInstance.Server?.Active ?? false;
-    
+
     /// <summary>
     ///     The current mission time, calculated from the server's perspective.
     /// </summary>
