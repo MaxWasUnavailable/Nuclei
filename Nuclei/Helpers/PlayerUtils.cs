@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Mirage;
 
@@ -28,7 +29,7 @@ public static class PlayerUtils
     /// <returns></returns>
     public static bool TryFindPlayer(string playerName, out Player? playerObject)
     {
-        playerObject = FactionHQ.playersCache.FirstOrDefault(p => p.PlayerName == playerName);
+        playerObject = FactionHQ.playersCache.FirstOrDefault(p => string.Equals(p.PlayerName, playerName, StringComparison.CurrentCultureIgnoreCase));
         return playerObject != null;
     }
     

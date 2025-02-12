@@ -152,4 +152,36 @@ public static class NucleiConfig
         
         Nuclei.Logger?.LogDebug("Settings validated!");
     }
+    
+    internal static void RemoveModerator(string steamId)
+    {
+        var moderatorsList = ModeratorsList;
+        moderatorsList.Remove(steamId);
+        Moderators!.Value = string.Join(";", moderatorsList);
+    }
+    
+    internal static void AddModerator(string steamId)
+    {
+        var moderatorsList = ModeratorsList;
+        if (moderatorsList.Contains(steamId))
+            return;
+        moderatorsList.Add(steamId);
+        Moderators!.Value = string.Join(";", moderatorsList);
+    }
+    
+    internal static void RemoveAdmin(string steamId)
+    {
+        var adminsList = AdminsList;
+        adminsList.Remove(steamId);
+        Admins!.Value = string.Join(";", adminsList);
+    }
+    
+    internal static void AddAdmin(string steamId)
+    {
+        var adminsList = AdminsList;
+        if (adminsList.Contains(steamId))
+            return;
+        adminsList.Add(steamId);
+        Admins!.Value = string.Join(";", adminsList);
+    }
 }
