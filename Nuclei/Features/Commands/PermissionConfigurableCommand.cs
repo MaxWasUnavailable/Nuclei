@@ -40,7 +40,7 @@ public abstract class PermissionConfigurableCommand : ICommand
     /// <summary>
     ///     Constructor for the base command.
     /// </summary>
-    /// <param name="config"></param>
+    /// <param name="config"> BepInEx configuration file. </param>
     protected PermissionConfigurableCommand(ConfigFile config)
     {
         PermissionLevelConfig = config.Bind(CommandConfigSection, Name, DefaultPermissionLevel, $"The permission level required to execute the {Name} command.");
