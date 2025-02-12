@@ -1,5 +1,6 @@
 using System;
 using NuclearOption.Networking;
+using Steamworks;
 
 namespace Nuclei.Helpers;
 
@@ -22,7 +23,7 @@ public static class Globals
     ///     Gets the instance of the <see cref="ChatManager" /> class.
     /// </summary>
     public static ChatManager ChatManagerInstance => ChatManager.i ?? throw new NullReferenceException("ChatManager instance is null.");
-    
+
     /// <summary>
     ///     Gets the instance of the <see cref="SteamLobby" /> class.
     /// </summary>
@@ -37,4 +38,9 @@ public static class Globals
     ///     Gets the name of the local player. (The host / server)
     /// </summary>
     public static string HostName => LocalPlayer.PlayerName;
+
+    /// <summary>
+    ///     Gets the Steam ID of the lobby.
+    /// </summary>
+    public static CSteamID LobbySteamID => SteamLobbyInstance._currentLobbyID;
 }

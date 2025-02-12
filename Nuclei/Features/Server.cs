@@ -162,6 +162,8 @@ public static class Server
 
         await SteamLobbyService.StartSteamLobby();
         await StartMission();
+        await SteamLobbyService.SetPingData();
+        SteamLobbyService.SetLobbyData();
 
         Resources.UnloadUnusedAssets();
     }

@@ -13,6 +13,7 @@ public static class SteamLobbyService
     private const string KeyHostAddress = "HostAddress";
     private const string KeyName = "name";
     private const string KeyVersion = "version";
+    private const string KeyHostPing = "HostPing";
 
     /// <summary>
     ///     Starts a Steam lobby.
@@ -30,16 +31,26 @@ public static class SteamLobbyService
             return;
         }
         
-        SetLobbyData(new CSteamID(result.m_ulSteamIDLobby));
-        
         Nuclei.Logger?.LogInfo("Steam lobby started.");
     }
-
-    internal static void SetLobbyData(CSteamID lobbyId)
+    internal static void SetLobbyData()
     {
-        SteamMatchmaking.SetLobbyData(lobbyId, KeyHostAddress, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(lobbyId, KeyName, NucleiConfig.ServerName!.Value);
-        SteamMatchmaking.SetLobbyData(lobbyId, KeyVersion, Application.version);
+        SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyHostAddress, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyName, NucleiConfig.ServerName!.Value);
+        SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyVersion, Application.version);
+    }
+
+    internal static async UniTask SetPingData()
+    {
+        if (!await Globals.SteamLobbyInstance.WaitForLocalLocation())
+        {
+            Nuclei.Logger?.LogError("Failed to await Steam Lobby local location fetch for ping data. Ping will be empty.");
+            return;
+        }
+        if (SteamLobby.GetLocalLocation(out var location))
+            SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyHostPing, location);
+        else
+            Nuclei.Logger?.LogError("Failed to get local location for ping data. Ping will be empty.");
     }
     
 }
