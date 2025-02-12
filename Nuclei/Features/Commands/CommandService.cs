@@ -12,6 +12,15 @@ public static class CommandService
     private static readonly List<ICommand> Commands = [];
 
     /// <summary>
+    ///     Get all registered commands.
+    /// </summary>
+    /// <returns> All registered commands as a read-only collection. </returns>
+    public static IEnumerable<ICommand> GetCommands()
+    {
+        return Commands.AsReadOnly();
+    }
+
+    /// <summary>
     ///     Register a command.
     /// </summary>
     /// <param name="command"> The command to register. </param>
