@@ -77,6 +77,7 @@ public static class ChatService
         }
 
         Globals.ChatManagerInstance.TargetReceiveMessage(player.Owner, message, player, true);
+        Nuclei.Logger?.LogInfo($"Sent private message to {player.PlayerName}: {message}");
     }
 
     /// <summary>
