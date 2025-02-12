@@ -29,7 +29,13 @@ public static class CommandService
         if (player.IsHost)
             return PermissionLevel.Admin;
 
-        return 0; // TODO: Implement permission levels from config (?)
+        if (NucleiConfig.AdminsList.Contains(player.SteamID.ToString()))
+            return PermissionLevel.Admin;
+        
+        if (NucleiConfig.ModeratorsList.Contains(player.SteamID.ToString()))
+            return PermissionLevel.Moderator;
+        
+        return PermissionLevel.Everyone;
     }
 
     /// <summary>

@@ -45,6 +45,16 @@ public static class NucleiConfig
     
     internal static ConfigEntry<ELobbyType>? LobbyType;
     internal const ELobbyType DefaultLobbyType = ELobbyType.k_ELobbyTypePublic;
+
+    internal static ConfigEntry<string>? Moderators;
+    internal const string DefaultModerators = "";
+    
+    internal static ConfigEntry<string>? Admins;
+    internal const string DefaultAdmins = "";
+    
+    internal static List<string> ModeratorsList => Moderators!.Value.Split(';').ToList();
+    
+    internal static List<string> AdminsList => Admins!.Value.Split(';').ToList();
     
     internal static List<string> MissionsList => Missions!.Value.Split(';').ToList();
     
@@ -84,6 +94,12 @@ public static class NucleiConfig
         
         LobbyType = config.Bind(TechnicalSection, "LobbyType", DefaultLobbyType, "The type of lobby to create when starting a Steam lobby.");
         Nuclei.Logger?.LogDebug($"LobbyType: {LobbyType.Value}");
+        
+        Moderators = config.Bind(GeneralSection, "Moderators", DefaultModerators, "A list of moderators who have access to moderator commands. Separate steam IDs with a semicolon.");
+        Nuclei.Logger?.LogDebug($"Moderators: {Moderators.Value}");
+        
+        Admins = config.Bind(GeneralSection, "Admins", DefaultAdmins, "A list of admins who have access to admin commands. Separate steam IDs with a semicolon.");
+        Nuclei.Logger?.LogDebug($"Admins: {Admins.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
