@@ -90,7 +90,7 @@ public static class CommandService
         else
         {
             Nuclei.Logger?.LogWarning($"Validation for command {commandName} ran by {player.PlayerName} failed with argument(s): {string.Join(", ", args)}");
-            ChatService.SendPrivateChatMessage("Invalid arguments.", player);
+            ChatService.SendPrivateChatMessage($"Invalid arguments: {command.Usage}", player);
             return false;
         }
         return true;
