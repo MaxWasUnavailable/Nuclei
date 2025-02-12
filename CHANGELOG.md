@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Log startup time
 - Log SendPrivateChatMessage calls since these are not logged by the chat manager patch
 - Send usage information for commands when validation fails
+- Mission events for mission start & end
+- Handle end of mission properly, and start a new mission after a delay
+- Log faction scores at the end of a mission
+- Fire mission start & end events
 
 ### Changed
 

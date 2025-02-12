@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NuclearOption.Networking;
@@ -36,25 +37,42 @@ public static class Server
 
     private static void CheckMissionOverTime()
     {
-        if (MissionTime >= NucleiConfig.MissionDuration!.Value)
-            _ = HandleMissionOverTime();
+        if (MissionTime < NucleiConfig.MissionDuration!.Value)
+            return;
+        
+        Nuclei.Logger?.LogInfo("Mission over-time reached, notifying players...");
+        ChatService.SendChatMessage("Mission over-time reached, ending mission prematurely...");
+        
+        _ = SlowlyEndMission();
     }
     
-    private static async UniTask HandleMissionOverTime()
+    private static void OnMissionEnded(Mission mission)
     {
-        Nuclei.Logger?.LogInfo("Mission over time reached, notifying players...");
+        Nuclei.Logger?.LogInfo($"Mission ended: {mission.Name}. Faction scores: {mission.factions.Aggregate("", (current, faction) => current + $"{faction.factionName}: {faction.FactionHQ.factionScore} ")}");
         
-        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 30 seconds...");
+        _ = SlowlyEndMission();
+    }
+    
+    private static async UniTask SlowlyEndMission()
+    {
+        ChatService.SendChatMessage("Ending mission and starting a new one in 30 seconds...");
         
         await Task.Delay(20000);
         
-        ChatService.SendChatMessage("Mission over time reached, ending mission and starting a new one in 10 seconds...");
+        ChatService.SendChatMessage("Ending mission and starting a new one in 10 seconds...");
         
         await Task.Delay(10000);
         
         Nuclei.Logger?.LogInfo("Ending mission and starting a new one...");
 
         await StartOrRestartLobby();
+    }
+    
+    private static void TimeStatus()
+    {
+        Nuclei.Logger?.LogInfo($"Mission time: {MissionTime} seconds ({MissionTime / 60} minutes)");
+        Nuclei.Logger?.LogInfo($"Remaining time: {NucleiConfig.MissionDuration!.Value - MissionTime} seconds ({(NucleiConfig.MissionDuration!.Value - MissionTime) / 60} minutes)");
+        Nuclei.Logger?.LogInfo($"Server FPS: {GetServerFPS()}");
     }
 
     /// <summary>
@@ -185,6 +203,8 @@ public static class Server
         
         await Globals.NetworkManagerNuclearOptionInstance.StartHostAsync(CreateHostOptionsForCurrentMission());
         
+        MissionEvents.OnNewMissionStarted(MissionService.CurrentMission!);
+        
         Nuclei.Logger?.LogInfo("Mission started.");
     }
 
@@ -250,6 +270,8 @@ public static class Server
         
         TimeEvents.EveryMinute += CheckSendMotD;
         TimeEvents.EveryMinute += CheckMissionOverTime;
+        TimeEvents.Every10Minutes += TimeStatus;
+        MissionEvents.MissionEnded += OnMissionEnded;
         
         Nuclei.Logger?.LogInfo($"Server started. (Took {Time.time} seconds)");
     }
