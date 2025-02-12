@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,9 +27,6 @@ public static class CommandService
     /// <returns> The permission level of the player. </returns>
     public static PermissionLevel GetPlayerPermissionLevel(Player player)
     {
-        if (player.IsHost)
-            return PermissionLevel.Admin;
-
         if (NucleiConfig.AdminsList.Contains(player.SteamID.ToString()))
             return PermissionLevel.Admin;
         
@@ -46,7 +44,7 @@ public static class CommandService
     /// <returns></returns>
     public static bool TryGetCommand(string commandName, out ICommand command)
     {
-        command = Commands.Find(c => c.Name.ToLower() == commandName);
+        command = Commands.Find(c => string.Equals(c.Name, commandName, StringComparison.CurrentCultureIgnoreCase));
         return command != null;
     }
 
@@ -68,6 +66,7 @@ public static class CommandService
         if (GetPlayerPermissionLevel(player) < command.PermissionLevel)
         {
             Nuclei.Logger?.LogWarning($"Player {player.PlayerName} does not have permission to execute command {commandName}");
+            ChatService.SendPrivateChatMessage("You do not have permission to execute this command.", player);
             return false;
         }
         
@@ -79,6 +78,7 @@ public static class CommandService
         else
         {
             Nuclei.Logger?.LogWarning($"Validation for command {commandName} ran by {player.PlayerName} failed with argument(s): {string.Join(", ", args)}");
+            ChatService.SendPrivateChatMessage("Invalid arguments.", player);
             return false;
         }
         return true;
