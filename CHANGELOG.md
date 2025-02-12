@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Disable server process' audio on server start, to prevent annoyance in case of running the server on a local machine
+
 ## [1.0.1] - 2025-02-12
 
 ### Changed
