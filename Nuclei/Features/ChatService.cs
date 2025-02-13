@@ -8,9 +8,9 @@ namespace Nuclei.Features;
 /// </summary>
 public static class ChatService
 {
-    private static bool CanSend(string message)
+    private static bool CanSend(string message, bool ignoreEmpty = false, bool ignoreRateLimit = false)
     {
-        if (string.IsNullOrWhiteSpace(message))
+        if (string.IsNullOrWhiteSpace(message) && !ignoreEmpty)
         {
             Nuclei.Logger?.LogWarning("Cannot send empty chat message.");
             return false;
@@ -21,6 +21,9 @@ public static class ChatService
             return false;
         }
 
+        if (ignoreRateLimit)
+            return true;
+        
         try
         {
             return ChatManager.CanSend(message, true, true);
@@ -33,17 +36,12 @@ public static class ChatService
     }
 
     /// <summary>
-    ///     Fills chat message variables.
+    ///     Sanitizes a chat message to prevent command injection.
     /// </summary>
-    /// <param name="message"> The message to fill. </param>
-    /// <param name="player"> The player to use for filling player-specific variables. </param>
-    /// <returns></returns>
-    public static string FillChatMessageVariables(string message, Player? player = null)
+    /// <param name="message"> The message to sanitize. </param>
+    /// <returns> The sanitized message. </returns>
+    private static string SanitizeMessage(this string message)
     {
-        if (player) 
-            message = message.Replace("{username}", player!.PlayerName);
-        
-        // We need to trim any leading slashes in case someone tries to send a command through the server.
         return message.TrimStart('/');
     }
 
@@ -54,30 +52,30 @@ public static class ChatService
     /// <param name="player"> Player to use for chat message variables </param>
     public static void SendChatMessage(string message, Player? player = null)
     {
-        if (!CanSend(message))
+        if (!CanSend(message, ignoreRateLimit: true))
         {
             Nuclei.Logger?.LogWarning("Cannot send chat message.");
             return;
         }
         
-        Globals.ChatManagerInstance.CmdSendChatMessage(FillChatMessageVariables(message, player), true);
+        Globals.ChatManagerInstance.CmdSendChatMessage(DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(message, player).SanitizeMessage(), true);
     }
 
     /// <summary>
     ///     Sends a private chat message to a player.
     /// </summary>
     /// <param name="message"> The message to send. </param>
-    /// <param name="player"> The player to send the message to. </param>
-    public static void SendPrivateChatMessage(string message, Player player)
+    /// <param name="targetPlayer"> The player to send the message to. </param>
+    public static void SendPrivateChatMessage(string message, Player targetPlayer)
     {
-        if (!CanSend(message))
+        if (!CanSend(message, ignoreRateLimit: true))
         {
             Nuclei.Logger?.LogWarning("Cannot send private chat message.");
             return;
         }
 
-        Globals.ChatManagerInstance.TargetReceiveMessage(player.Owner, message, player, true);
-        Nuclei.Logger?.LogInfo($"Sent private message to {player.PlayerName}: {message}");
+        Globals.ChatManagerInstance.TargetReceiveMessage(targetPlayer.Owner, message.SanitizeMessage(), targetPlayer, true);
+        Nuclei.Logger?.LogInfo($"Sent private message to {targetPlayer.PlayerName}: {message.SanitizeMessage()}");
     }
 
     /// <summary>
@@ -85,12 +83,12 @@ public static class ChatService
     /// </summary>
     public static void SendMotD()
     {
-        if (string.IsNullOrWhiteSpace(NucleiConfig.MessageOfTheDay!.Value))
+        if (!CanSend(NucleiConfig.MessageOfTheDay!.Value, ignoreRateLimit: true))
         {
-            Nuclei.Logger?.LogWarning("Cannot send empty message of the day.");
+            Nuclei.Logger?.LogWarning("Cannot send message of the day.");
             return;
         }
 
-        Globals.ChatManagerInstance.CmdSendChatMessage(FillChatMessageVariables(NucleiConfig.MessageOfTheDay!.Value), true);
+        Globals.ChatManagerInstance.CmdSendChatMessage(DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(NucleiConfig.MessageOfTheDay!.Value).SanitizeMessage(), true);
     }
 }
