@@ -239,7 +239,8 @@ public static class Server
 
         Resources.UnloadUnusedAssets();
         
-        DisableAudio();
+        if (NucleiConfig.MuteAfterStart!.Value)
+            DisableAudio();
     }
     
     private static void DisableAudio()
