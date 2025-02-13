@@ -36,8 +36,17 @@ public static class SteamLobbyService
     internal static void SetLobbyData()
     {
         SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyHostAddress, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyName, NucleiConfig.ServerName!.Value);
         SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyVersion, Application.version);
+        UpdateLobbyName();
+    }
+
+    /// <summary>
+    ///     Updates the lobby name.
+    /// </summary>
+    /// <remarks> It is useful to re-run this periodically in case of dynamic placeholders. </remarks>
+    public static void UpdateLobbyName()
+    {
+        SteamMatchmaking.SetLobbyData(Globals.LobbySteamID, KeyName, DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(NucleiConfig.ServerName!.Value));
     }
 
     internal static async UniTask SetPingData()
