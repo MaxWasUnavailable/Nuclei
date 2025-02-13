@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Configuration;
+using Nuclei.Enums;
 using Nuclei.Helpers;
 using Steamworks;
 
@@ -71,6 +72,9 @@ public static class NucleiConfig
 
     internal static ConfigEntry<bool>? UseUpdateForPhysicsUpdate;
     internal const bool DefaultUseUpdateForPhysicsUpdate = false;
+
+    internal static ConfigEntry<MissionSelectMode>? MissionSelectMode;
+    internal const MissionSelectMode DefaultMissionSelectMode = Enums.MissionSelectMode.Random;
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -138,6 +142,9 @@ public static class NucleiConfig
         
         UseUpdateForPhysicsUpdate = config.Bind(ExperimentalSection, "UseUpdateForPhysicsUpdate", DefaultUseUpdateForPhysicsUpdate, "Whether to use the Update method for physics updates. Only change this if you know what you're doing - this can negatively impact performance.");
         Nuclei.Logger?.LogDebug($"UseUpdateForPhysicsUpdate: {UseUpdateForPhysicsUpdate.Value}");
+        
+        MissionSelectMode = config.Bind(GeneralSection, "MissionSelectMode", DefaultMissionSelectMode, "The mode used to select the next mission. Random will select a random mission from the list, RandomNoRepeat will select a random mission without repeating the last one (if possible), and Sequential will select the next mission in the list.");
+        Nuclei.Logger?.LogDebug($"MissionSelectMode: {MissionSelectMode.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
