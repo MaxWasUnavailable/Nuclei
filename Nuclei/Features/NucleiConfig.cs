@@ -13,6 +13,7 @@ public static class NucleiConfig
 {
     internal const string GeneralSection = "General";
     internal const string TechnicalSection = "Technical";
+    internal const string ExperimentalSection = "Experimental";
 
     internal static ConfigEntry<ushort>? MaxPlayers;
     internal const ushort DefaultMaxPlayers = 16;
@@ -64,6 +65,12 @@ public static class NucleiConfig
     
     internal static ConfigEntry<bool>? MuteAfterStart;
     internal const bool DefaultMuteAfterStart = true;
+    
+    internal static ConfigEntry<ushort>? PhysicsUpdatesPerSecond;
+    internal const ushort DefaultPhysicsUpdatesPerSecond = 60;
+
+    internal static ConfigEntry<bool>? UseUpdateForPhysicsUpdate;
+    internal const bool DefaultUseUpdateForPhysicsUpdate = false;
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -125,6 +132,12 @@ public static class NucleiConfig
         
         MuteAfterStart = config.Bind(TechnicalSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
         Nuclei.Logger?.LogDebug($"MuteAfterStart: {MuteAfterStart.Value}");
+        
+        PhysicsUpdatesPerSecond = config.Bind(ExperimentalSection, "PhysicsUpdatesPerSecond", DefaultPhysicsUpdatesPerSecond, "The number of physics updates per second. Only change this if you know what you're doing - this can break the game.");
+        Nuclei.Logger?.LogDebug($"PhysicsUpdatesPerSecond: {PhysicsUpdatesPerSecond.Value}");
+        
+        UseUpdateForPhysicsUpdate = config.Bind(ExperimentalSection, "UseUpdateForPhysicsUpdate", DefaultUseUpdateForPhysicsUpdate, "Whether to use the Update method for physics updates. Only change this if you know what you're doing - this can negatively impact performance.");
+        Nuclei.Logger?.LogDebug($"UseUpdateForPhysicsUpdate: {UseUpdateForPhysicsUpdate.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }

@@ -236,14 +236,14 @@ public static class Server
         await StartMission();
         await SteamLobbyService.SetPingData();
         SteamLobbyService.SetLobbyData();
-
-        Resources.UnloadUnusedAssets();
         
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = NucleiConfig.TargetFrameRate!.Value;
+        ApplyFramerateSettings();
+        ApplyExperimentalSettings();
         
         if (NucleiConfig.MuteAfterStart!.Value)
             DisableAudio();
+
+        Resources.UnloadUnusedAssets();
     }
     
     private static void DisableAudio()
@@ -253,6 +253,23 @@ public static class Server
         Globals.AudioMixerVolumeInstance.ChangeMixerVolume(AudioMixerVolume.Master, 0);
 
         Nuclei.Logger?.LogDebug("Audio disabled.");
+    }
+
+    private static void ApplyFramerateSettings()
+    {
+        QualitySettings.SetQualityLevel(0, true);
+        QualitySettings.maxQueuedFrames = 0;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = NucleiConfig.TargetFrameRate!.Value;
+    }
+    
+    private static void ApplyExperimentalSettings()
+    {
+        if (NucleiConfig.UseUpdateForPhysicsUpdate!.Value)
+            Physics.simulationMode = SimulationMode.Update;
+        
+        if (NucleiConfig.PhysicsUpdatesPerSecond!.Value != 60)
+            Time.fixedDeltaTime = 1f / NucleiConfig.PhysicsUpdatesPerSecond!.Value;
     }
 
     /// <summary>
@@ -288,6 +305,8 @@ public static class Server
             Nuclei.Logger?.LogDebug("Hooked up periodic server name refresh event.");
             TimeEvents.Every10Minutes += SteamLobbyService.SetLobbyData;
         }
+        
+        // TimeEvents.EverySecond += () => Nuclei.Logger?.LogDebug($"Server FPS: {GetServerFPS()}");
         
         Nuclei.Logger?.LogInfo($"Server started. (Took {Time.time} seconds)");
     }
