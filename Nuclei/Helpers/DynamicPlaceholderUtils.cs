@@ -68,6 +68,11 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for showing up to 3 random missions, and (...) if there are more.
     /// </summary>
     public const string Random3MissionsEtc = "{random_3_missions_etc}";
+    
+    /// <summary>
+    ///     Placeholder for the server name.
+    /// </summary>
+    public const string ServerName = "{server_name}";
 
     /// <summary>
     ///     Replaces dynamic placeholders in a string with the appropriate values.
@@ -106,6 +111,8 @@ public static class DynamicPlaceholderUtils
         if (NucleiConfig.MissionsList.Count > 3) 
             randomMissionsString += ", (...)";
         original = original.Replace(Random3MissionsEtc, randomMissionsString);
+        
+        original = original.Replace(ServerName, NucleiConfig.ServerName!.Value);
         
         return original;
     }
