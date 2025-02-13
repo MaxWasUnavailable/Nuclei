@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Configuration;
+using Nuclei.Helpers;
 using Steamworks;
 
 namespace Nuclei.Features;
@@ -20,13 +21,13 @@ public static class NucleiConfig
     internal const string DefaultServerName = "Dedicated Nuclei Server";
     
     internal static ConfigEntry<string>? MessageOfTheDay;
-    internal const string DefaultMessageOfTheDay = "Default message of the day.";
+    internal const string DefaultMessageOfTheDay = "This server is running on Nuclei! Have fun!";
     
     internal static ConfigEntry<uint>? MotDFrequency;
     internal const uint DefaultMotDFrequency = 900;
     
     internal static ConfigEntry<string>? WelcomeMessage;
-    internal const string DefaultWelcomeMessage = "Welcome to the server, {username}!";
+    internal const string DefaultWelcomeMessage = $"Welcome to the server, {DynamicPlaceholderUtils.PlayerNameCensored}!";
     
     internal static ConfigEntry<string>? Missions;
     internal const string DefaultMissions = "Escalation;Domination;Confrontation;Breakout;Carrier Duel;Altercation";
