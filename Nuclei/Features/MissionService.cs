@@ -129,6 +129,15 @@ public static class MissionService
     }
 
     /// <summary>
+    ///     Set a mission to be preselected for the next mission start.
+    /// </summary>
+    /// <param name="key"> The mission key to preselect. </param>
+    public static void SetPreselectedMission(MissionGroup.MissionKey key)
+    {
+        PreselectedMissionKey = key;
+    }
+
+    /// <summary>
     ///     Return preselected mission if it exists, and clear it.
     /// </summary>
     /// <param name="mission"> The mission to return. </param>
