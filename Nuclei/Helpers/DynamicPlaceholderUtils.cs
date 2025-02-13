@@ -25,16 +25,6 @@ public static class DynamicPlaceholderUtils
     public const string SteamID = "{steamid}";
 
     /// <summary>
-    ///     Placeholder for a player's faction name.
-    /// </summary>
-    public const string PlayerFactionName = "{player_faction_name}";
-
-    /// <summary>
-    ///     Placeholder for a player's faction tag.
-    /// </summary>
-    public const string PlayerFactionTag = "{player_faction_tag}";
-
-    /// <summary>
     ///     Placeholder for the mission name.
     /// </summary>
     public const string MissionName = "{mission_name}";
@@ -94,11 +84,13 @@ public static class DynamicPlaceholderUtils
     {
         if (player)
         {
+            Nuclei.Logger?.LogInfo($"1");
             original = original.Replace(PlayerName, player!.PlayerName);
+            Nuclei.Logger?.LogInfo($"2");
             original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
+            Nuclei.Logger?.LogInfo($"3");
             original = original.Replace(SteamID, player.SteamID.ToString());
-            original = original.Replace(PlayerFactionName, player.HQ.faction.factionName);
-            original = original.Replace(PlayerFactionTag, player.HQ.faction.factionTag);
+            Nuclei.Logger?.LogInfo($"4");
         }
         
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
