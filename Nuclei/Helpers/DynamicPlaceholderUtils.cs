@@ -42,12 +42,22 @@ public static class DynamicPlaceholderUtils
     /// <summary>
     ///     Placeholder for the first faction's name.
     /// </summary>
-    public const string Faction1 = "{faction1_name}";
+    public const string Faction1Name = "{faction1_name}";
 
     /// <summary>
     ///     Placeholder for the second faction's name.
     /// </summary>
-    public const string Faction2 = "{faction2_name}";
+    public const string Faction2Name = "{faction2_name}";
+    
+    /// <summary>
+    ///     Placeholder for the first faction's tag.
+    /// </summary>
+    public const string Faction1Tag = "{faction1_tag}";
+    
+    /// <summary>
+    ///     Placeholder for the second faction's tag.
+    /// </summary>
+    public const string Faction2Tag = "{faction2_tag}";
 
     /// <summary>
     ///     Placeholder for the first faction's score.
@@ -94,13 +104,15 @@ public static class DynamicPlaceholderUtils
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
         if (MissionService.CurrentMission!.factions.Count > 0)
         {
-            original = original.Replace(Faction1, MissionService.CurrentMission!.factions[0].factionName);
+            original = original.Replace(Faction1Name, MissionService.CurrentMission!.factions[0].FactionHQ.faction.factionName);
             original = original.Replace(Faction1Score, Mathf.RoundToInt(MissionService.CurrentMission!.factions[0].FactionHQ.factionScore).ToString());
+            original = original.Replace(Faction1Tag, MissionService.CurrentMission!.factions[0].FactionHQ.faction.factionTag);
         }
         if (MissionService.CurrentMission!.factions.Count > 1)
         {
-            original = original.Replace(Faction2, MissionService.CurrentMission!.factions[1].factionName);
+            original = original.Replace(Faction2Name, MissionService.CurrentMission!.factions[1].FactionHQ.faction.factionName);
             original = original.Replace(Faction2Score, Mathf.RoundToInt(MissionService.CurrentMission!.factions[1].FactionHQ.factionScore).ToString());
+            original = original.Replace(Faction2Tag, MissionService.CurrentMission!.factions[1].FactionHQ.faction.factionTag);
         }
 
         var allMissions = NucleiConfig.MissionsList.Aggregate("", (current, mission) => current + ", " + mission).TrimStart(',', ' ');
