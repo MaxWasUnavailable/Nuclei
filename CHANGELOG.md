@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Handle end of mission properly, and start a new mission after a delay
 - Log faction scores at the end of a mission
 - Fire mission start & end events
+- New Dynamic Placeholder system, allowing for *many more* dynamic placeholders to be used in the server name, message
+  of the day, and welcome message
+- Toggleable periodic server name refresh, to allow for dynamic server names using the new dynamic placeholders
 
 ### Changed
 

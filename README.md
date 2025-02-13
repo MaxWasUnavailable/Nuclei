@@ -21,6 +21,7 @@ framework, and hence requires a BepInEx installation to run.
     - Max player count
     - Steam lobby type (public, friends-only, etc...)
 - Modular and robust design, allowing for easy extension, modification, and maintenance
+- A variety of dynamic placeholders that can be used in the server name, message of the day, and welcome message
 
 ## Installation
 
