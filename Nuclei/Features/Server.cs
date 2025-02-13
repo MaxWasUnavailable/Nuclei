@@ -306,8 +306,6 @@ public static class Server
             TimeEvents.Every10Minutes += SteamLobbyService.SetLobbyData;
         }
         
-        // TimeEvents.EverySecond += () => Nuclei.Logger?.LogDebug($"Server FPS: {GetServerFPS()}");
-        
         Nuclei.Logger?.LogInfo($"Server started. (Took {Time.time} seconds)");
     }
 }
