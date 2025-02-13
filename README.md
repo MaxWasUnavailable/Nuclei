@@ -22,6 +22,7 @@ framework, and hence requires a BepInEx installation to run.
     - Steam lobby type (public, friends-only, etc...)
 - Modular and robust design, allowing for easy extension, modification, and maintenance
 - A variety of dynamic placeholders that can be used in the server name, message of the day, and welcome message
+- Disables server game audio on server start, to make it less annoying to run a server in the background
 
 ## Installation
 
@@ -32,6 +33,28 @@ framework, and hence requires a BepInEx installation to run.
 5. Run the copied script to start the server once, and then close it. This will generate a`MaxWasUnavailable.Nuclei.cfg`
    file in the `BepInEx/config` folder, which you can edit to configure the server
 6. After configuring the server, run the script whenever you want to start the server
+
+## Dynamic Placeholders
+
+The following dynamic placeholders are supported in the server name, message of the day, and welcome message:
+
+- `{server_name}`: The name of the server
+- `{player_name}`: The name of the player (only available in the welcome message)
+- `{player_name_censored}`: The name of the player, censored using the game's censoring rules (only available in the
+  welcome message)
+- `{steamid}`: The Steam ID of the player (only available in the welcome message)
+- `{player_faction_name}`: The name of the player's faction (only available in the welcome message)
+- `{player_faction_tag}`: The tag of the player's faction (only available in the welcome message)
+- `{mission_name}`: The name of the current mission
+- `{faction1_name}`: The name of the first faction in the current mission
+- `{faction2_name}`: The name of the second faction in the current mission
+- `{faction1_tag}`: The tag of the first faction in the current mission
+- `{faction2_tag}`: The tag of the second faction in the current mission
+- `{faction1_score}`: The score of the first faction in the current mission
+- `{faction2_score}`: The score of the second faction in the current mission
+- `{all_missions}`: A list of all missions in the mission rotation
+- `{random_3_missions_etc}`: A list of 3 random missions from the mission rotation, with (...) at the end if there are
+  more than 3 missions
 
 ## Developer Documentation
 
