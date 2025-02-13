@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- MotD frequency validation, since it's not actually relevant to compare mission duration & MotD frequency
+
 ## [1.2.0] - 2025-02-13
 
 ### Added

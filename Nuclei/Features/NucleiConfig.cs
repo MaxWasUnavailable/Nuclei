@@ -183,12 +183,6 @@ public static class NucleiConfig
             UdpPort.Value = DefaultUdpPort;
         }
         
-        if (MotDFrequency!.Value > MissionDuration!.Value && MotDFrequency!.Value != 0)
-        {
-            Nuclei.Logger?.LogWarning("MotDFrequency must be less than or equal to MissionDuration! Otherwise, the message of the day will never be displayed. Setting MotDFrequency to 0 (disabled).");
-            MotDFrequency.Value = 0;
-        }
-        
         if (TargetFrameRate!.Value < -1)
         {
             Nuclei.Logger?.LogWarning("TargetFrameRate cannot be less than -1! Setting to -1 (unlimited).");
