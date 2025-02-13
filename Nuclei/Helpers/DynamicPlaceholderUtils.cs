@@ -95,7 +95,7 @@ public static class DynamicPlaceholderUtils
         if (player)
         {
             original = original.Replace(PlayerName, player!.PlayerName);
-            original = original.Replace(PlayerNameCensored, player.playerName_Censored);
+            original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
             original = original.Replace(SteamID, player.SteamID.ToString());
             original = original.Replace(PlayerFactionName, player.HQ.faction.factionName);
             original = original.Replace(PlayerFactionTag, player.HQ.faction.factionTag);

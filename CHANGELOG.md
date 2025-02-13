@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.1] - 2025-02-13
 
 ### Fixed
+
 - Fixed MotD frequency and Mission Duration 0 value not actually disabling the feature
+- Fix player name censored value not existing at initial connect. Switch to GetNameOrCensored
 
 ## [1.1.0] - 2025-02-13
 
