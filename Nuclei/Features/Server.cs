@@ -135,17 +135,17 @@ public static class Server
     }
 
     /// <summary>
-    ///     Select a random mission on the server, based on the server config.
+    ///     Select the next mission on the server, based on the server config's mission list and MissionSelectMode.
     /// </summary>
-    public static void SelectRandomMission()
+    public static void SelectNextMission()
     {
-        Nuclei.Logger?.LogInfo("Selecting random mission...");
+        Nuclei.Logger?.LogInfo("Selecting next mission...");
 
-        var mission = MissionService.GetRandomMission(NucleiConfig.AllowRepeatMission!.Value);
+        var mission = MissionService.GetNextMission(NucleiConfig.MissionSelectMode!.Value, NucleiConfig.UseAllMissions!.Value);
         
         if (mission == null)
         {
-            Nuclei.Logger?.LogWarning("Failed to get a random mission.");
+            Nuclei.Logger?.LogError("Failed to get a new mission.");
             return;
         }
         
@@ -230,7 +230,7 @@ public static class Server
         if (MissionService.TryGetConsumePreselectedMission(out var mission))
             SelectMission(mission!);
         else
-            SelectRandomMission();
+            SelectNextMission();
 
         await SteamLobbyService.StartSteamLobby();
         await StartMission();

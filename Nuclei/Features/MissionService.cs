@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NuclearOption.SavedMission;
 using NuclearOption.SavedMission.ObjectiveV2;
+using Nuclei.Enums;
 using Nuclei.Helpers;
 using Random = UnityEngine.Random;
 
@@ -64,6 +65,16 @@ public static class MissionService
     }
 
     /// <summary>
+    ///     Gets a mission by its mission object.
+    /// </summary>
+    /// <param name="mission"> The mission object </param>
+    /// <returns> The mission if found, otherwise null. </returns>
+    public static MissionGroup.MissionKey GetMissionKey(Mission mission)
+    {
+        return AllMissionKeys.First(k => k.Name == mission.Name);
+    }
+
+    /// <summary>
     ///     Gets a list of Mission Keys filtered by the config.
     /// </summary>
     /// <returns> The list of mission keys. </returns>
@@ -84,6 +95,46 @@ public static class MissionService
     }
 
     /// <summary>
+    ///     Gets the next sequential mission to be played. Loops back around to the first mission if at the end.
+    /// </summary>
+    /// <param name="allMissions"> Whether to allow getting from all missions or only the ones in the config. </param>
+    /// <returns> The mission if found, otherwise null. </returns>
+    public static Mission? GetNextSequentialMission(bool allMissions = false)
+    {
+        var missionKeys = allMissions ? AllMissionKeys.ToArray() : GetConfigMissionKeys();
+        if (LastMission == null)
+            return GetMission(missionKeys[0]);
+        var index = Array.IndexOf(missionKeys, GetMissionKey(LastMission)) + 1;
+        if (index >= missionKeys.Length)
+            index = 0;
+        return GetMission(missionKeys[index]);
+    }
+
+    /// <summary>
+    ///     Gets the next mission to be played, based on the provided select mode.
+    /// </summary>
+    /// <param name="selectMode"> The mission select mode to use. </param>
+    /// <param name="allMissions"> Whether to allow getting from all missions or only the ones in the config. </param>
+    /// <returns> The mission if found, otherwise null. </returns>
+    public static Mission? GetNextMission(MissionSelectMode selectMode, bool allMissions = false)
+    {
+        if (TryGetConsumePreselectedMission(out var mission))
+            return mission;
+        
+        if (NucleiConfig.MissionSelectMode!.Value == MissionSelectMode.Random)
+            return GetRandomMission(true);
+        
+        if (NucleiConfig.MissionSelectMode.Value == MissionSelectMode.RandomNoRepeat)
+            return GetRandomMission();
+        
+        if (NucleiConfig.MissionSelectMode.Value == MissionSelectMode.Sequential)
+            return GetNextSequentialMission();
+
+        Nuclei.Logger?.LogError("Invalid mission select mode. Defaulting to random.");
+        return GetRandomMission();
+    }
+
+    /// <summary>
     ///     Gets a random mission from the provided list of missions.
     /// </summary>
     /// <param name="missions"> The list of missions to choose from. </param>
@@ -93,7 +144,7 @@ public static class MissionService
     {
         if (missions.Length == 0)
         {
-            Nuclei.Logger?.LogWarning("No missions found. This should not happen.");
+            Nuclei.Logger?.LogError("No missions found. This should not happen.");
             return null;
         }
         if (!allowRepeat && missions.Length > 1 && LastMission != null)
