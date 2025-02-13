@@ -59,6 +59,15 @@ public static class NucleiConfig
     internal static ConfigEntry<bool>? RefreshServerNamePeriodically;
     internal const bool DefaultRefreshServerNamePeriodically = true;
     
+    internal static ConfigEntry<short>? TargetFrameRate;
+    internal const short DefaultTargetFrameRate = 120;
+    
+    internal static ConfigEntry<bool>? ApplyPerformanceTweaks;
+    internal const bool DefaultApplyPerformanceTweaks = true;
+    
+    internal static ConfigEntry<bool>? MuteAfterStart;
+    internal const bool DefaultMuteAfterStart = true;
+    
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').ToList();
     
     internal static List<string> AdminsList => Admins!.Value.Split(';').ToList();
@@ -114,6 +123,15 @@ public static class NucleiConfig
         RefreshServerNamePeriodically = config.Bind(GeneralSection, "RefreshServerNamePeriodically", DefaultRefreshServerNamePeriodically, "Whether to refresh the server name every 10 minutes. This is useful for servers that use dynamic placeholders in the server name.");
         Nuclei.Logger?.LogDebug($"RefreshServerNamePeriodically: {RefreshServerNamePeriodically.Value}");
         
+        TargetFrameRate = config.Bind(TechnicalSection, "TargetFrameRate", DefaultTargetFrameRate, "The target frame rate of the server. Only change this if you know what you're doing. -1 for unlimited.");
+        Nuclei.Logger?.LogDebug($"TargetFrameRate: {TargetFrameRate.Value}");
+        
+        ApplyPerformanceTweaks = config.Bind(TechnicalSection, "ApplyPerformanceTweaks", DefaultApplyPerformanceTweaks, "Whether to apply performance tweaks to the server. Only change this if you know what you're doing.");
+        Nuclei.Logger?.LogDebug($"ApplyPerformanceTweaks: {ApplyPerformanceTweaks.Value}");
+        
+        MuteAfterStart = config.Bind(GeneralSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
+        Nuclei.Logger?.LogDebug($"MuteAfterStart: {MuteAfterStart.Value}");
+        
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
 
@@ -163,7 +181,55 @@ public static class NucleiConfig
             MotDFrequency.Value = 0;
         }
         
+        if (TargetFrameRate!.Value < -1)
+        {
+            Nuclei.Logger?.LogWarning("TargetFrameRate cannot be less than -1! Setting to -1 (unlimited).");
+            TargetFrameRate.Value = -1;
+        }
+        
+        ValidateForUserErrors();
+        
         Nuclei.Logger?.LogDebug("Settings validated!");
+    }
+
+    internal static void ValidateForUserErrors()
+    {
+        if (Owner!.Value == "")
+        {
+            Nuclei.Logger?.LogWarning("Owner is not set! It is recommended to set the owner in the config file.");
+        }
+        else
+        {
+            if (!ulong.TryParse(Owner.Value, out _))
+                Nuclei.Logger?.LogWarning("Owner is not a valid Steam ID! Remove or correct it in the config file.");
+            if (Owner.Value.Contains(";"))
+                Nuclei.Logger?.LogWarning("Owner cannot be a list of Steam IDs! Remove or correct it in the config file. (Found a semicolon ';')");
+        }
+        
+        if (ModeratorsList.Any(m => !ulong.TryParse(m, out _))) 
+            Nuclei.Logger?.LogWarning("One or more moderators are not valid Steam IDs! Remove or correct them in the config file.");
+        
+        // Print moderators list
+        Nuclei.Logger?.LogDebug("Moderators:");
+        foreach (var moderator in ModeratorsList)
+        {
+            Nuclei.Logger?.LogDebug($"- {moderator}");
+        }
+
+        if (Moderators!.Value.EndsWith(";"))
+        {
+            Nuclei.Logger?.LogWarning("Moderators list ends with a semicolon ';'. Removing it.");
+            Moderators.Value = Moderators.Value.TrimEnd(';');
+        }
+
+        if (AdminsList.Any(a => !ulong.TryParse(a, out _)))
+            Nuclei.Logger?.LogWarning("One or more admins are not valid Steam IDs! Remove or correct them in the config file.");
+
+        if (Admins!.Value.EndsWith(";"))
+        {
+            Nuclei.Logger?.LogWarning("Admins list ends with a semicolon ';'. Removing it.");
+            Admins.Value = Admins.Value.TrimEnd(';');
+        }
     }
     
     internal static void RemoveModerator(string steamId)
