@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-02-13
+
 ### Added
 
 - Disable server process' audio on server start, to prevent annoyance in case of running the server on a local machine
@@ -23,14 +25,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   of the day, and welcome message
 - Toggleable periodic server name refresh, to allow for dynamic server names using the new dynamic placeholders
 
-### Changed
-
 ### Fixed
 
 - Incorrect docstring for ChatService's SendChatMessage method
 - General code cleanup
 
-### Removed
+### Changed
+
+- Ignore rate limit for chat messages sent by the server. May not work as intended, needs follow-up from live testing
 
 ## [1.0.1] - 2025-02-12
 
