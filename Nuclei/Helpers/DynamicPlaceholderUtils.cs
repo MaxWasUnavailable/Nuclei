@@ -84,13 +84,9 @@ public static class DynamicPlaceholderUtils
     {
         if (player)
         {
-            Nuclei.Logger?.LogInfo($"1");
             original = original.Replace(PlayerName, player!.PlayerName);
-            Nuclei.Logger?.LogInfo($"2");
             original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
-            Nuclei.Logger?.LogInfo($"3");
             original = original.Replace(SteamID, player.SteamID.ToString());
-            Nuclei.Logger?.LogInfo($"4");
         }
         
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
