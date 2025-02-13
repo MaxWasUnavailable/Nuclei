@@ -37,9 +37,6 @@ public static class NucleiConfig
     internal static ConfigEntry<uint>? MissionDuration;
     internal const uint DefaultMissionDuration = 3600;
     
-    internal static ConfigEntry<bool>? AllowRepeatMission;
-    internal const bool DefaultAllowRepeatMission = true;
-    
     internal static ConfigEntry<ushort>? UdpPort;
     internal const ushort DefaultUdpPort = 7777;
     
@@ -75,6 +72,9 @@ public static class NucleiConfig
 
     internal static ConfigEntry<MissionSelectMode>? MissionSelectMode;
     internal const MissionSelectMode DefaultMissionSelectMode = Enums.MissionSelectMode.Random;
+
+    internal static ConfigEntry<bool>? UseAllMissions;
+    internal const bool DefaultUseAllMissions = false;
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -106,9 +106,6 @@ public static class NucleiConfig
         
         MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching. Checks are done every minute.");
         Nuclei.Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
-        
-        AllowRepeatMission = config.Bind(GeneralSection, "AllowRepeatMission", DefaultAllowRepeatMission, "Whether to allow the same mission to be selected more than once in a row. Does not work if there is only one mission in the list.");
-        Nuclei.Logger?.LogDebug($"AllowRepeatMission: {AllowRepeatMission.Value}");
         
         UdpPort = config.Bind(TechnicalSection, "UdpPort", DefaultUdpPort, "The UDP port the server will listen on. Only change this if you know what you're doing.");
         Nuclei.Logger?.LogDebug($"UdpPort: {UdpPort.Value}");
@@ -146,6 +143,9 @@ public static class NucleiConfig
         MissionSelectMode = config.Bind(GeneralSection, "MissionSelectMode", DefaultMissionSelectMode, "The mode used to select the next mission. Random will select a random mission from the list, RandomNoRepeat will select a random mission without repeating the last one (if possible), and Sequential will select the next mission in the list.");
         Nuclei.Logger?.LogDebug($"MissionSelectMode: {MissionSelectMode.Value}");
         
+        UseAllMissions = config.Bind(GeneralSection, "UseAllMissions", DefaultUseAllMissions, "Whether to use all missions available to the client (including tutorials, workshop items, custom missions, etc...) for mission selection. If false, only the missions in the config will be used.");
+        Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
+        
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
 
@@ -175,12 +175,6 @@ public static class NucleiConfig
         {
             Nuclei.Logger?.LogWarning("Missions cannot be empty! Resetting to default value.");
             Missions.Value = DefaultMissions;
-        }
-        
-        if (MissionsList.Count == 1 && !AllowRepeatMission!.Value)
-        {
-            Nuclei.Logger?.LogWarning("AllowRepeatMission is disabled, but there is only one mission in the list! Enabling AllowRepeatMission.");
-            AllowRepeatMission.Value = true;
         }
         
         if (UdpPort!.Value > 65535)
