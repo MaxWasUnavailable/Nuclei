@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using Nuclei.Enums;
 
 namespace Nuclei.Features.Commands;
 

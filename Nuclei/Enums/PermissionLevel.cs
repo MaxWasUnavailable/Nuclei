@@ -1,4 +1,4 @@
-namespace Nuclei.Features.Commands;
+namespace Nuclei.Enums;
 
 /// <summary>
 ///     The permission level required to execute a command.
