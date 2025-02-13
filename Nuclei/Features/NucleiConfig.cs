@@ -202,18 +202,17 @@ public static class NucleiConfig
         
         if (ModeratorsList.Any(m => !ulong.TryParse(m, out _))) 
             Nuclei.Logger?.LogWarning("One or more moderators are not valid Steam IDs! Remove or correct them in the config file.");
-        
-        // Print moderators list
-        Nuclei.Logger?.LogDebug("Moderators:");
-        foreach (var moderator in ModeratorsList)
-        {
-            Nuclei.Logger?.LogDebug($"- {moderator}");
-        }
 
         if (Moderators!.Value.EndsWith(";"))
         {
             Nuclei.Logger?.LogWarning("Moderators list ends with a semicolon ';'. Removing it.");
             Moderators.Value = Moderators.Value.TrimEnd(';');
+        }
+        
+        if (Moderators!.Value.Contains(";;"))
+        {
+            Nuclei.Logger?.LogWarning("Moderators list contains multiple following semicolons ';;'. Fixing it.");
+            Moderators.Value = Moderators.Value.Replace(";;", ";");
         }
 
         if (AdminsList.Any(a => !ulong.TryParse(a, out _)))
@@ -223,6 +222,12 @@ public static class NucleiConfig
         {
             Nuclei.Logger?.LogWarning("Admins list ends with a semicolon ';'. Removing it.");
             Admins.Value = Admins.Value.TrimEnd(';');
+        }
+        
+        if (Admins!.Value.Contains(";;"))
+        {
+            Nuclei.Logger?.LogWarning("Admins list contains multiple following semicolons ';;'. Fixing it.");
+            Admins.Value = Admins.Value.Replace(";;", ";");
         }
     }
     
