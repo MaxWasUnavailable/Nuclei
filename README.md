@@ -14,15 +14,18 @@ framework, and hence requires a BepInEx installation to run.
     - Welcome message
     - Maximum mission duration
     - Mission rotation
-    - Mission repeating (i.e. ensure variety by not repeating the same mission twice in a row)
+    - Mission selection mode (Ranom, Random with no direct repeats, and sequential)
     - Moderator, admin, & owner
     - Steam vs UDP
     - Command permission levels
     - Max player count
     - Steam lobby type (public, friends-only, etc...)
+    - And *much* more
 - Modular and robust design, allowing for easy extension, modification, and maintenance
-- A variety of dynamic placeholders that can be used in the server name, message of the day, and welcome message
-- Disables server game audio on server start, to make it less annoying to run a server in the background
+- A variety of dynamic placeholders that can be used in the server name, message of the day, and welcome message. See
+  [Dynamic Placeholders](#dynamic-placeholders) for more information.
+- Allows you to disable the server game audio on server start, to make it less annoying to run a server in the
+  background
 
 ## Installation
 
@@ -43,8 +46,6 @@ The following dynamic placeholders are supported in the server name, message of 
 - `{player_name_censored}`: The name of the player, censored using the game's censoring rules (only available in the
   welcome message)
 - `{steamid}`: The Steam ID of the player (only available in the welcome message)
-- `{player_faction_name}`: The name of the player's faction (only available in the welcome message)
-- `{player_faction_tag}`: The tag of the player's faction (only available in the welcome message)
 - `{mission_name}`: The name of the current mission
 - `{faction1_name}`: The name of the first faction in the current mission
 - `{faction2_name}`: The name of the second faction in the current mission

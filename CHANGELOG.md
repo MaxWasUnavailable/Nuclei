@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-02-13
+
+### Added
+
+- Added user error validation. Essentially warnings and small fixes for common pitfalls / user errors in the config
+- Config toggle for the audio mute
+- Target framerate config entry
+- Vsync is disabled after server start
+- Experimental settings
+    - Physics updates per second setting
+    - Using Update instead of FixedUpdate for physics setting
+- Added MissionSelectMode enum, and added to config to allow selecting between Random, RandomNoRepeat, and Sequential
+- Added setter for preselected mission in MissionService. Useful for mods that want to e.g. force a specific mission
+  based on some condition or outcome
+
+### Fixed
+
+- Do not have an empty entry in the moderator/admin/missions list if it is not set
+
+### Changed
+
+- Moved PermissionLevel to Enum directory, for better organisation
+- Made MissionService use MissionSelectMode enum
+
+### Removed
+
+- AllowRepeatMission config option. Has been replaced by MissionSelectMode
+
 ## [1.1.2] - 2025-02-13
 
 ### Removed
