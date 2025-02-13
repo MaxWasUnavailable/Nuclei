@@ -28,6 +28,9 @@ public static class Server
     
     private static void CheckSendMotD()
     {
+        if (NucleiConfig.MotDFrequency!.Value <= 0)
+            return;
+        
         if (Time.time - _lastMotDSent < NucleiConfig.MotDFrequency!.Value && _lastMotDSent > 0)
             return;
         
@@ -37,6 +40,9 @@ public static class Server
 
     private static void CheckMissionOverTime()
     {
+        if (NucleiConfig.MissionDuration!.Value <= 0)
+            return;
+        
         if (MissionTime < NucleiConfig.MissionDuration!.Value)
             return;
         

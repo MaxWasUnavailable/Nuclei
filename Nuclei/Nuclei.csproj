@@ -7,7 +7,7 @@
         <PackageId>MaxWasUnavailable.Nuclei</PackageId>
         <Title>Nuclei</Title>
         <Description>A flexible and powerful dedicated server solution for Nuclear Option.</Description>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <Authors>MaxWasUnavailable</Authors>
         <PackageTags>nuclear;option;bepinex</PackageTags>
 
