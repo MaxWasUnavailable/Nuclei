@@ -272,6 +272,12 @@ public static class Server
         TimeEvents.EveryMinute += CheckMissionOverTime;
         TimeEvents.Every10Minutes += TimeStatus;
         MissionEvents.MissionEnded += OnMissionEnded;
+
+        if (NucleiConfig.RefreshServerNamePeriodically!.Value)
+        {
+            Nuclei.Logger?.LogDebug("Hooked up periodic server name refresh event.");
+            TimeEvents.Every10Minutes += SteamLobbyService.SetLobbyData;
+        }
         
         Nuclei.Logger?.LogInfo($"Server started. (Took {Time.time} seconds)");
     }
