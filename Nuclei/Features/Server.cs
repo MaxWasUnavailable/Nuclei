@@ -239,6 +239,9 @@ public static class Server
 
         Resources.UnloadUnusedAssets();
         
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = NucleiConfig.TargetFrameRate!.Value;
+        
         if (NucleiConfig.MuteAfterStart!.Value)
             DisableAudio();
     }
