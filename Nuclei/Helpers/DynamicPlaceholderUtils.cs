@@ -1,3 +1,4 @@
+using System.Linq;
 using Nuclei.Features;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for a player's username.
     /// </summary>
     public const string PlayerName = "{player_name}";
-    
+
     /// <summary>
     ///     Placeholder for a player's username, censored.
     /// </summary>
@@ -59,6 +60,16 @@ public static class DynamicPlaceholderUtils
     public const string Faction2Score = "{faction2_score}";
 
     /// <summary>
+    ///     Placeholder for all configured missions.
+    /// </summary>
+    public const string AllMissions = "{all_missions}";
+
+    /// <summary>
+    ///     Placeholder for showing up to 3 random missions, and (...) if there are more.
+    /// </summary>
+    public const string Random3MissionsEtc = "{random_3_missions_etc}";
+
+    /// <summary>
     ///     Replaces dynamic placeholders in a string with the appropriate values.
     /// </summary>
     /// <param name="original"> The original string. </param>
@@ -86,6 +97,15 @@ public static class DynamicPlaceholderUtils
             original = original.Replace(Faction2, MissionService.CurrentMission!.factions[1].factionName);
             original = original.Replace(Faction2Score, Mathf.RoundToInt(MissionService.CurrentMission!.factions[1].FactionHQ.factionScore).ToString());
         }
+
+        var allMissions = NucleiConfig.MissionsList.Aggregate("", (current, mission) => current + ", " + mission).TrimStart(',', ' ');
+        original = original.Replace(AllMissions, allMissions);
+        
+        var randomMissions = NucleiConfig.MissionsList.OrderBy(_ => Random.Range(0, 100)).Take(3).ToList();
+        var randomMissionsString = randomMissions.Aggregate("", (current, mission) => current + ", " + mission).TrimStart(',', ' ');
+        if (NucleiConfig.MissionsList.Count > 3) 
+            randomMissionsString += ", (...)";
+        original = original.Replace(Random3MissionsEtc, randomMissionsString);
         
         return original;
     }
