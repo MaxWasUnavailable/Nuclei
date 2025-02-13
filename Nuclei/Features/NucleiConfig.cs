@@ -56,6 +56,9 @@ public static class NucleiConfig
     internal static ConfigEntry<string>? Owner;
     internal const string DefaultOwner = "";
     
+    internal static ConfigEntry<bool>? RefreshServerNamePeriodically;
+    internal const bool DefaultRefreshServerNamePeriodically = true;
+    
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').ToList();
     
     internal static List<string> AdminsList => Admins!.Value.Split(';').ToList();
@@ -107,6 +110,9 @@ public static class NucleiConfig
         
         Owner = config.Bind(GeneralSection, "Owner", DefaultOwner, "The Steam ID of the server owner. This player has access to all commands, and cannot be removed from the admin list.");
         Nuclei.Logger?.LogDebug($"Owner: {Owner.Value}");
+        
+        RefreshServerNamePeriodically = config.Bind(GeneralSection, "RefreshServerNamePeriodically", DefaultRefreshServerNamePeriodically, "Whether to refresh the server name every 10 minutes. This is useful for servers that use dynamic placeholders in the server name.");
+        Nuclei.Logger?.LogDebug($"RefreshServerNamePeriodically: {RefreshServerNamePeriodically.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
