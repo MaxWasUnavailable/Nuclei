@@ -65,11 +65,11 @@ public static class NucleiConfig
     internal static ConfigEntry<bool>? MuteAfterStart;
     internal const bool DefaultMuteAfterStart = true;
     
-    internal static List<string> ModeratorsList => Moderators!.Value.Split(';').ToList();
+    internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
-    internal static List<string> AdminsList => Admins!.Value.Split(';').ToList();
+    internal static List<string> AdminsList => Admins!.Value.Split(';').Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
     
-    internal static List<string> MissionsList => Missions!.Value.Split(';').ToList();
+    internal static List<string> MissionsList => Missions!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
     internal static void InitSettings(ConfigFile config)
     {
