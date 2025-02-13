@@ -62,9 +62,6 @@ public static class NucleiConfig
     internal static ConfigEntry<short>? TargetFrameRate;
     internal const short DefaultTargetFrameRate = 120;
     
-    internal static ConfigEntry<bool>? ApplyPerformanceTweaks;
-    internal const bool DefaultApplyPerformanceTweaks = true;
-    
     internal static ConfigEntry<bool>? MuteAfterStart;
     internal const bool DefaultMuteAfterStart = true;
     
@@ -126,10 +123,7 @@ public static class NucleiConfig
         TargetFrameRate = config.Bind(TechnicalSection, "TargetFrameRate", DefaultTargetFrameRate, "The target frame rate of the server. Only change this if you know what you're doing. -1 for unlimited.");
         Nuclei.Logger?.LogDebug($"TargetFrameRate: {TargetFrameRate.Value}");
         
-        ApplyPerformanceTweaks = config.Bind(TechnicalSection, "ApplyPerformanceTweaks", DefaultApplyPerformanceTweaks, "Whether to apply performance tweaks to the server. Only change this if you know what you're doing.");
-        Nuclei.Logger?.LogDebug($"ApplyPerformanceTweaks: {ApplyPerformanceTweaks.Value}");
-        
-        MuteAfterStart = config.Bind(GeneralSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
+        MuteAfterStart = config.Bind(TechnicalSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
         Nuclei.Logger?.LogDebug($"MuteAfterStart: {MuteAfterStart.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
