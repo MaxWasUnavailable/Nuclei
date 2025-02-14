@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-02-15
+
+### Added
+
+- Explicitly closes Steam lobby after mission end. Attempt at addressing report of "ghost" lobbies remaining over time
+
 ### Removed
 
 - MotD frequency validation, since it's not actually relevant to compare mission duration & MotD frequency
