@@ -129,6 +129,8 @@ public static class Server
         
         Globals.NetworkManagerNuclearOptionInstance.Stop(false);
         
+        SteamLobbyService.StopSteamLobby();
+        
         GameManager.SetGameState(GameManager.GameState.Menu);
         
         Nuclei.Logger?.LogInfo("Mission ended.");

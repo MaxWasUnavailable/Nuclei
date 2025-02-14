@@ -62,4 +62,14 @@ public static class SteamLobbyService
             Nuclei.Logger?.LogError("Failed to get local location for ping data. Ping will be empty.");
     }
     
+    /// <summary>
+    ///     Stops the Steam lobby.
+    /// </summary>
+    public static void StopSteamLobby()
+    {
+        Nuclei.Logger?.LogDebug("Stopping Steam lobby...");
+        SteamMatchmaking.LeaveLobby(Globals.LobbySteamID);
+        Nuclei.Logger?.LogDebug("Steam lobby stopped.");
+    }
+    
 }
