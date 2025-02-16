@@ -119,12 +119,6 @@ public static class Server
             return;
         }
         
-        if (GameManager.gameState != GameManager.GameState.Multiplayer)
-        {
-            Nuclei.Logger?.LogWarning("Cannot end mission while not in game.");
-            return;
-        }
-        
         MessageService.SendHostEndedMessage();
         
         Globals.NetworkManagerNuclearOptionInstance.Stop(false);
