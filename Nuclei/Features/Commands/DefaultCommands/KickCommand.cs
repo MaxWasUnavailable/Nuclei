@@ -26,7 +26,19 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
 
         if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
         {
-            Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
+            if (targetPlayer == player)
+            {
+                ChatService.SendPrivateChatMessage("You can't kick yourself.", player);
+                return;
+            }
+
+            if (targetPlayer == Globals.LocalPlayer)
+            {
+                ChatService.SendPrivateChatMessage("You can't kick the host.", player);
+                return;
+            }
+            
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
         }
         else
