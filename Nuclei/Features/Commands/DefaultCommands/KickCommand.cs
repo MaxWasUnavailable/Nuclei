@@ -1,4 +1,3 @@
-using System.Linq;
 using BepInEx.Configuration;
 using Nuclei.Enums;
 using Nuclei.Helpers;
@@ -20,7 +19,7 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         return args.Length == 1;
     }
 
-    public override void Execute(Player player, string[] args)
+    public override bool Execute(Player player, string[] args)
     {
         var target = args[0];
 
@@ -29,23 +28,23 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
             if (targetPlayer == player)
             {
                 ChatService.SendPrivateChatMessage("You can't kick yourself.", player);
-                return;
+                return false;
             }
 
             if (targetPlayer == Globals.LocalPlayer)
             {
                 ChatService.SendPrivateChatMessage("You can't kick the host.", player);
-                return;
+                return false;
             }
             
             _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
+            return true;
         }
-        else
-        {
-            ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
-            Nuclei.Logger?.LogWarning($"Player {target} not found.");
-        }
+
+        ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
+        Nuclei.Logger?.LogWarning($"Player {target} not found.");
+        return false;
     }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;

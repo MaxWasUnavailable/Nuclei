@@ -85,8 +85,15 @@ public static class CommandService
         
         if (command.Validate(player, args))
         {
-            command.Execute(player, args);
-            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully by {player.PlayerName} with argument(s): {string.Join(", ", args)}");
+            if (command.Execute(player, args))
+            {
+                Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully by {player.PlayerName} with argument(s): {string.Join(", ", args)}");
+            }
+            else
+            {
+                Nuclei.Logger?.LogWarning($"Command {commandName} failed to execute by {player.PlayerName} with argument(s): {string.Join(", ", args)}");
+                ChatService.SendPrivateChatMessage("An error occurred while executing the command.", player);
+            }
         }
         else
         {

@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated to work with version 0.30 of Nuclei
   - Fixed AudioMixerVolumeInstance that was moved to a different class
   - Fixed MissionKey class usage that was moved to a different namespace
+- Fixed accidental usage of default welcome message instead of config value
+- Address https://github.com/MaxWasUnavailable/Nuclei/issues/13 (Server silently fails on start if Nuclear Option fails to connect to steam)
+
+### Changed
+
+- Made command execution return a boolean to indicate success or failure, to prevent confusing output in the console
 
 ## [1.2.2] - 2025-02-16
 

@@ -19,14 +19,14 @@ public class SetPermissionLevelCommand(ConfigFile config) : PermissionConfigurab
         return args.Length == 2 && PermissionLevelUtils.TryParsePermissionLevel(args[1], out _);
     }
 
-    public override void Execute(Player player, string[] args)
+    public override bool Execute(Player player, string[] args)
     {
         var target = args[0];
         PermissionLevelUtils.TryParsePermissionLevel(args[1], out var permissionLevel);
 
         if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
         {
-            var targetSteamID = player.SteamID.ToString();
+            var targetSteamID = targetPlayer!.SteamID.ToString();
             switch (permissionLevel)
             {
                 case PermissionLevel.Admin:
@@ -44,12 +44,13 @@ public class SetPermissionLevelCommand(ConfigFile config) : PermissionConfigurab
                     break;
             }
             Nuclei.Logger?.LogInfo($"Set permission level of {target} to {permissionLevel}.");
+            ChatService.SendPrivateChatMessage($"Set permission level of {target} to {permissionLevel}.", player);
+            return true;
         }
-        else
-        {
-            ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
-            Nuclei.Logger?.LogWarning($"Player {target} not found.");
-        }
+
+        ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
+        Nuclei.Logger?.LogWarning($"Player {target} not found.");
+        return false;
     }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;

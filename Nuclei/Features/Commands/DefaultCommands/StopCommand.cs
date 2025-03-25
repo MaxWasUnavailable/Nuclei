@@ -18,9 +18,11 @@ public class StopCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         return args.Length == 0;
     }
 
-    public override void Execute(Player player, string[] args)
+    public override bool Execute(Player player, string[] args)
     {
+        ChatService.SendPrivateChatMessage("Stopping server...", player);
         Server.StopServer();
+        return true;
     }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;

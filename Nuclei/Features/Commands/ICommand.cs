@@ -41,5 +41,6 @@ public interface ICommand
     /// </summary>
     /// <param name="player"> The player executing the command. </param>
     /// <param name="args"> The command arguments. </param>
-    void Execute(Player player, string[] args);
+    /// <returns> Whether the command was executed successfully. </returns>
+    bool Execute(Player player, string[] args);
 }

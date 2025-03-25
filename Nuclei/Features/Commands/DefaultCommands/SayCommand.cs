@@ -18,10 +18,11 @@ public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(confi
         return args.Length > 0;
     }
 
-    public override void Execute(Player player, string[] args)
+    public override bool Execute(Player player, string[] args)
     {
         var message = string.Join(" ", args);
         ChatService.SendChatMessage($"{message}");
+        return true;
     }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;

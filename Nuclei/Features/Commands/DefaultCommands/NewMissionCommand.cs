@@ -18,9 +18,10 @@ public class NewMissionCommand(ConfigFile config) : PermissionConfigurableComman
         return true;
     }
 
-    public override void Execute(Player player, string[] args)
+    public override bool Execute(Player player, string[] args)
     {
         _ = Server.StartOrRestartLobby();
+        return true;
     }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;

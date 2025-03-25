@@ -23,7 +23,7 @@ public abstract class PermissionConfigurableCommand : ICommand
     public abstract bool Validate(Player player, string[] args);
 
     /// <inheritdoc />
-    public abstract void Execute(Player player, string[] args);
+    public abstract bool Execute(Player player, string[] args);
 
     /// <inheritdoc />
     public PermissionLevel PermissionLevel => PermissionLevelConfig.Value;
