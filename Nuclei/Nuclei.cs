@@ -61,6 +61,7 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new SayCommand(Config));
         CommandService.RegisterCommand(new NewMissionCommand(Config));
         CommandService.RegisterCommand(new KickCommand(Config));
+        CommandService.RegisterCommand(new BanCommand(Config));
         CommandService.RegisterCommand(new StopCommand(Config));
         CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
         CommandService.RegisterCommand(new HelpCommand(Config));
