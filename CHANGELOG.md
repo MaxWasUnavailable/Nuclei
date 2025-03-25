@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.0 - 2025-03-25
+
+### Fixed
+
+- Updated to work with version 0.30 of Nuclei
+  - Fixed AudioMixerVolumeInstance that was moved to a different class
+  - Fixed MissionKey class usage that was moved to a different namespace
+
 ## [1.2.2] - 2025-02-16
 
 ### Removed
