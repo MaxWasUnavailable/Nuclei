@@ -6,9 +6,9 @@ framework, and hence requires a BepInEx installation to run.
 
 ## Features
 
-- Native support for chat commands with permission levels, with a number of default commands such as `kick`, `say`,
-  `stop`, `newmission`, and `setpermissionlevel`. Modders can easily add their own commands, and server owners can
-  configure which roles can access what commands, and assign moderator and admin roles to specific users.
+- Native support for chat commands with permission levels, with a number of default commands such as `ban`, `kick`,
+  `say`, `stop`, `newmission`, and `setpermissionlevel`. Modders can easily add their own commands, and server owners
+  can configure which roles can access what commands, and assign moderator and admin roles to specific users.
 - Extensive configurability
     - Message of the day
     - Welcome message
