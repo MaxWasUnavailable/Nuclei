@@ -22,7 +22,7 @@ public static class MissionService
     /// <summary>
     ///     The preselected mission key.
     /// </summary>
-    public static MissionGroup.MissionKey? PreselectedMissionKey { get; private set; }
+    public static MissionKey? PreselectedMissionKey { get; private set; }
 
     /// <summary>
     ///     The current mission.
@@ -52,14 +52,14 @@ public static class MissionService
     /// <summary>
     ///     Gets all Mission Keys as an IEnumerable.
     /// </summary>
-    public static IEnumerable<MissionGroup.MissionKey> AllMissionKeys => MissionGroup.All.GetMissions();
+    public static IEnumerable<MissionKey> AllMissionKeys => MissionGroup.All.GetMissions();
 
     /// <summary>
     ///     Gets a mission by its key.
     /// </summary>
     /// <param name="key"> The mission key object of the mission. </param>
     /// <returns> The mission if found, otherwise null. </returns>
-    public static Mission? GetMission(MissionGroup.MissionKey key)
+    public static Mission? GetMission(MissionKey key)
     {
         return key.TryLoad(out var mission, out var errorString) ? mission : throw new Exception(errorString);
     }
@@ -69,7 +69,7 @@ public static class MissionService
     /// </summary>
     /// <param name="mission"> The mission object </param>
     /// <returns> The mission if found, otherwise null. </returns>
-    public static MissionGroup.MissionKey GetMissionKey(Mission mission)
+    public static MissionKey GetMissionKey(Mission mission)
     {
         return AllMissionKeys.First(k => k.Name == mission.Name);
     }
@@ -78,7 +78,7 @@ public static class MissionService
     ///     Gets a list of Mission Keys filtered by the config.
     /// </summary>
     /// <returns> The list of mission keys. </returns>
-    public static MissionGroup.MissionKey[] GetConfigMissionKeys()
+    public static MissionKey[] GetConfigMissionKeys()
     {
         return NucleiConfig.MissionsList.Select(m => AllMissionKeys.First(k => k.Name == m)).ToArray();
     }
@@ -140,7 +140,7 @@ public static class MissionService
     /// <param name="missions"> The list of missions to choose from. </param>
     /// <param name="allowRepeat"> Whether to allow the same mission to be returned multiple times in a row. </param>
     /// <returns></returns>
-    public static Mission? GetRandomMission(MissionGroup.MissionKey[] missions, bool allowRepeat = false)
+    public static Mission? GetRandomMission(MissionKey[] missions, bool allowRepeat = false)
     {
         if (missions.Length == 0)
         {
@@ -183,7 +183,7 @@ public static class MissionService
     ///     Set a mission to be preselected for the next mission start.
     /// </summary>
     /// <param name="key"> The mission key to preselect. </param>
-    public static void SetPreselectedMission(MissionGroup.MissionKey key)
+    public static void SetPreselectedMission(MissionKey key)
     {
         PreselectedMissionKey = key;
     }
