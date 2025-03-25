@@ -125,8 +125,6 @@ public static class Server
         
         SteamLobbyService.StopSteamLobby();
         
-        GameManager.SetGameState(GameManager.GameState.Menu);
-        
         Nuclei.Logger?.LogInfo("Mission ended.");
     }
 
@@ -219,6 +217,7 @@ public static class Server
         {
             Nuclei.Logger?.LogInfo("Already running, ending mission first...");
             EndMission();
+            await UniTask.WaitUntil(() => !Globals.NetworkManagerNuclearOptionInstance.stopping);
         }
         
         GameManager.SetGameState(GameManager.GameState.Multiplayer);
