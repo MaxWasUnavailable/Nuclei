@@ -1,3 +1,4 @@
+using System;
 using Nuclei.Enums;
 using Nuclei.Features.Commands;
 
@@ -20,7 +21,8 @@ public static class PermissionLevelUtils
             "everyone" => PermissionLevel.Everyone,
             "moderator" => PermissionLevel.Moderator,
             "admin" => PermissionLevel.Admin,
-            _ => PermissionLevel.Everyone
+            "owner" => PermissionLevel.Owner,
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
     
@@ -55,7 +57,15 @@ public static class PermissionLevelUtils
             return true;
         }
 
-        result = StringToPermissionLevel(permissionLevel);
-        return true;
+        try
+        {
+            result = StringToPermissionLevel(permissionLevel);
+            return true;
+        }
+        catch
+        {
+            result = PermissionLevel.Everyone;
+            return false;
+        }
     }
 }
