@@ -121,17 +121,18 @@ public static class MissionService
         if (TryGetConsumePreselectedMission(out var mission))
             return mission;
         
-        if (NucleiConfig.MissionSelectMode!.Value == MissionSelectMode.Random)
-            return GetRandomMission(true);
-        
-        if (NucleiConfig.MissionSelectMode.Value == MissionSelectMode.RandomNoRepeat)
-            return GetRandomMission();
-        
-        if (NucleiConfig.MissionSelectMode.Value == MissionSelectMode.Sequential)
-            return GetNextSequentialMission();
-
-        Nuclei.Logger?.LogError("Invalid mission select mode. Defaulting to random.");
-        return GetRandomMission();
+        switch (selectMode)
+        {
+            case MissionSelectMode.Random:
+                return GetRandomMission(true, allMissions);
+            case MissionSelectMode.RandomNoRepeat:
+                return GetRandomMission(false, allMissions);
+            case MissionSelectMode.Sequential:
+                return GetNextSequentialMission(allMissions);
+            default:
+                Nuclei.Logger?.LogError("Invalid mission select mode. Defaulting to random.");
+                return GetRandomMission();
+        }
     }
 
     /// <summary>
