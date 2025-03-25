@@ -55,6 +55,9 @@ public static class NucleiConfig
     internal static ConfigEntry<string>? Owner;
     internal const string DefaultOwner = "";
     
+    internal static ConfigEntry<string>? BannedPlayers;
+    internal const string DefaultBannedPlayers = "";
+    
     internal static ConfigEntry<bool>? RefreshServerNamePeriodically;
     internal const bool DefaultRefreshServerNamePeriodically = true;
     
@@ -79,6 +82,8 @@ public static class NucleiConfig
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
     internal static List<string> AdminsList => Admins!.Value.Split(';').Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+    
+    internal static List<string> BannedPlayersList => BannedPlayers!.Value.Split(';').Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
     
     internal static List<string> MissionsList => Missions!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -124,6 +129,9 @@ public static class NucleiConfig
         
         Owner = config.Bind(GeneralSection, "Owner", DefaultOwner, "The Steam ID of the server owner. This player has access to all commands, and cannot be removed from the admin list.");
         Nuclei.Logger?.LogDebug($"Owner: {Owner.Value}");
+        
+        BannedPlayers = config.Bind(GeneralSection, "BannedPlayers", DefaultBannedPlayers, "A list of banned players. Separate steam IDs with a semicolon.");
+        Nuclei.Logger?.LogDebug($"BannedPlayers: {BannedPlayers.Value}");
         
         RefreshServerNamePeriodically = config.Bind(GeneralSection, "RefreshServerNamePeriodically", DefaultRefreshServerNamePeriodically, "Whether to refresh the server name every 10 minutes. This is useful for servers that use dynamic placeholders in the server name.");
         Nuclei.Logger?.LogDebug($"RefreshServerNamePeriodically: {RefreshServerNamePeriodically.Value}");
@@ -237,6 +245,18 @@ public static class NucleiConfig
             Nuclei.Logger?.LogWarning("Admins list contains multiple following semicolons ';;'. Fixing it.");
             Admins.Value = Admins.Value.Replace(";;", ";");
         }
+        
+        if (BannedPlayers!.Value.EndsWith(";"))
+        {
+            Nuclei.Logger?.LogWarning("BannedPlayers list ends with a semicolon ';'. Removing it.");
+            BannedPlayers.Value = BannedPlayers.Value.TrimEnd(';');
+        }
+        
+        if (BannedPlayers!.Value.Contains(";;"))
+        {
+            Nuclei.Logger?.LogWarning("BannedPlayers list contains multiple following semicolons ';;'. Fixing it.");
+            BannedPlayers.Value = BannedPlayers.Value.Replace(";;", ";");
+        }
     }
     
     internal static void RemoveModerator(string steamId)
@@ -269,5 +289,21 @@ public static class NucleiConfig
             return;
         adminsList.Add(steamId);
         Admins!.Value = string.Join(";", adminsList);
+    }
+    
+    internal static void RemoveBannedPlayer(string steamId)
+    {
+        var bannedPlayersList = BannedPlayersList;
+        bannedPlayersList.Remove(steamId);
+        BannedPlayers!.Value = string.Join(";", bannedPlayersList);
+    }
+    
+    internal static void AddBannedPlayer(string steamId)
+    {
+        var bannedPlayersList = BannedPlayersList;
+        if (bannedPlayersList.Contains(steamId))
+            return;
+        bannedPlayersList.Add(steamId);
+        BannedPlayers!.Value = string.Join(";", bannedPlayersList);
     }
 }
