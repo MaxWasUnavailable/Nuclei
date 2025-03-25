@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Made command execution return a boolean to indicate success or failure, to prevent confusing output in the console
 
+### Added
+
+- Ban command
+
 ## [1.2.2] - 2025-02-16
 
 ### Removed
