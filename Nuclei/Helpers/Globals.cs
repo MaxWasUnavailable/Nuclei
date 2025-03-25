@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Mirage;
 using NuclearOption.Networking;
 using Steamworks;
 
@@ -33,6 +35,7 @@ public static class Globals
     ///     Gets the local player. (The host / server)
     /// </summary>
     public static Player LocalPlayer => GameManager.LocalPlayer ?? throw new NullReferenceException("Local player is null.");
+
     /// <summary>
     ///     Gets the instance of the <see cref="AudioMixerVolume" /> class.
     /// </summary>
@@ -47,4 +50,9 @@ public static class Globals
     ///     Gets the Steam ID of the lobby.
     /// </summary>
     public static CSteamID LobbySteamID => SteamLobbyInstance._currentLobbyID;
+
+    /// <summary>
+    ///     Get a read-only list of all authenticated players.
+    /// </summary>
+    public static IReadOnlyList<INetworkPlayer> AuthenticatedPlayers => NetworkManagerNuclearOptionInstance.Server.AuthenticatedPlayers;
 }

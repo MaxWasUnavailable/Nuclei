@@ -14,7 +14,7 @@ internal static class ChatManagerPatches
     [HarmonyPatch(nameof(ChatManager.UserCode_CmdSendChatMessage_1323305531))]
     private static bool UserCode_CmdSendChatMessage_1323305531Prefix(string message, bool allChat, INetworkPlayer sender)
     {
-        if (!PlayerUtils.TryGetPlayerFromINetworkPlayer(sender, out var player)) 
+        if (!sender.TryGetPlayer(out var player)) 
             Nuclei.Logger?.LogWarning("Player component is null");
 
         if (message.StartsWith("/") && message.Length > 1)
