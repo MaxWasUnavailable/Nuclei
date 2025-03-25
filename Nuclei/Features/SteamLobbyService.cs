@@ -72,4 +72,13 @@ public static class SteamLobbyService
         Nuclei.Logger?.LogDebug("Steam lobby stopped.");
     }
     
+    /// <summary>
+    ///     Checks if the Steam API is available.
+    /// </summary>
+    /// <returns> True if the Steam API is available, false otherwise. </returns>
+    public static bool IsSteamAPIAvailable()
+    {
+        return SteamAPI.IsSteamRunning();
+    }
+    
 }

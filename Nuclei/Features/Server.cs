@@ -287,6 +287,12 @@ public static class Server
             return;
         }
         
+        if (!SteamLobbyService.IsSteamAPIAvailable())
+        {
+            Nuclei.Logger?.LogError("Steam API is not available! Aborting server launch.");
+            return;
+        }
+        
         await StartOrRestartLobby();
         
         TimeService.Initialize();
