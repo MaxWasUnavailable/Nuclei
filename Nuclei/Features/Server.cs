@@ -284,6 +284,14 @@ public static class Server
         }
         
         Nuclei.Logger?.LogInfo("Starting server...");
+        
+        Nuclei.Logger?.LogDebug("Checking Steam API availability...");
+        
+        if (!SteamLobbyService.IsSteamAPIAvailable())
+        {
+            Nuclei.Logger?.LogError("Steam API is not available! Aborting server launch.");
+            return;
+        }
 
         Nuclei.Logger?.LogDebug("Waiting for SteamManager to initialize...");
         
@@ -296,11 +304,7 @@ public static class Server
             return;
         }
         
-        if (!SteamLobbyService.IsSteamAPIAvailable())
-        {
-            Nuclei.Logger?.LogError("Steam API is not available! Aborting server launch.");
-            return;
-        }
+        Nuclei.Logger?.LogDebug("Validating mission config...");
 
         if (!MissionService.ValidateMissionConfig())
         {
