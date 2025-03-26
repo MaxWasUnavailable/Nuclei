@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.1 - 2025-03-26
+
+### Added
+
+- INetworkPlayerUtils class for helper methods related to INetworkPlayer objects
+  - Noteworthy is a method that fetches the SteamID from the authentication data of an INetworkPlayer object (found deep
+    in the base game's code, can't claim credit for that one). Should allow for very early functionality that requires
+    the SteamID of a player, without having to wait for the player to be fully loaded and joined.
+
+### Fixed
+
+- Fixed the fetching of Player objects from the server. The GamePlayers list was never populated, and hence I had to use
+  the AuthenticatedPlayers list instead.
+- Fixed ban patch not hooking into the correct method
+
 ## 1.3.0 - 2025-03-25
 
 ### Fixed
