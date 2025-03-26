@@ -266,6 +266,11 @@ public static class Server
         if (NucleiConfig.PhysicsUpdatesPerSecond!.Value != 60)
             Time.fixedDeltaTime = 1f / NucleiConfig.PhysicsUpdatesPerSecond!.Value;
     }
+    
+    private static bool IsSteamManagerInitializedOrTimeout(float startTime)
+    {
+        return SteamManager.Initialized || Time.time - startTime > 10;
+    }
 
     /// <summary>
     ///     Starts the dedicated server.
@@ -280,15 +285,26 @@ public static class Server
         
         Nuclei.Logger?.LogInfo("Starting server...");
 
-        if (!MissionService.ValidateMissionConfig())
+        Nuclei.Logger?.LogDebug("Waiting for SteamManager to initialize...");
+        
+        var startTime = Time.time;
+        await UniTask.WaitUntil(() => IsSteamManagerInitializedOrTimeout(startTime));
+        
+        if (!SteamManager.Initialized)
         {
-            Nuclei.Logger?.LogError("Failed to validate mission config! Aborting server launch.");
+            Nuclei.Logger?.LogError("SteamManager failed to initialize within 10 seconds! Aborting server launch.");
             return;
         }
         
         if (!SteamLobbyService.IsSteamAPIAvailable())
         {
             Nuclei.Logger?.LogError("Steam API is not available! Aborting server launch.");
+            return;
+        }
+
+        if (!MissionService.ValidateMissionConfig())
+        {
+            Nuclei.Logger?.LogError("Failed to validate mission config! Aborting server launch.");
             return;
         }
         

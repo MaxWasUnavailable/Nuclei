@@ -7,14 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.2 - 2025-03-26
+
+### Fixed
+
+- Fixed workshop items not being loaded at server start, causing config validation issues. The server now waits at most
+  10 seconds for the workshop to load before starting the server. If the workshop is not loaded by then, the server will
+  abort the launch and log an error message.
+
 ## 1.3.1 - 2025-03-26
 
 ### Added
 
 - INetworkPlayerUtils class for helper methods related to INetworkPlayer objects
-  - Noteworthy is a method that fetches the SteamID from the authentication data of an INetworkPlayer object (found deep
-    in the base game's code, can't claim credit for that one). Should allow for very early functionality that requires
-    the SteamID of a player, without having to wait for the player to be fully loaded and joined.
+    - Noteworthy is a method that fetches the SteamID from the authentication data of an INetworkPlayer object (found
+      deep in the base game's code, can't claim credit for that one). Should allow for very early functionality that
+      requires the SteamID of a player, without having to wait for the player to be fully loaded and joined.
 
 ### Fixed
 
@@ -27,10 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Updated to work with version 0.30 of Nuclei
-  - Fixed AudioMixerVolumeInstance that was moved to a different class
-  - Fixed MissionKey class usage that was moved to a different namespace
+    - Fixed AudioMixerVolumeInstance that was moved to a different class
+    - Fixed MissionKey class usage that was moved to a different namespace
 - Fixed accidental usage of default welcome message instead of config value
-- Address https://github.com/MaxWasUnavailable/Nuclei/issues/13 (Server silently fails on start if Nuclear Option fails to connect to steam)
+- Address https://github.com/MaxWasUnavailable/Nuclei/issues/13 (Server silently fails on start if Nuclear Option fails
+  to connect to steam)
 
 ### Changed
 
