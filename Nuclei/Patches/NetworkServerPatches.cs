@@ -1,6 +1,9 @@
 using HarmonyLib;
 using Mirage;
+using Mirage.Authentication;
 using Nuclei.Events;
+using Nuclei.Features;
+using Nuclei.Helpers;
 
 namespace Nuclei.Patches;
 
@@ -28,5 +31,18 @@ internal static class NetworkServerPatches
     private static void StopPostfix()
     {
         ServerEvents.OnServerStopped();
+    }
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(NetworkServer.AuthenticationSuccess))]
+    private static void AuthenticationSuccessPrefix(ref INetworkPlayer player, AuthenticationResult result)
+    {
+        var steamId = player.GetSteamIDUlong();
+        
+        if (!NucleiConfig.IsBanned(steamId)) 
+            return;
+
+        Nuclei.Logger?.LogInfo($"Player with Steam ID {steamId} tried to join the game but is banned.");
+        player.Disconnect();
     }
 }

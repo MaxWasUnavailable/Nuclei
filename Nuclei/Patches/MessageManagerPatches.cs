@@ -19,17 +19,6 @@ internal static class MessageManagerPatches
         PlayerEvents.OnPlayerJoined(joinedPlayer);
     }
     
-    [HarmonyPrefix]
-    [HarmonyPatch(nameof(MessageManager.JoinMessage))]
-    private static bool JoinMessagePrefix(Player joinedPlayer)
-    {
-        if (!NucleiConfig.BannedPlayers!.Value.Contains(joinedPlayer.SteamID.ToString())) 
-            return true;
-        
-        Nuclei.Logger?.LogInfo($"{joinedPlayer.PlayerName} ({joinedPlayer.SteamID}) tried to join the game but is banned");
-        return false;
-    }
-    
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.DisconnectedMessage))]
     private static void DisconnectedMessagePostfix(Player player)
