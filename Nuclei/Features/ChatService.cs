@@ -44,6 +44,17 @@ public static class ChatService
     {
         return message.TrimStart('/');
     }
+    
+    /// <summary>
+    ///     Pre-processes a chat message by replacing dynamic placeholders & sanitizing it.
+    /// </summary>
+    /// <param name="message"> The message to pre-process. </param>
+    /// <param name="player"> Player to use for chat message variables </param>
+    /// <returns> The pre-processed message. </returns>
+    private static string PreProcessMessage(this string message, Player? player = null)
+    {
+        return DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(message, player).SanitizeMessage();
+    }
 
     /// <summary>
     ///     Sends a chat message to all clients.
@@ -52,13 +63,15 @@ public static class ChatService
     /// <param name="player"> Player to use for chat message variables </param>
     public static void SendChatMessage(string message, Player? player = null)
     {
-        if (!CanSend(message, ignoreRateLimit: true))
+        var actualMessage = message.PreProcessMessage(player);
+        
+        if (!CanSend(actualMessage, ignoreRateLimit: true))
         {
             Nuclei.Logger?.LogWarning("Cannot send chat message.");
             return;
         }
         
-        Globals.ChatManagerInstance.CmdSendChatMessage(DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(message, player).SanitizeMessage(), true);
+        Globals.ChatManagerInstance.CmdSendChatMessage(actualMessage, true);
     }
 
     /// <summary>
@@ -68,14 +81,16 @@ public static class ChatService
     /// <param name="targetPlayer"> The player to send the message to. </param>
     public static void SendPrivateChatMessage(string message, Player targetPlayer)
     {
-        if (!CanSend(message, ignoreRateLimit: true))
+        var actualMessage = message.PreProcessMessage(targetPlayer);
+        
+        if (!CanSend(actualMessage, ignoreRateLimit: true))
         {
             Nuclei.Logger?.LogWarning("Cannot send private chat message.");
             return;
         }
 
-        Globals.ChatManagerInstance.TargetReceiveMessage(targetPlayer.Owner, message.SanitizeMessage(), targetPlayer, true);
-        Nuclei.Logger?.LogInfo($"Sent private message to {targetPlayer.PlayerName}: {message.SanitizeMessage()}");
+        Globals.ChatManagerInstance.TargetReceiveMessage(targetPlayer.Owner, actualMessage, targetPlayer, true);
+        Nuclei.Logger?.LogInfo($"Sent private message to {targetPlayer.PlayerName}: {actualMessage}");
     }
 
     /// <summary>
@@ -83,12 +98,14 @@ public static class ChatService
     /// </summary>
     public static void SendMotD()
     {
-        if (!CanSend(NucleiConfig.MessageOfTheDay!.Value, ignoreRateLimit: true))
+        var actualMotD = NucleiConfig.MessageOfTheDay!.Value.PreProcessMessage();
+        
+        if (!CanSend(actualMotD, ignoreRateLimit: true))
         {
             Nuclei.Logger?.LogWarning("Cannot send message of the day.");
             return;
         }
 
-        Globals.ChatManagerInstance.CmdSendChatMessage(DynamicPlaceholderUtils.ReplaceDynamicPlaceholders(NucleiConfig.MessageOfTheDay!.Value).SanitizeMessage(), true);
+        Globals.ChatManagerInstance.CmdSendChatMessage(actualMotD, true);
     }
 }
