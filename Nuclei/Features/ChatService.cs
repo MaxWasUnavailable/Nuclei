@@ -42,7 +42,10 @@ public static class ChatService
     /// <returns> The sanitized message. </returns>
     private static string SanitizeMessage(this string message)
     {
-        return message.TrimStart('/');
+        var prefix = NucleiConfig.CommandPrefix!.Value;
+        while(message.StartsWith(prefix))
+            message = message.Substring(prefix.Length - 1);
+        return message;
     }
     
     /// <summary>

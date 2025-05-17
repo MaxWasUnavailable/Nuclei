@@ -78,6 +78,9 @@ public static class NucleiConfig
 
     internal static ConfigEntry<bool>? UseAllMissions;
     internal const bool DefaultUseAllMissions = false;
+
+    internal static ConfigEntry<string>? CommandPrefix;
+    internal const string DefaultCommandPrefix = "/";
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -153,6 +156,9 @@ public static class NucleiConfig
         
         UseAllMissions = config.Bind(GeneralSection, "UseAllMissions", DefaultUseAllMissions, "Whether to use all missions available to the client (including tutorials, workshop items, custom missions, etc...) for mission selection. If false, only the missions in the config will be used.");
         Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
+
+        CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the string that needs to be at the start of a command to be seen as one).");
+        Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
