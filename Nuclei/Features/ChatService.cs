@@ -49,7 +49,7 @@ public static class ChatService
     }
     
     /// <summary>
-    ///     Pre-processes a chat message by replacing dynamic placeholders & sanitizing it.
+    ///     Pre-processes a chat message by replacing dynamic placeholders &amp; sanitizing it.
     /// </summary>
     /// <param name="message"> The message to pre-process. </param>
     /// <param name="player"> Player to use for chat message variables </param>
