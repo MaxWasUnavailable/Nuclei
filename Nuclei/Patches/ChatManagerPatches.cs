@@ -18,7 +18,7 @@ internal static class ChatManagerPatches
         if (!sender.TryGetPlayer(out var player)) 
             Nuclei.Logger?.LogWarning("Player component is null");
 
-        if (message.StartsWith(NucleiConfig.CommandPrefix!.Value) && message.Length > 1)
+        if (message.StartsWith(NucleiConfig.CommandPrefix!.Value) && message.Length > NucleiConfig.CommandPrefix!.Value.Length)
             if (CommandService.TryExecuteCommand(player!, message.Remove(0, 1)))
                 return false;
 
