@@ -89,6 +89,8 @@ public static class NucleiConfig
     internal static List<string> BannedPlayersList => BannedPlayers!.Value.Split(';').Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
     
     internal static List<string> MissionsList => Missions!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
+
+    internal static char CommandPrefixChar => CommandPrefix!.Value[0];
     
     internal static void InitSettings(ConfigFile config)
     {
@@ -157,7 +159,7 @@ public static class NucleiConfig
         UseAllMissions = config.Bind(GeneralSection, "UseAllMissions", DefaultUseAllMissions, "Whether to use all missions available to the client (including tutorials, workshop items, custom missions, etc...) for mission selection. If false, only the missions in the config will be used.");
         Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
 
-        CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the string that needs to be at the start of a command to be seen as one).");
+        CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the character at the start of a command).");
         Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
@@ -203,9 +205,9 @@ public static class NucleiConfig
             TargetFrameRate.Value = -1;
         }
 
-        if (CommandPrefix!.Value.Length == 0)
+        if (CommandPrefix!.Value.Length != 1)
         {
-            Nuclei.Logger?.LogWarning("CommandPrefix must not be empty! Resetting to default value.");
+            Nuclei.Logger?.LogWarning("CommandPrefix must be a single character! Resetting to default value.");
             CommandPrefix.Value = DefaultCommandPrefix;
         }
         
