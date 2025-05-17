@@ -202,6 +202,12 @@ public static class NucleiConfig
             Nuclei.Logger?.LogWarning("TargetFrameRate cannot be less than -1! Setting to -1 (unlimited).");
             TargetFrameRate.Value = -1;
         }
+
+        if (CommandPrefix!.Value.Length == 0)
+        {
+            Nuclei.Logger?.LogWarning("CommandPrefix must not be empty! Resetting to default value.");
+            CommandPrefix.Value = DefaultCommandPrefix;
+        }
         
         ValidateForUserErrors();
         
