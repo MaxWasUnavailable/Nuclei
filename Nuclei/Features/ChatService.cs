@@ -42,11 +42,11 @@ public static class ChatService
     /// <returns> The sanitized message. </returns>
     private static string SanitizeMessage(this string message)
     {
-        return message.TrimStart('/');
+        return message.TrimStart(NucleiConfig.CommandPrefixChar);
     }
     
     /// <summary>
-    ///     Pre-processes a chat message by replacing dynamic placeholders & sanitizing it.
+    ///     Pre-processes a chat message by replacing dynamic placeholders &amp; sanitizing it.
     /// </summary>
     /// <param name="message"> The message to pre-process. </param>
     /// <param name="player"> Player to use for chat message variables </param>
