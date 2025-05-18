@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.3.3 - 2025-05-18
+
 ### Changed
 
 - Streamlined the ChatService with a preprocess method that both replaces placeholders and sanitizes the input.
+- Command prefix is now configurable (Thanks to [downloadpizza](https://github.com/downloadpizza)
+  in [#20](https://github.com/MaxWasUnavailable/Nuclei/pull/20))
 
 ## 1.3.2 - 2025-03-26
 
