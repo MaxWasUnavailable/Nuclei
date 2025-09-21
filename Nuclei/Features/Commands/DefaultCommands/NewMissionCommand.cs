@@ -24,7 +24,7 @@ public class NewMissionCommand(ConfigFile config) : PermissionConfigurableComman
 
     public override bool Execute(Player player, string[] args)
     {
-                return true;
+        return true;
     }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;

@@ -90,7 +90,7 @@ public static class ChatService
             }
             catch (Exception ex)
             {
-                Nuclei.Logger.LogError($"[Admin] Broadcast to a connection failed: {ex}");
+                Nuclei.Logger.LogError($"Broadcast to a connection failed: {ex}");
             }
         }
 
@@ -146,7 +146,7 @@ public static class ChatService
             }
             catch (Exception ex)
             {
-                Nuclei.Logger.LogError($"[Admin] Broadcast to a connection failed: {ex}");
+                Nuclei.Logger.LogError($"Broadcast to a connection failed: {ex}");
             }
         }
     }
