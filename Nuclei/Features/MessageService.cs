@@ -4,7 +4,6 @@ using NuclearOption.Networking;
 using Nuclei.Helpers;
 
 namespace Nuclei.Features;
-
 /// <summary>
 ///     Manages server messaging. Not to be confused with chat messages: for functionality surrounding that, see
 ///     <see cref="ChatService" />.
@@ -42,7 +41,6 @@ public static class MessageService
     {
         Globals.NetworkManagerNuclearOptionInstance.Server.SendToMany(players, message, excludeLocalPlayer, channel);
     }
-
     /// <summary>
     ///     Sends a host ended message to all clients.
     /// </summary>
@@ -50,7 +48,7 @@ public static class MessageService
     {
         SendToAll(new HostEndedMessage
         {
-            HostName = Globals.HostName
+            HostName = Globals.NetworkManagerNuclearOptionInstance.name
         }, excludeLocalPlayer: true);
     }
 }

@@ -1,5 +1,7 @@
 using BepInEx.Configuration;
+using NuclearOption.Networking;
 using Nuclei.Enums;
+using Nuclei.Helpers;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Nuclei.Features.Commands.DefaultCommands;
@@ -21,7 +23,7 @@ public class StopCommand(ConfigFile config) : PermissionConfigurableCommand(conf
     public override bool Execute(Player player, string[] args)
     {
         ChatService.SendPrivateChatMessage("Stopping server...", player);
-        Server.StopServer();
+        Globals.NetworkManagerNuclearOptionInstance.Server.Stop();
         return true;
     }
     

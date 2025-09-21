@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using NuclearOption.Networking;
 using Nuclei.Enums;
 using Nuclei.Helpers;
 
@@ -28,12 +29,6 @@ public class BanCommand(ConfigFile config) : PermissionConfigurableCommand(confi
             if (targetPlayer == player)
             {
                 ChatService.SendPrivateChatMessage("You can't ban yourself.", player);
-                return false;
-            }
-
-            if (targetPlayer == Globals.LocalPlayer)
-            {
-                ChatService.SendPrivateChatMessage("You can't ban the host.", player);
                 return false;
             }
 

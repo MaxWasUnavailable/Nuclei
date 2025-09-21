@@ -1,5 +1,8 @@
-using System;
+using Mirage;
+using NuclearOption.Networking;
 using Nuclei.Helpers;
+using System;
+using static Rewired.Controller;
 
 namespace Nuclei.Features;
 
@@ -71,7 +74,26 @@ public static class ChatService
             return;
         }
         
-        Globals.ChatManagerInstance.CmdSendChatMessage(actualMessage, true);
+        /* This uses the recipient as the "sender". TargetReceiveMessage requires this.
+           No way around it, devs have said that this will be changed in upcoming patch.
+         */
+        int sent = 0;
+        foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
+        {
+            try
+            {
+                if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
+                    continue;
+                 
+                Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMessage, recipient, true);
+                sent++;
+            }
+            catch (Exception ex)
+            {
+                Nuclei.Logger.LogError($"[Admin] Broadcast to a connection failed: {ex}");
+            }
+        }
+
     }
 
     /// <summary>
@@ -106,6 +128,26 @@ public static class ChatService
             return;
         }
 
-        Globals.ChatManagerInstance.CmdSendChatMessage(actualMotD, true);
+        int sent = 0;
+        foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
+        {
+            try
+            {
+                // skip the dedicated server’s host connection if present
+                if (conn.IsHost) continue;
+
+                if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
+                    continue;
+
+                // Targeted ClientRpc: one message per client, no duplicates
+
+                Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMotD, recipient, true);
+                sent++;
+            }
+            catch (Exception ex)
+            {
+                Nuclei.Logger.LogError($"[Admin] Broadcast to a connection failed: {ex}");
+            }
+        }
     }
 }

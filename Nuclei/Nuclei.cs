@@ -59,7 +59,7 @@ public class Nuclei : BaseUnityPlugin
         PatchAll();
         
         CommandService.RegisterCommand(new SayCommand(Config));
-        CommandService.RegisterCommand(new NewMissionCommand(Config));
+        //CommandService.RegisterCommand(new NewMissionCommand(Config)); // Disabled until rework
         CommandService.RegisterCommand(new KickCommand(Config));
         CommandService.RegisterCommand(new BanCommand(Config));
         CommandService.RegisterCommand(new StopCommand(Config));
