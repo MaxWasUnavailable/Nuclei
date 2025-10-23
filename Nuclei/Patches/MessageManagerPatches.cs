@@ -2,7 +2,7 @@ using HarmonyLib;
 using NuclearOption.Networking;
 using Nuclei.Events;
 using Nuclei.Features;
-using Nuclei.Features.Commands.DefaultCommands;
+using Nuclei.Helpers;
 
 namespace Nuclei.Patches;
 
@@ -20,7 +20,7 @@ internal static class MessageManagerPatches
         if (NucleiConfig.IsBanned(steamId))
         {
             Nuclei.Logger?.LogInfo($"Player {joinedPlayer.PlayerName} is banned. Kicking...");
-            KickCommand.Kick(joinedPlayer);
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(joinedPlayer);
             return false;
         }
 
