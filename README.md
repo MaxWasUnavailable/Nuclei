@@ -86,3 +86,4 @@ username is `maxwasunavailable`.
 - [JetF0x](https://github.com/JetF0x), for creating
   the [first dedicated server solution for Nuclear Option](https://github.com/JetF0x/NO-ServerHost), and kindly
   licensing it under the MIT license so others can learn from it.
+- [bekkos](https://github.com/bekkos), for their work on porting Nuclei to the new official dedicated server.

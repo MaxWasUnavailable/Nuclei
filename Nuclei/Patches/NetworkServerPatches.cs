@@ -1,9 +1,6 @@
 using HarmonyLib;
 using Mirage;
-using Mirage.Authentication;
 using Nuclei.Events;
-using Nuclei.Features;
-using Nuclei.Helpers;
 
 namespace Nuclei.Patches;
 

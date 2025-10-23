@@ -1,4 +1,3 @@
-using BepInEx.Configuration;
 using NuclearOption.Networking;
 using Nuclei.Enums;
 

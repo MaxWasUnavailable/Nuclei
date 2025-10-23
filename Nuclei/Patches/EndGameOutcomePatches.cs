@@ -1,8 +1,7 @@
+using System.Reflection;
 using HarmonyLib;
-using NuclearOption.SavedMission.ObjectiveV2.Outcomes;
 using Nuclei.Events;
 using Nuclei.Features;
-using System.Reflection;
 
 namespace Nuclei.Patches;
 
@@ -11,8 +10,10 @@ namespace Nuclei.Patches;
 [HarmonyWrapSafe]
 internal static class EndGameOutcomePatches
 {
-    static MethodBase TargetMethod() =>
-    AccessTools.Method("NuclearOption.SavedMission.ObjectiveV2.Outcomes.EndGameOutcome:Complete");
+    private static MethodBase TargetMethod()
+    {
+        return AccessTools.Method("NuclearOption.SavedMission.ObjectiveV2.Outcomes.EndGameOutcome:Complete");
+    }
 
     [HarmonyPostfix]
     [HarmonyPatch]

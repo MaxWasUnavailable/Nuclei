@@ -3,15 +3,12 @@ using NuclearOption.Networking;
 
 namespace Nuclei.Helpers;
 
-
-
 /// <summary>
 ///     Helper class for INetworkPlayer-related operations.
 /// </summary>
 // ReSharper disable once InconsistentNaming
 public static class INetworkPlayerUtils
 {
-   
     /// <summary>
     ///     Get the Steam ID of an INetworkPlayer object as a ulong.
     /// </summary>

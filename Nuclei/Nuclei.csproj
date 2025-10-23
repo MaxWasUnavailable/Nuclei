@@ -34,381 +34,63 @@
 
         <!-- Prevent Publicizer Warnings from Showing -->
         <NoWarn>$(NoWarn);CS0436</NoWarn>
-        
+
         <!-- Mod Destination -->
         <ModDestination>$(NUCLEAR_OPTION_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
     </PropertyGroup>
 
     <!-- Include README and CHANGELOG in the package -->
     <ItemGroup>
-        <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/" />
-        <None Include="$(ProjectDir)../CHANGELOG.md" Pack="true" PackagePath="/" />
-        <None Include="$(ProjectDir)../run_server.bat" Pack="true" PackagePath="/" />
+        <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../CHANGELOG.md" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../run_server.bat" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
     <!-- BepInEx Package References -->
     <ItemGroup>
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime">
-          <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-        <PackageReference Include="BepInEx.Core" Version="5.*" />
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime"/>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
+        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
+    </ItemGroup>
 
     <!-- Extra Package References -->
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>
-    <ItemGroup>
-      <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Assembly-CSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="Assembly-CSharp-firstpass">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      </Reference>
-      <Reference Include="com.rlabrecque.steamworks.net">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
-      </Reference>
-      <Reference Include="JamesFrowen.Build.Runtime">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\JamesFrowen.Build.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="JamesFrowen.Graphy">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\JamesFrowen.Graphy.dll</HintPath>
-      </Reference>
-      <Reference Include="JamesFrowen.ScriptableVariables">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\JamesFrowen.ScriptableVariables.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage.Authenticators">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.Authenticators.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage.Components">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.Components.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage.SocketLayer">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.SocketLayer.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage.Sockets.Udp">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.Sockets.Udp.dll</HintPath>
-      </Reference>
-      <Reference Include="Mirage.SteamworksSocket">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mirage.SteamworksSocket.dll</HintPath>
-      </Reference>
-      <Reference Include="Mono.Security">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Mono.Security.dll</HintPath>
-      </Reference>
-      <Reference Include="netstandard">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\netstandard.dll</HintPath>
-      </Reference>
-      <Reference Include="ProfanityDetector">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\ProfanityDetector.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Core">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Rewired_Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Linux">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Rewired_Linux.dll</HintPath>
-      </Reference>
-      <Reference Include="RuntimeTransformHandle">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\RuntimeTransformHandle.dll</HintPath>
-      </Reference>
-      <Reference Include="StandaloneFileBrowser">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\StandaloneFileBrowser.dll</HintPath>
-      </Reference>
-      <Reference Include="UniTask">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UniTask.dll</HintPath>
-      </Reference>
-      <Reference Include="UniTask.Addressables">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UniTask.Addressables.dll</HintPath>
-      </Reference>
-      <Reference Include="UniTask.DOTween">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UniTask.DOTween.dll</HintPath>
-      </Reference>
-      <Reference Include="UniTask.Linq">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UniTask.Linq.dll</HintPath>
-      </Reference>
-      <Reference Include="UniTask.TextMeshPro">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UniTask.TextMeshPro.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Addressables">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Addressables.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.AI.Navigation">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.AI.Navigation.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Animation.Rigging">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Animation.Rigging.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Animation.Rigging.DocCodeExamples">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Animation.Rigging.DocCodeExamples.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Burst">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Burst.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Burst.Unsafe">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Burst.Unsafe.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.InputSystem">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.InputSystem.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.InputSystem.ForUI">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.InputSystem.ForUI.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.InputSystem.RebindingUI">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.InputSystem.RebindingUI.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Mathematics">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.Mathematics.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipelines.Core.Runtime">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ResourceManager">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.ResourceManager.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ScriptableBuildPipeline">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.ScriptableBuildPipeline.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.TextMeshPro">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\Unity.TextMeshPro.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AccessibilityModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AIModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AndroidJNIModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AnimationModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AnimationModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AssetBundleModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AudioModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.AudioModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClothModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ClothModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClusterInputModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClusterRendererModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ContentLoadModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ContentLoadModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.CoreModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.CoreModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.CrashReportingModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.DirectorModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.DirectorModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.DSPGraphModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.DSPGraphModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GameCenterModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.GameCenterModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GIModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.GIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GridModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.GridModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.HotReloadModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.HotReloadModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ImageConversionModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.IMGUIModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.InputLegacyModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.InputModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.InputModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.JSONSerializeModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.LocalizationModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.LocalizationModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ParticleSystemModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.PerformanceReportingModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.Physics2DModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.Physics2DModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.PhysicsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ProfilerModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ProfilerModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.PropertiesModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.PropertiesModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ScreenCaptureModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SharedInternalsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SpriteMaskModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SpriteShapeModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.StreamingModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.StreamingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SubstanceModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.SubstanceModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SubsystemsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.SubsystemsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TerrainModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TerrainModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TerrainPhysicsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TextCoreFontEngineModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TextCoreTextEngineModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TextRenderingModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TilemapModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TilemapModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TLSModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.TLSModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UI">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UI.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UIElementsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UIElementsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UIModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UmbraModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UmbraModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityAnalyticsModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityConnectModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityCurlModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityCurlModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityTestProtocolModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityTestProtocolModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VehiclesModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.VehiclesModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VFXModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.VFXModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VideoModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.VideoModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VirtualTexturingModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.VirtualTexturingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VRModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.VRModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.WindModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.WindModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.XRModule">
-        <HintPath>..\..\..\..\Desktop\managed\Managed\UnityEngine.XRModule.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-    
+
     <Target Name="PostBuild" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' AND '$(ModDestination)' != ''">
         <!-- Create an item for all .dll files in the output directory -->
         <CreateItem Include="$(OutDir)*.dll">
-            <Output TaskParameter="Include" ItemName="DllFiles" />
+            <Output TaskParameter="Include" ItemName="DllFiles"/>
         </CreateItem>
 
         <!-- Copy the build output -->
-        <Message Text="Copying build output assemblies from $(OutDir)*.dll to $(ModDestination)\$(AssemblyName)" Importance="high" />
-        <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(ModDestination)\$(AssemblyName)" />
+        <Message Text="Copying build output assemblies from $(OutDir)*.dll to $(ModDestination)\$(AssemblyName)" Importance="high"/>
+        <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
 
         <!-- Copy README & CHANGELOG -->
-        <Message Text="Copying README from $(ProjectDir)..\README.md to $(ModDestination)\$(AssemblyName)" Importance="high" />
-        <Copy SourceFiles="$(ProjectDir)..\README.md" DestinationFolder="$(ModDestination)\$(AssemblyName)" />
-        <Message Text="Copying CHANGELOG from $(ProjectDir)..\CHANGELOG.md to $(ModDestination)" Importance="high" />
-        <Copy SourceFiles="$(ProjectDir)..\CHANGELOG.md" DestinationFolder="$(ModDestination)\$(AssemblyName)" />
+        <Message Text="Copying README from $(ProjectDir)..\README.md to $(ModDestination)\$(AssemblyName)" Importance="high"/>
+        <Copy SourceFiles="$(ProjectDir)..\README.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
+        <Message Text="Copying CHANGELOG from $(ProjectDir)..\CHANGELOG.md to $(ModDestination)" Importance="high"/>
+        <Copy SourceFiles="$(ProjectDir)..\CHANGELOG.md" DestinationFolder="$(ModDestination)\$(AssemblyName)"/>
     </Target>
 </Project>

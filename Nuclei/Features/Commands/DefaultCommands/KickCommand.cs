@@ -1,9 +1,9 @@
+using System;
 using BepInEx.Configuration;
 using Cysharp.Threading.Tasks;
 using NuclearOption.Networking;
 using Nuclei.Enums;
 using Nuclei.Helpers;
-using System;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Nuclei.Features.Commands.DefaultCommands;
@@ -54,9 +54,9 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
                 Nuclei.Logger.LogError("Kick failed: player is null.");
                 return;
             }
-            Nuclei.Logger.LogInfo($"Kicking...");
+            Nuclei.Logger.LogInfo("Kicking...");
         
-            // Use the game’s provided API (does authenticator.OnKick, shows reason, then Disconnects)
+            // Use the gameï¿½s provided API (does authenticator.OnKick, shows reason, then Disconnects)
             Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(player);
         }
         catch (Exception ex)

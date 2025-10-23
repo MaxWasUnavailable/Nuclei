@@ -2,7 +2,6 @@ using HarmonyLib;
 using NuclearOption.Networking;
 using Nuclei.Events;
 using Nuclei.Features;
-using Nuclei.Features.Commands.DefaultCommands;
 
 namespace Nuclei.Patches;
 

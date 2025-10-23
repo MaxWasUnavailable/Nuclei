@@ -321,7 +321,7 @@ public static class NucleiConfig
         bannedPlayersList.Add(steamId);
         BannedPlayers!.Value = string.Join(";", bannedPlayersList);
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is a moderator.
     /// </summary>
@@ -331,7 +331,7 @@ public static class NucleiConfig
     {
         return ModeratorsList.Contains(steamId.ToString());
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is an admin.
     /// </summary>
@@ -341,7 +341,7 @@ public static class NucleiConfig
     {
         return AdminsList.Contains(steamId.ToString());
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is the owner.
     /// </summary>
@@ -351,7 +351,7 @@ public static class NucleiConfig
     {
         return Owner!.Value == steamId.ToString();
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is banned.
     /// </summary>

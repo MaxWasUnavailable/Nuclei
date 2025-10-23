@@ -8,7 +8,6 @@ namespace Nuclei.Features.Commands.DefaultCommands;
 
 // This needs to be reworked so that it uses the NetworkManagerInstance.Server()?
 
-
 /// <summary>
 ///     Command to end the current mission and start a new one.
 /// </summary>

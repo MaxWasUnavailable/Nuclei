@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Mirage;
 using NuclearOption.Networking;
-using Steamworks;
 
 namespace Nuclei.Helpers;
 
@@ -26,12 +25,12 @@ public static class Globals
     /// </summary>
     public static ChatManager ChatManagerInstance => ChatManager.i ?? throw new NullReferenceException("ChatManager instance is null.");
 
-      /// <summary>
+    /// <summary>
     ///     Gets the instance of the <see cref="AudioMixerVolume" /> class.
     /// </summary>
     public static AudioMixerVolume AudioMixerVolumeInstance => SoundManager.i.Volumes ?? throw new NullReferenceException("SoundManager AudioMixerVolume instance is null.");
 
-   
+
     /// <summary>
     ///     Get a read-only list of all authenticated players.
     /// </summary>

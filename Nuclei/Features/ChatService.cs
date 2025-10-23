@@ -1,8 +1,6 @@
-using Mirage;
+using System;
 using NuclearOption.Networking;
 using Nuclei.Helpers;
-using System;
-using static Rewired.Controller;
 
 namespace Nuclei.Features;
 
@@ -47,7 +45,7 @@ public static class ChatService
     {
         return message.TrimStart(NucleiConfig.CommandPrefixChar);
     }
-    
+
     /// <summary>
     ///     Pre-processes a chat message by replacing dynamic placeholders &amp; sanitizing it.
     /// </summary>
@@ -77,23 +75,18 @@ public static class ChatService
         /* This uses the recipient as the "sender". TargetReceiveMessage requires this.
            No way around it, devs have said that this will be changed in upcoming patch.
          */
-        int sent = 0;
         foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
-        {
             try
             {
                 if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
                     continue;
                  
                 Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMessage, recipient, true);
-                sent++;
             }
             catch (Exception ex)
             {
-                Nuclei.Logger.LogError($"Broadcast to a connection failed: {ex}");
+                Nuclei.Logger?.LogError($"Broadcast to a connection failed: {ex}");
             }
-        }
-
     }
 
     /// <summary>
@@ -128,26 +121,21 @@ public static class ChatService
             return;
         }
 
-        int sent = 0;
         foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
-        {
             try
             {
-                // skip the dedicated server’s host connection if present
+                // skip the dedicated serverï¿½s host connection if present
                 if (conn.IsHost) continue;
 
                 if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
                     continue;
 
                 // Targeted ClientRpc: one message per client, no duplicates
-
                 Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMotD, recipient, true);
-                sent++;
             }
             catch (Exception ex)
             {
-                Nuclei.Logger.LogError($"Broadcast to a connection failed: {ex}");
+                Nuclei.Logger?.LogError($"Broadcast to a connection failed: {ex}");
             }
-        }
     }
 }

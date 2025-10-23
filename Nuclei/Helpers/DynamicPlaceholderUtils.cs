@@ -1,7 +1,4 @@
-using System.Linq;
 using NuclearOption.Networking;
-using Nuclei.Features;
-using UnityEngine;
 
 namespace Nuclei.Helpers;
 
@@ -39,12 +36,12 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for the second faction's name.
     /// </summary>
     public const string Faction2Name = "{faction2_name}";
-    
+
     /// <summary>
     ///     Placeholder for the first faction's tag.
     /// </summary>
     public const string Faction1Tag = "{faction1_tag}";
-    
+
     /// <summary>
     ///     Placeholder for the second faction's tag.
     /// </summary>
@@ -69,7 +66,7 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for showing up to 3 random missions, and (...) if there are more.
     /// </summary>
     public const string Random3MissionsEtc = "{random_3_missions_etc}";
-    
+
     /// <summary>
     ///     Placeholder for the server name.
     /// </summary>
