@@ -1,6 +1,8 @@
 using HarmonyLib;
+using NuclearOption.Networking;
 using Nuclei.Events;
 using Nuclei.Features;
+using Nuclei.Helpers;
 
 namespace Nuclei.Patches;
 
@@ -13,6 +15,15 @@ internal static class MessageManagerPatches
     [HarmonyPatch(nameof(MessageManager.JoinMessage))]
     private static void JoinMessagePostfix(Player joinedPlayer)
     {
+        // TODO: move ban check to a dedicated service, hook into OnPlayerJoined event (or earlier?)
+        var steamId = joinedPlayer.SteamID;
+        if (NucleiConfig.IsBanned(steamId))
+        {
+            Nuclei.Logger?.LogInfo($"Player {joinedPlayer.PlayerName} is banned. Kicking...");
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(joinedPlayer);
+            return;
+        }
+
         Nuclei.Logger?.LogInfo($"{joinedPlayer.PlayerName} joined the game");
         ChatService.SendChatMessage(NucleiConfig.WelcomeMessage!.Value, joinedPlayer);
         

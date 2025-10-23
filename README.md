@@ -1,31 +1,22 @@
 # Nuclei
 
-Nuclei is a dedicated server solution for Nuclear Option. It is designed to offer a flexible, easy-to-use, and
+Nuclei is a dedicated server plugin for Nuclear Option. It is designed to offer a flexible, easy-to-use, and
 easy-to-modify server solution. It is built on top of the [BepInEx](https://docs.bepinex.dev/index.html) modding
 framework, and hence requires a BepInEx installation to run.
 
 ## Features
 
 - Native support for chat commands with permission levels, with a number of default commands such as `ban`, `kick`,
-  `say`, `stop`, `newmission`, and `setpermissionlevel`. Modders can easily add their own commands, and server owners
+  `say`, `stop`, and `setpermissionlevel`. Modders can easily add their own commands, and server owners
   can configure which roles can access what commands, and assign moderator and admin roles to specific users.
 - Extensive configurability
     - Message of the day
     - Welcome message
-    - Maximum mission duration
-    - Mission rotation
-    - Mission selection mode (Ranom, Random with no direct repeats, and sequential)
     - Moderator, admin, & owner
-    - Steam vs UDP
     - Command permission levels
-    - Max player count
-    - Steam lobby type (public, friends-only, etc...)
-    - And *much* more
 - Modular and robust design, allowing for easy extension, modification, and maintenance
 - A variety of dynamic placeholders that can be used in the server name, message of the day, and welcome message. See
   [Dynamic Placeholders](#dynamic-placeholders) for more information.
-- Allows you to disable the server game audio on server start, to make it less annoying to run a server in the
-  background
 
 ## Installation
 
@@ -95,3 +86,4 @@ username is `maxwasunavailable`.
 - [JetF0x](https://github.com/JetF0x), for creating
   the [first dedicated server solution for Nuclear Option](https://github.com/JetF0x/NO-ServerHost), and kindly
   licensing it under the MIT license so others can learn from it.
+- [bekkos](https://github.com/bekkos), for their work on porting Nuclei to the new official dedicated server.

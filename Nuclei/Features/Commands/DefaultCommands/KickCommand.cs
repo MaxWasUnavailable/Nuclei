@@ -1,4 +1,7 @@
+using System;
 using BepInEx.Configuration;
+using Cysharp.Threading.Tasks;
+using NuclearOption.Networking;
 using Nuclei.Enums;
 using Nuclei.Helpers;
 
@@ -31,12 +34,6 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
                 return false;
             }
 
-            if (targetPlayer == Globals.LocalPlayer)
-            {
-                ChatService.SendPrivateChatMessage("You can't kick the host.", player);
-                return false;
-            }
-            
             _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
             return true;
@@ -46,6 +43,6 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         Nuclei.Logger?.LogWarning($"Player {target} not found.");
         return false;
     }
-    
+
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }

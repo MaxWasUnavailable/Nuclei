@@ -1,4 +1,5 @@
 using System;
+using NuclearOption.Networking;
 
 namespace Nuclei.Events;
 
@@ -16,7 +17,7 @@ public static class PlayerEvents
     {
         PlayerJoined?.Invoke(e);
     }
-    
+
     /// <summary>
     ///     Event handler for when a player leaves the game.
     /// </summary>

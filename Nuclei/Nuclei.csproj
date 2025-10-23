@@ -7,7 +7,7 @@
         <PackageId>MaxWasUnavailable.Nuclei</PackageId>
         <Title>Nuclei</Title>
         <Description>A flexible and powerful dedicated server solution for Nuclear Option.</Description>
-        <Version>1.3.3</Version>
+        <Version>1.4.0</Version>
         <Authors>MaxWasUnavailable</Authors>
         <PackageTags>nuclear;option;bepinex</PackageTags>
 
@@ -34,9 +34,9 @@
 
         <!-- Prevent Publicizer Warnings from Showing -->
         <NoWarn>$(NoWarn);CS0436</NoWarn>
-        
+
         <!-- Mod Destination -->
-        <ModDestination>$(NUCLEAR_OPTION_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
+        <ModDestination>$(NUCLEAR_OPTION_SERVER_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
     </PropertyGroup>
 
     <!-- Include README and CHANGELOG in the package -->
@@ -48,7 +48,7 @@
 
     <!-- BepInEx Package References -->
     <ItemGroup>
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" ExcludeAssets="runtime"/>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime"/>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.Core" Version="5.*"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
@@ -56,27 +56,27 @@
 
     <!-- Nuclear Option-specific Assembly References -->
     <ItemGroup>
-        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
-        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
-        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
+        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
+        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
     </ItemGroup>
 
     <!-- Extra Package References -->
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>
-    
+
     <Target Name="PostBuild" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' AND '$(ModDestination)' != ''">
         <!-- Create an item for all .dll files in the output directory -->
         <CreateItem Include="$(OutDir)*.dll">

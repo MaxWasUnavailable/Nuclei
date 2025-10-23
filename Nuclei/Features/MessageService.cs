@@ -50,7 +50,7 @@ public static class MessageService
     {
         SendToAll(new HostEndedMessage
         {
-            HostName = Globals.HostName
+            HostName = Globals.NetworkManagerNuclearOptionInstance.name
         }, excludeLocalPlayer: true);
     }
 }

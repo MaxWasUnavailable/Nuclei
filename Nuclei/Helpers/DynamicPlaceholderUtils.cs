@@ -1,6 +1,4 @@
-using System.Linq;
-using Nuclei.Features;
-using UnityEngine;
+using NuclearOption.Networking;
 
 namespace Nuclei.Helpers;
 
@@ -38,12 +36,12 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for the second faction's name.
     /// </summary>
     public const string Faction2Name = "{faction2_name}";
-    
+
     /// <summary>
     ///     Placeholder for the first faction's tag.
     /// </summary>
     public const string Faction1Tag = "{faction1_tag}";
-    
+
     /// <summary>
     ///     Placeholder for the second faction's tag.
     /// </summary>
@@ -68,7 +66,7 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for showing up to 3 random missions, and (...) if there are more.
     /// </summary>
     public const string Random3MissionsEtc = "{random_3_missions_etc}";
-    
+
     /// <summary>
     ///     Placeholder for the server name.
     /// </summary>
@@ -80,6 +78,7 @@ public static class DynamicPlaceholderUtils
     /// <param name="original"> The original string. </param>
     /// <param name="player"> The player to get the values from. Ignored if null. </param>
     /// <returns> The string with the placeholders replaced. </returns>
+    // TODO: review
     public static string ReplaceDynamicPlaceholders(string original, Player? player = null)
     {
         if (player)
@@ -88,7 +87,7 @@ public static class DynamicPlaceholderUtils
             original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
             original = original.Replace(SteamID, player.SteamID.ToString());
         }
-        
+        /*
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
         if (MissionService.CurrentMission!.factions.Count > 0)
         {
@@ -113,7 +112,7 @@ public static class DynamicPlaceholderUtils
         original = original.Replace(Random3MissionsEtc, randomMissionsString);
         
         original = original.Replace(ServerName, NucleiConfig.ServerName!.Value);
-        
+        */
         return original;
     }
 }

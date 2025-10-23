@@ -14,7 +14,7 @@ public enum MissionSelectMode
     ///     Select a mission at random, but do not repeat the same mission twice in a row.
     /// </summary>
     RandomNoRepeat = 1,
-    
+
     /// <summary>
     ///     Select the next mission in the list and loop back to the start if the end is reached.
     /// </summary>

@@ -1,5 +1,6 @@
 using System.Linq;
 using BepInEx.Configuration;
+using NuclearOption.Networking;
 using Nuclei.Enums;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

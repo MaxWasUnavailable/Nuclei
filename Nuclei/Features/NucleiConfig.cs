@@ -7,6 +7,8 @@ using Steamworks;
 
 namespace Nuclei.Features;
 
+// TODO: cleanup & review whether we can hook into the base game's config?
+
 /// <summary>
 ///     Configuration class for Nuclei.
 /// </summary>
@@ -87,8 +89,9 @@ public static class NucleiConfig
     internal static List<string> AdminsList => Admins!.Value.Split(';').Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
     
     internal static List<string> BannedPlayersList => BannedPlayers!.Value.Split(';').Where(b => !string.IsNullOrWhiteSpace(b)).ToList();
-    
-    internal static List<string> MissionsList => Missions!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
+
+    //internal static List<string> MissionsList => Missions!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
+    internal static List<string> MissionsList => [];
 
     internal static char CommandPrefixChar => CommandPrefix!.Value[0];
     
@@ -96,11 +99,11 @@ public static class NucleiConfig
     {
         Nuclei.Logger?.LogDebug("Loading settings...");
         
-        MaxPlayers = config.Bind(GeneralSection, "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
-        Nuclei.Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");
+        //MaxPlayers = config.Bind(GeneralSection, "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
+        //Nuclei.Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");
         
-        ServerName = config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
-        Nuclei.Logger?.LogDebug($"ServerName: {ServerName.Value}");
+        //ServerName = config.Bind(GeneralSection, "ServerName", DefaultServerName, "The name of the server.");
+        //Nuclei.Logger?.LogDebug($"ServerName: {ServerName.Value}");
         
         MessageOfTheDay = config.Bind(GeneralSection, "MessageOfTheDay", DefaultMessageOfTheDay, "The message of the day for the server. This message is displayed periodically to all players.");
         Nuclei.Logger?.LogDebug($"MessageOfTheDay: {MessageOfTheDay.Value}");
@@ -111,20 +114,20 @@ public static class NucleiConfig
         WelcomeMessage = config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. See the readme for placeholders.");
         Nuclei.Logger?.LogDebug($"WelcomeMessage: {WelcomeMessage.Value}");
         
-        Missions = config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
-        Nuclei.Logger?.LogDebug($"Missions: {Missions.Value}");
+        //Missions = config.Bind(GeneralSection, "Missions", DefaultMissions, "The list of missions the server will cycle through. Separate missions with a semicolon.");
+        //Nuclei.Logger?.LogDebug($"Missions: {Missions.Value}");
         
-        MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching. Checks are done every minute.");
-        Nuclei.Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
+        //MissionDuration = config.Bind(GeneralSection, "MissionDuration", DefaultMissionDuration, "The duration of each mission in seconds. The server will automatically switch to the next mission after this duration. Set to 0 to disable automatic mission switching. Checks are done every minute.");
+        //Nuclei.Logger?.LogDebug($"MissionDuration: {MissionDuration.Value}");
         
-        UdpPort = config.Bind(TechnicalSection, "UdpPort", DefaultUdpPort, "The UDP port the server will listen on. Only change this if you know what you're doing.");
-        Nuclei.Logger?.LogDebug($"UdpPort: {UdpPort.Value}");
+        //UdpPort = config.Bind(TechnicalSection, "UdpPort", DefaultUdpPort, "The UDP port the server will listen on. Only change this if you know what you're doing.");
+        //Nuclei.Logger?.LogDebug($"UdpPort: {UdpPort.Value}");
         
-        UseSteamSocket = config.Bind(TechnicalSection, "UseSteamSocket", DefaultUseSteamSocket, "Whether to use the Steam socket type. Only change this if you know what you're doing.");
-        Nuclei.Logger?.LogDebug($"UseSteamSocket: {UseSteamSocket.Value}");
+        //UseSteamSocket = config.Bind(TechnicalSection, "UseSteamSocket", DefaultUseSteamSocket, "Whether to use the Steam socket type. Only change this if you know what you're doing.");
+        //Nuclei.Logger?.LogDebug($"UseSteamSocket: {UseSteamSocket.Value}");
         
-        LobbyType = config.Bind(TechnicalSection, "LobbyType", DefaultLobbyType, "The type of lobby to create when starting a Steam lobby.");
-        Nuclei.Logger?.LogDebug($"LobbyType: {LobbyType.Value}");
+        //LobbyType = config.Bind(TechnicalSection, "LobbyType", DefaultLobbyType, "The type of lobby to create when starting a Steam lobby.");
+        //Nuclei.Logger?.LogDebug($"LobbyType: {LobbyType.Value}");
         
         Moderators = config.Bind(GeneralSection, "Moderators", DefaultModerators, "A list of moderators who have access to moderator commands. Separate steam IDs with a semicolon.");
         Nuclei.Logger?.LogDebug($"Moderators: {Moderators.Value}");
@@ -138,26 +141,26 @@ public static class NucleiConfig
         BannedPlayers = config.Bind(GeneralSection, "BannedPlayers", DefaultBannedPlayers, "A list of banned players. Separate steam IDs with a semicolon.");
         Nuclei.Logger?.LogDebug($"BannedPlayers: {BannedPlayers.Value}");
         
-        RefreshServerNamePeriodically = config.Bind(GeneralSection, "RefreshServerNamePeriodically", DefaultRefreshServerNamePeriodically, "Whether to refresh the server name every 10 minutes. This is useful for servers that use dynamic placeholders in the server name.");
-        Nuclei.Logger?.LogDebug($"RefreshServerNamePeriodically: {RefreshServerNamePeriodically.Value}");
+        //RefreshServerNamePeriodically = config.Bind(GeneralSection, "RefreshServerNamePeriodically", DefaultRefreshServerNamePeriodically, "Whether to refresh the server name every 10 minutes. This is useful for servers that use dynamic placeholders in the server name.");
+        //Nuclei.Logger?.LogDebug($"RefreshServerNamePeriodically: {RefreshServerNamePeriodically.Value}");
         
-        TargetFrameRate = config.Bind(TechnicalSection, "TargetFrameRate", DefaultTargetFrameRate, "The target frame rate of the server. Only change this if you know what you're doing. -1 for unlimited.");
-        Nuclei.Logger?.LogDebug($"TargetFrameRate: {TargetFrameRate.Value}");
+        //TargetFrameRate = config.Bind(TechnicalSection, "TargetFrameRate", DefaultTargetFrameRate, "The target frame rate of the server. Only change this if you know what you're doing. -1 for unlimited.");
+        //Nuclei.Logger?.LogDebug($"TargetFrameRate: {TargetFrameRate.Value}");
         
-        MuteAfterStart = config.Bind(TechnicalSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
-        Nuclei.Logger?.LogDebug($"MuteAfterStart: {MuteAfterStart.Value}");
+        //MuteAfterStart = config.Bind(TechnicalSection, "MuteAfterStart", DefaultMuteAfterStart, "Whether to mute the server process after starting.");
+        //Nuclei.Logger?.LogDebug($"MuteAfterStart: {MuteAfterStart.Value}");
         
-        PhysicsUpdatesPerSecond = config.Bind(ExperimentalSection, "PhysicsUpdatesPerSecond", DefaultPhysicsUpdatesPerSecond, "The number of physics updates per second. Only change this if you know what you're doing - this can break the game.");
-        Nuclei.Logger?.LogDebug($"PhysicsUpdatesPerSecond: {PhysicsUpdatesPerSecond.Value}");
+        //PhysicsUpdatesPerSecond = config.Bind(ExperimentalSection, "PhysicsUpdatesPerSecond", DefaultPhysicsUpdatesPerSecond, "The number of physics updates per second. Only change this if you know what you're doing - this can break the game.");
+        //Nuclei.Logger?.LogDebug($"PhysicsUpdatesPerSecond: {PhysicsUpdatesPerSecond.Value}");
         
-        UseUpdateForPhysicsUpdate = config.Bind(ExperimentalSection, "UseUpdateForPhysicsUpdate", DefaultUseUpdateForPhysicsUpdate, "Whether to use the Update method for physics updates. Only change this if you know what you're doing - this can negatively impact performance.");
-        Nuclei.Logger?.LogDebug($"UseUpdateForPhysicsUpdate: {UseUpdateForPhysicsUpdate.Value}");
+        //UseUpdateForPhysicsUpdate = config.Bind(ExperimentalSection, "UseUpdateForPhysicsUpdate", DefaultUseUpdateForPhysicsUpdate, "Whether to use the Update method for physics updates. Only change this if you know what you're doing - this can negatively impact performance.");
+        //Nuclei.Logger?.LogDebug($"UseUpdateForPhysicsUpdate: {UseUpdateForPhysicsUpdate.Value}");
         
-        MissionSelectMode = config.Bind(GeneralSection, "MissionSelectMode", DefaultMissionSelectMode, "The mode used to select the next mission. Random will select a random mission from the list, RandomNoRepeat will select a random mission without repeating the last one (if possible), and Sequential will select the next mission in the list.");
-        Nuclei.Logger?.LogDebug($"MissionSelectMode: {MissionSelectMode.Value}");
+        //MissionSelectMode = config.Bind(GeneralSection, "MissionSelectMode", DefaultMissionSelectMode, "The mode used to select the next mission. Random will select a random mission from the list, RandomNoRepeat will select a random mission without repeating the last one (if possible), and Sequential will select the next mission in the list.");
+        //Nuclei.Logger?.LogDebug($"MissionSelectMode: {MissionSelectMode.Value}");
         
-        UseAllMissions = config.Bind(GeneralSection, "UseAllMissions", DefaultUseAllMissions, "Whether to use all missions available to the client (including tutorials, workshop items, custom missions, etc...) for mission selection. If false, only the missions in the config will be used.");
-        Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
+        //UseAllMissions = config.Bind(GeneralSection, "UseAllMissions", DefaultUseAllMissions, "Whether to use all missions available to the client (including tutorials, workshop items, custom missions, etc...) for mission selection. If false, only the missions in the config will be used.");
+        //Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
 
         CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the character at the start of a command).");
         Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
@@ -169,7 +172,7 @@ public static class NucleiConfig
     {
         Nuclei.Logger?.LogDebug("Validating settings...");
         
-        if (MaxPlayers!.Value < 1)
+        /*if (MaxPlayers!.Value < 1)
         {
             Nuclei.Logger?.LogWarning("MaxPlayers must be at least 1! Resetting to default value.");
             MaxPlayers.Value = DefaultMaxPlayers;
@@ -203,7 +206,7 @@ public static class NucleiConfig
         {
             Nuclei.Logger?.LogWarning("TargetFrameRate cannot be less than -1! Setting to -1 (unlimited).");
             TargetFrameRate.Value = -1;
-        }
+        }*/
 
         if (CommandPrefix!.Value.Length != 1)
         {
@@ -320,7 +323,7 @@ public static class NucleiConfig
         bannedPlayersList.Add(steamId);
         BannedPlayers!.Value = string.Join(";", bannedPlayersList);
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is a moderator.
     /// </summary>
@@ -330,7 +333,7 @@ public static class NucleiConfig
     {
         return ModeratorsList.Contains(steamId.ToString());
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is an admin.
     /// </summary>
@@ -340,7 +343,7 @@ public static class NucleiConfig
     {
         return AdminsList.Contains(steamId.ToString());
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is the owner.
     /// </summary>
@@ -350,7 +353,7 @@ public static class NucleiConfig
     {
         return Owner!.Value == steamId.ToString();
     }
-    
+
     /// <summary>
     ///     Check if the given Steam ID is banned.
     /// </summary>

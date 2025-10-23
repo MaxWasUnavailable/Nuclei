@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Ported to new official dedicated server (credits go to bekkos)
+
 ## 1.3.3 - 2025-05-18
 
 ### Changed
