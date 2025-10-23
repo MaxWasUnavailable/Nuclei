@@ -16,6 +16,7 @@ public static class INetworkPlayerUtils
     /// <returns> The Steam ID of the player as a ulong. </returns>
     public static ulong GetSteamIDUlong(this INetworkPlayer networkPlayer)
     {
+        // TODO: review suspicious cast
         return (networkPlayer as Player)!.SteamID;
     }
 }

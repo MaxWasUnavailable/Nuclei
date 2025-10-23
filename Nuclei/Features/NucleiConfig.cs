@@ -7,6 +7,8 @@ using Steamworks;
 
 namespace Nuclei.Features;
 
+// TODO: cleanup & review whether we can hook into the base game's config?
+
 /// <summary>
 ///     Configuration class for Nuclei.
 /// </summary>

@@ -34,8 +34,7 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
                 return false;
             }
 
-            Kick(targetPlayer);
-
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
             return true;
         }
@@ -43,26 +42,6 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         ChatService.SendPrivateChatMessage($"Player {target} not found.", player);
         Nuclei.Logger?.LogWarning($"Player {target} not found.");
         return false;
-    }
-
-    public static async UniTaskVoid Kick(Player player)
-    {
-        try
-        {
-            if (player == null)
-            {
-                Nuclei.Logger.LogError("Kick failed: player is null.");
-                return;
-            }
-            Nuclei.Logger.LogInfo("Kicking...");
-        
-            // Use the game�s provided API (does authenticator.OnKick, shows reason, then Disconnects)
-            Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(player);
-        }
-        catch (Exception ex)
-        {
-            Nuclei.Logger.LogError($"Kick error: {ex}");
-        }
     }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;

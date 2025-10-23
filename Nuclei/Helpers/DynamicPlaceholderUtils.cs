@@ -78,6 +78,7 @@ public static class DynamicPlaceholderUtils
     /// <param name="original"> The original string. </param>
     /// <param name="player"> The player to get the values from. Ignored if null. </param>
     /// <returns> The string with the placeholders replaced. </returns>
+    // TODO: review
     public static string ReplaceDynamicPlaceholders(string original, Player? player = null)
     {
         if (player)

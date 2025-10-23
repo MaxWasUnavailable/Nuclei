@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
-using System.Reflection;
 using HarmonyLib;
 using Mirage;
+using NuclearOption.Chat;
 using Nuclei.Features;
 using Nuclei.Features.Commands;
 using Nuclei.Helpers;
@@ -14,17 +12,9 @@ namespace Nuclei.Patches;
 [HarmonyWrapSafe]
 internal static class ChatManagerPatches
 {
-    private static MethodBase TargetMethod()
-    {
-        var t = typeof(ChatManager);
-        var mi = AccessTools.GetDeclaredMethods(t)
-            .FirstOrDefault(m => m.Name.StartsWith("UserCode_CmdSendChatMessage_", StringComparison.Ordinal));
-        if (mi == null)
-            throw new Exception("Could not find ChatManager.UserCode_CmdSendChatMessage_*");
-        return mi;
-    }
-
-    private static bool Prefix(ChatManager __instance, string message, bool allChat, INetworkPlayer sender)
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(ChatManager.UserCode_CmdSendChatMessage_\u002D456754112))]
+    private static bool UserCode_CmdSendChatMessage_\u002D456754112Prefix(string message, bool allChat, INetworkPlayer sender)
     {
         if (!sender.TryGetPlayer(out var player)) 
             Nuclei.Logger?.LogWarning("Player component is null");

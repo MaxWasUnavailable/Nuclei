@@ -36,7 +36,7 @@
         <NoWarn>$(NoWarn);CS0436</NoWarn>
 
         <!-- Mod Destination -->
-        <ModDestination>$(NUCLEAR_OPTION_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
+        <ModDestination>$(NUCLEAR_OPTION_SERVER_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
     </PropertyGroup>
 
     <!-- Include README and CHANGELOG in the package -->
@@ -56,20 +56,20 @@
 
     <!-- Nuclear Option-specific Assembly References -->
     <ItemGroup>
-        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
-        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" Publicize="True"/>
-        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
-        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
-        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
+        <Reference Include="Assembly-CSharp" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.AudioModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.AudioModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" Publicize="True"/>
+        <Reference Include="UniTask" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\UniTask.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SocketLayer" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.SocketLayer.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Sockets.Udp" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Sockets.Udp.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.SteamworksSocket" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.SteamworksSocket.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Authenticators" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Authenticators.dll" Private="False" Publicize="True"/>
+        <Reference Include="Mirage.Components" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\Mirage.Components.dll" Private="False" Publicize="True"/>
+        <Reference Include="com.rlabrecque.steamworks.net" HintPath="$(NUCLEAR_OPTION_SERVER_REFERENCES)\com.rlabrecque.steamworks.net.dll" Private="False" Publicize="True"/>
     </ItemGroup>
 
     <!-- Extra Package References -->

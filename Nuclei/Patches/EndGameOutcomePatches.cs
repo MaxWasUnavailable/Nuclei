@@ -1,23 +1,18 @@
-using System.Reflection;
 using HarmonyLib;
+using NuclearOption.SavedMission.ObjectiveV2.Outcomes;
 using Nuclei.Events;
 using Nuclei.Features;
 
 namespace Nuclei.Patches;
 
-[HarmonyPatch]
+[HarmonyPatch(typeof(EndGameOutcome))]
 [HarmonyPriority(Priority.First)]
 [HarmonyWrapSafe]
 internal static class EndGameOutcomePatches
 {
-    private static MethodBase TargetMethod()
-    {
-        return AccessTools.Method("NuclearOption.SavedMission.ObjectiveV2.Outcomes.EndGameOutcome:Complete");
-    }
-
     [HarmonyPostfix]
-    [HarmonyPatch]
-    private static void Postfix()
+    [HarmonyPatch(nameof(EndGameOutcome.Complete))]
+    private static void CompletePostfix()
     {
         MissionEvents.OnMissionEnded(MissionService.CurrentMission!);
     }

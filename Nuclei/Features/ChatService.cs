@@ -1,4 +1,5 @@
 using System;
+using NuclearOption.Chat;
 using NuclearOption.Networking;
 using Nuclei.Helpers;
 
@@ -75,6 +76,7 @@ public static class ChatService
         /* This uses the recipient as the "sender". TargetReceiveMessage requires this.
            No way around it, devs have said that this will be changed in upcoming patch.
          */
+        // TODO: review
         foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
             try
             {
@@ -121,21 +123,6 @@ public static class ChatService
             return;
         }
 
-        foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
-            try
-            {
-                // skip the dedicated server�s host connection if present
-                if (conn.IsHost) continue;
-
-                if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
-                    continue;
-
-                // Targeted ClientRpc: one message per client, no duplicates
-                Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMotD, recipient, true);
-            }
-            catch (Exception ex)
-            {
-                Nuclei.Logger?.LogError($"Broadcast to a connection failed: {ex}");
-            }
+        SendChatMessage(actualMotD);
     }
 }
