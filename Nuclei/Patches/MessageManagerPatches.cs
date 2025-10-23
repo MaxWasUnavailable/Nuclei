@@ -13,22 +13,21 @@ internal static class MessageManagerPatches
 {
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.JoinMessage))]
-    private static bool JoinMessagePostfix(Player joinedPlayer)
+    private static void JoinMessagePostfix(Player joinedPlayer)
     {
-        // Check ban status
+        // TODO: move ban check to a dedicated service, hook into OnPlayerJoined event (or earlier?)
         var steamId = joinedPlayer.SteamID;
         if (NucleiConfig.IsBanned(steamId))
         {
             Nuclei.Logger?.LogInfo($"Player {joinedPlayer.PlayerName} is banned. Kicking...");
             _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(joinedPlayer);
-            return false;
+            return;
         }
 
         Nuclei.Logger?.LogInfo($"{joinedPlayer.PlayerName} joined the game");
         ChatService.SendChatMessage(NucleiConfig.WelcomeMessage!.Value, joinedPlayer);
         
         PlayerEvents.OnPlayerJoined(joinedPlayer);
-        return true;
     }
     
     [HarmonyPostfix]
