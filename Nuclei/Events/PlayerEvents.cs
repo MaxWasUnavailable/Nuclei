@@ -1,3 +1,6 @@
+using NuclearOption.Networking;
+using Nuclei.Features;
+using Nuclei.Features.Commands.DefaultCommands;
 using System;
 
 namespace Nuclei.Events;
@@ -14,6 +17,15 @@ public static class PlayerEvents
 
     internal static void OnPlayerJoined(Player e)
     {
+        // Check ban status
+        var steamId = e.SteamID;
+        if (NucleiConfig.IsBanned(steamId))
+        {
+            Nuclei.Logger.LogInfo($"Player {e.PlayerName} is banned. Kicking...");
+            KickCommand.Kick(e);
+            return;
+        }
+            
         PlayerJoined?.Invoke(e);
     }
     

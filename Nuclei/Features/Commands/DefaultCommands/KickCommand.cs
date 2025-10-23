@@ -1,6 +1,9 @@
 using BepInEx.Configuration;
+using Cysharp.Threading.Tasks;
+using NuclearOption.Networking;
 using Nuclei.Enums;
 using Nuclei.Helpers;
+using System;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Nuclei.Features.Commands.DefaultCommands;
@@ -31,13 +34,8 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
                 return false;
             }
 
-            if (targetPlayer == Globals.LocalPlayer)
-            {
-                ChatService.SendPrivateChatMessage("You can't kick the host.", player);
-                return false;
-            }
-            
-            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
+            Kick(targetPlayer);
+
             Nuclei.Logger?.LogInfo($"Player {target} kicked from the server.");
             return true;
         }
@@ -46,6 +44,26 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         Nuclei.Logger?.LogWarning($"Player {target} not found.");
         return false;
     }
-    
+
+    public static async UniTaskVoid Kick(Player player)
+    {
+        try
+        {
+            if (player == null)
+            {
+                Nuclei.Logger.LogError("Kick failed: player is null.");
+                return;
+            }
+            Nuclei.Logger.LogInfo($"Kicking...");
+        
+            // Use the game’s provided API (does authenticator.OnKick, shows reason, then Disconnects)
+            Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(player);
+        }
+        catch (Exception ex)
+        {
+            Nuclei.Logger.LogError($"Kick error: {ex}");
+        }
+    }
+
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }

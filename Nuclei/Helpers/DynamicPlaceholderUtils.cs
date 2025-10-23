@@ -1,4 +1,5 @@
 using System.Linq;
+using NuclearOption.Networking;
 using Nuclei.Features;
 using UnityEngine;
 
@@ -88,7 +89,7 @@ public static class DynamicPlaceholderUtils
             original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
             original = original.Replace(SteamID, player.SteamID.ToString());
         }
-        
+        /*
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
         if (MissionService.CurrentMission!.factions.Count > 0)
         {
@@ -113,7 +114,7 @@ public static class DynamicPlaceholderUtils
         original = original.Replace(Random3MissionsEtc, randomMissionsString);
         
         original = original.Replace(ServerName, NucleiConfig.ServerName!.Value);
-        
+        */
         return original;
     }
 }
