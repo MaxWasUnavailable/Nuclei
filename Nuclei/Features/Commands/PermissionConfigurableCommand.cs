@@ -25,6 +25,9 @@ public abstract class PermissionConfigurableCommand : ICommand
 
     /// <inheritdoc />
     public abstract bool Execute(Player player, string[] args);
+    
+    /// <inheritdoc />
+    public abstract bool Execute(string[] args);
 
     /// <inheritdoc />
     public PermissionLevel PermissionLevel => PermissionLevelConfig.Value;

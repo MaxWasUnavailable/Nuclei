@@ -1,4 +1,5 @@
 using NuclearOption.Networking;
+using Nuclei.Features;
 
 namespace Nuclei.Helpers;
 
@@ -71,6 +72,11 @@ public static class DynamicPlaceholderUtils
     ///     Placeholder for the server name.
     /// </summary>
     public const string ServerName = "{server_name}";
+    
+    /// <summary>
+    ///     Placeholder for the message broadcaster name.
+    /// </summary>
+    public const string ServerBroadcastName = "{server_broadcast_name}";
 
     /// <summary>
     ///     Replaces dynamic placeholders in a string with the appropriate values.
@@ -87,6 +93,8 @@ public static class DynamicPlaceholderUtils
             original = original.Replace(PlayerNameCensored, player.GetNameOrCensored());
             original = original.Replace(SteamID, player.SteamID.ToString());
         }
+        
+        original = original.Replace(ServerBroadcastName, NucleiConfig.ServerBroadcastName!.Value);
         /*
         original = original.Replace(MissionName, MissionService.CurrentMission!.Name);
         if (MissionService.CurrentMission!.factions.Count > 0)

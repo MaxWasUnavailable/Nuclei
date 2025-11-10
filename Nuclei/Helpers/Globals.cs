@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mirage;
 using NuclearOption.Chat;
+using NuclearOption.DedicatedServer;
 using NuclearOption.Networking;
 
 namespace Nuclei.Helpers;
@@ -35,4 +36,10 @@ public static class Globals
     ///     Get a read-only list of all authenticated players.
     /// </summary>
     public static IReadOnlyList<INetworkPlayer> AuthenticatedPlayers => NetworkManagerNuclearOptionInstance.Server.AuthenticatedPlayers;
+    
+    /// <summary>
+    ///     Get the instance of the <see cref="DedicatedServerManager" /> class.
+    /// </summary>
+    public static DedicatedServerManager DedicatedServerManagerInstance => NetworkManagerNuclearOptionInstance.DedicatedServerManager ?? throw new NullReferenceException("No Dedicated Server found");   
+
 }

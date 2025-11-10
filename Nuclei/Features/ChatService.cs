@@ -65,7 +65,8 @@ public static class ChatService
     /// <param name="player"> Player to use for chat message variables </param>
     public static void SendChatMessage(string message, Player? player = null)
     {
-        var actualMessage = message.PreProcessMessage(player);
+        var actualMessage = "{server_broadcast_name} " + message;
+        actualMessage = actualMessage.PreProcessMessage(player);
         
         if (!CanSend(actualMessage, ignoreRateLimit: true))
         {
@@ -73,22 +74,7 @@ public static class ChatService
             return;
         }
         
-        /* This uses the recipient as the "sender". TargetReceiveMessage requires this.
-           No way around it, devs have said that this will be changed in upcoming patch.
-         */
-        // TODO: review
-        foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
-            try
-            {
-                if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
-                    continue;
-                 
-                Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMessage, recipient, true);
-            }
-            catch (Exception ex)
-            {
-                Nuclei.Logger?.LogError($"Broadcast to a connection failed: {ex}");
-            }
+        Globals.ChatManagerInstance.RpcServerMessage(actualMessage, false);
     }
 
     /// <summary>

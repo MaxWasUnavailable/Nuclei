@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using NuclearOption.Networking;
+using Nuclei.Events;
 using Nuclei.Features;
 using Nuclei.Features.Commands;
 using Nuclei.Features.Commands.DefaultCommands;
+using Nuclei.Helpers;
 using UnityEngine;
 
 namespace Nuclei;
@@ -19,25 +24,19 @@ public class Nuclei : BaseUnityPlugin
     internal new static ManualLogSource? Logger { get; private set; }
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
+    private ConsoleManager? _console;
     
-    private static bool IsServerDedicated()
-    {
-        return Application.isBatchMode;
-    }
-
     private void Awake()
     {
         Instance = this;
         
         Logger = base.Logger;
+        var unityCtx = SynchronizationContext.Current ?? new SynchronizationContext(); 
+        _console = new ConsoleManager(unityCtx, HandleConsoleCommand);
+        _console.Start();
         
         Logger?.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
         
-        if (!IsServerDedicated())
-        {
-            Logger?.LogError("This plugin is intended for dedicated servers only! Aborting server initialisation. To run a dedicated server, use the -batchmode and -nographics command line arguments. If you're running the game as a player, you can safely ignore this message.");
-            return;
-        }
 
         try
         {
@@ -65,6 +64,11 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new StopCommand(Config));
         CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
         CommandService.RegisterCommand(new HelpCommand(Config));
+        CommandService.RegisterCommand(new NextMissionCommand(Config));
+        CommandService.RegisterCommand(new BanSteamIDCommand(Config));
+        CommandService.RegisterCommand(new ListCommand(Config));
+
+        PlayerEvents.PlayerJoined += OnPlayerJoin;
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -116,5 +120,21 @@ public class Nuclei : BaseUnityPlugin
         IsPatched = false;
 
         Logger?.LogDebug("Unpatched!");
+    }
+    
+    // TODO: Move these somewhere else?
+    private static void HandleConsoleCommand(string rawLine, string[] args)
+    {
+        Logger?.LogInfo($"> {rawLine}");
+        if (args.Length == 0) return;
+
+        var cmd = args[0].ToLowerInvariant();
+        CommandService.TryExecuteCommand(cmd, args.Skip(1).ToArray());
+    }
+
+    private void OnPlayerJoin(Player player)
+    {
+        BanService.VerifyNotBanned(player);
+        PlayerUtils.ApplyOrRemoveStaffTag(player);
     }
 }
