@@ -26,5 +26,12 @@ public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(confi
         return true;
     }
     
+    public override bool Execute(string[] args)
+    {
+        var message = string.Join(" ", args);
+        ChatService.SendChatMessage($"{message}");
+        return true;
+    }
+    
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }

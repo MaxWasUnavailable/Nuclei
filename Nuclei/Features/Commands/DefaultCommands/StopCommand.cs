@@ -26,6 +26,12 @@ public class StopCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         Globals.NetworkManagerNuclearOptionInstance.Server.Stop();
         return true;
     }
+    public override bool Execute( string[] args)
+    {
+        Nuclei.Logger?.LogInfo("Stopping server...");
+        Globals.NetworkManagerNuclearOptionInstance.Server.Stop();
+        return true;
+    }
     
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;
 }

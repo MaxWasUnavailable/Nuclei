@@ -54,5 +54,37 @@ public class SetPermissionLevelCommand(ConfigFile config) : PermissionConfigurab
         return false;
     }
     
+    public override bool Execute(string[] args)
+    {
+        var target = args[0];
+        PermissionLevelUtils.TryParsePermissionLevel(args[1], out var permissionLevel);
+
+        if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
+        {
+            var targetSteamID = targetPlayer!.SteamID.ToString();
+            switch (permissionLevel)
+            {
+                case PermissionLevel.Admin:
+                    NucleiConfig.AddAdmin(targetSteamID);
+                    NucleiConfig.RemoveModerator(targetSteamID);
+                    break;
+                case PermissionLevel.Moderator:
+                    NucleiConfig.RemoveAdmin(targetSteamID);
+                    NucleiConfig.AddModerator(targetSteamID);
+                    break;
+                default:
+                case PermissionLevel.Everyone:
+                    NucleiConfig.RemoveAdmin(targetSteamID);
+                    NucleiConfig.RemoveModerator(targetSteamID);
+                    break;
+            }
+            Nuclei.Logger?.LogInfo($"Set permission level of {target} to {permissionLevel}.");
+            return true;
+        }
+
+        Nuclei.Logger?.LogWarning($"Player {target} not found.");
+        return false;
+    }
+    
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Owner;
 }

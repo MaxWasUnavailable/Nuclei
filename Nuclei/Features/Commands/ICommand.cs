@@ -37,10 +37,17 @@ public interface ICommand
     bool Validate(Player player, string[] args);
 
     /// <summary>
-    ///     The command action.
+    ///     The command action executed by a plyer.
     /// </summary>
     /// <param name="player"> The player executing the command. </param>
     /// <param name="args"> The command arguments. </param>
     /// <returns> Whether the command was executed successfully. </returns>
     bool Execute(Player player, string[] args);
+    
+    /// <summary>
+    ///     The command action executed by the console.
+    /// </summary>
+    /// <param name="args"> The command arguments. </param>
+    /// <returns> Whether the command was executed successfully. </returns>
+    bool Execute(string[] args);
 }
