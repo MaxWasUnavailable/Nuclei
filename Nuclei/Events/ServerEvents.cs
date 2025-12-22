@@ -1,4 +1,5 @@
 using System;
+using Nuclei.Features;
 
 namespace Nuclei.Events;
 
@@ -15,6 +16,7 @@ public static class ServerEvents
     internal static void OnServerStarted()
     {
         ServerStarted?.Invoke();
+        TimeService.Initialize();
     }
 
     /// <summary>

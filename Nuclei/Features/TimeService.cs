@@ -54,6 +54,14 @@ public class TimeService : MonoBehaviour
         _lastTime = currentTime;
         
         TimeEvents.OnEverySecond();
+
+        // MoTD
+        var motdFreq = NucleiConfig.MotDFrequency!.Value;
+        if (currentTime % motdFreq == 0)
+        {
+            ChatService.SendMotD();
+        }
+
         if (currentTime % 3600 == 0)
         {
             TimeEvents.OnEveryHour();
