@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+	    <NUCLEAR_OPTION_SERVER_REFERENCES>$(ProjectDir)../NuclearOptionServer_Data/Managed</NUCLEAR_OPTION_SERVER_REFERENCES>
         <!-- General Project Information -->
         <TargetFramework>net48</TargetFramework>
         <AssemblyName>MaxWasUnavailable.Nuclei</AssemblyName>
