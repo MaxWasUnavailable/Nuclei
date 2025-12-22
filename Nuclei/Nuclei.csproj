@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <!-- Change this to be the Managed folder within NuclearOptionServer_Data. 
+         This is located in the folder where you downloaded the dedicated server via steamcmd-->
 	    <NUCLEAR_OPTION_SERVER_REFERENCES>$(ProjectDir)../NuclearOptionServer_Data/Managed</NUCLEAR_OPTION_SERVER_REFERENCES>
         <!-- General Project Information -->
         <TargetFramework>net48</TargetFramework>
