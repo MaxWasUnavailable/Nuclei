@@ -22,7 +22,7 @@ public class SayCommand(ConfigFile config) : PermissionConfigurableCommand(confi
     public override bool Execute(Player player, string[] args)
     {
         var message = string.Join(" ", args);
-        ChatService.SendChatMessage($"{message}");
+        MissionMessages.ShowMessage(message, false, null, true);
         return true;
     }
     

@@ -59,39 +59,6 @@ public static class ChatService
     }
 
     /// <summary>
-    ///     Sends a chat message to all clients.
-    /// </summary>
-    /// <param name="message"> The message to send. </param>
-    /// <param name="player"> Player to use for chat message variables </param>
-    public static void SendChatMessage(string message, Player? player = null)
-    {
-        var actualMessage = message.PreProcessMessage(player);
-        
-        if (!CanSend(actualMessage, ignoreRateLimit: true))
-        {
-            Nuclei.Logger?.LogWarning("Cannot send chat message.");
-            return;
-        }
-        
-        /* This uses the recipient as the "sender". TargetReceiveMessage requires this.
-           No way around it, devs have said that this will be changed in upcoming patch.
-         */
-        // TODO: review
-        foreach (var conn in Globals.MissionManagerInstance.Server.AuthenticatedPlayers)
-            try
-            {
-                if (!conn.TryGetPlayer<Player>(out var recipient) || recipient == null)
-                    continue;
-                 
-                Globals.ChatManagerInstance.TargetReceiveMessage(conn, actualMessage, recipient, true);
-            }
-            catch (Exception ex)
-            {
-                Nuclei.Logger?.LogError($"Broadcast to a connection failed: {ex}");
-            }
-    }
-
-    /// <summary>
     ///     Sends a private chat message to a player.
     /// </summary>
     /// <param name="message"> The message to send. </param>
@@ -123,6 +90,6 @@ public static class ChatService
             return;
         }
 
-        SendChatMessage(actualMotD);
+        MissionMessages.ShowMessage(actualMotD,false,null,true);
     }
 }

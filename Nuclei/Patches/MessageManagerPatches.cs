@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NuclearOption.Chat;
 using NuclearOption.Networking;
 using Nuclei.Events;
 using Nuclei.Features;
@@ -25,7 +26,7 @@ internal static class MessageManagerPatches
         }
 
         Nuclei.Logger?.LogInfo($"{joinedPlayer.PlayerName} joined the game");
-        ChatService.SendChatMessage(NucleiConfig.WelcomeMessage!.Value, joinedPlayer);
+        MissionMessages.ShowMessage(NucleiConfig.WelcomeMessage!.Value,false,null,true);
         
         PlayerEvents.OnPlayerJoined(joinedPlayer);
     }
