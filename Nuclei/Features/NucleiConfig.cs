@@ -4,6 +4,7 @@ using BepInEx.Configuration;
 using Nuclei.Enums;
 using Nuclei.Helpers;
 using Steamworks;
+using VoteKick.Services;
 
 namespace Nuclei.Features;
 
@@ -15,8 +16,15 @@ namespace Nuclei.Features;
 public static class NucleiConfig
 {
     internal const string GeneralSection = "General";
+    internal const string VotekickSection = "Votekick";
     internal const string TechnicalSection = "Technical";
     internal const string ExperimentalSection = "Experimental";
+
+    internal static ConfigEntry<double>? KickThreshold;
+    internal const double DefaultKickThreshold = 0.5;
+
+    internal static ConfigEntry<int>? KickTimeout;
+    internal const int DefaultKickTimeout = 20;
 
     internal static ConfigEntry<ushort>? MaxPlayers;
     internal const ushort DefaultMaxPlayers = 16;
@@ -98,6 +106,12 @@ public static class NucleiConfig
     internal static void InitSettings(ConfigFile config)
     {
         Nuclei.Logger?.LogDebug("Loading settings...");
+
+        KickThreshold = config.Bind(VotekickSection, "KickThreshold", DefaultKickThreshold, "The percentage of the lobby that needs to agree to kick the player.");
+        Nuclei.Logger?.LogDebug($"KickThreshold: {KickThreshold.Value}");
+
+        KickTimeout = config.Bind(VotekickSection, "KickTimeout", DefaultKickTimeout, "The time it takes before the votekick expires.");
+        Nuclei.Logger?.LogDebug($"KickTimeout: {KickTimeout.Value}");
         
         //MaxPlayers = config.Bind(GeneralSection, "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
         //Nuclei.Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");

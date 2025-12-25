@@ -6,6 +6,7 @@ using Nuclei.Features;
 using Nuclei.Features.Commands;
 using Nuclei.Features.Commands.DefaultCommands;
 using UnityEngine;
+using VoteKick.Commands;
 
 namespace Nuclei;
 
@@ -65,6 +66,8 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new StopCommand(Config));
         CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
         CommandService.RegisterCommand(new HelpCommand(Config));
+        CommandService.RegisterCommand(new VoteKickCommand(Config));
+        CommandService.RegisterCommand(new VoteKickOptionCommand(Config));
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
