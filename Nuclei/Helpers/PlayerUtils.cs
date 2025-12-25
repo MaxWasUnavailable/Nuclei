@@ -40,7 +40,7 @@ public static class PlayerUtils
     /// <returns></returns>
     public static bool TryFindPlayer(string playerName, out Player? playerObject)
     {
-        playerObject = Globals.AuthenticatedPlayers.FirstOrDefault(p => string.Equals(p.GetPlayer()?.PlayerName, playerName, StringComparison.CurrentCultureIgnoreCase))?.GetPlayer();
+            playerObject = Globals.AuthenticatedPlayers.FirstOrDefault(p => StripStaffPrefix(p.GetPlayer()?.PlayerName ?? "").ToLower().StartsWith(StripStaffPrefix(playerName).ToLower()))?.GetPlayer();
         return playerObject != null;
     }
 }
