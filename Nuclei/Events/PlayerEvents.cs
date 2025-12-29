@@ -1,5 +1,6 @@
 using System;
 using NuclearOption.Networking;
+using Nuclei.Features;
 
 namespace Nuclei.Events;
 
@@ -16,6 +17,7 @@ public static class PlayerEvents
     internal static void OnPlayerJoined(Player e)
     {
         PlayerJoined?.Invoke(e);
+        RankCatchUpService.CatchUpPlayer(e);
     }
 
     /// <summary>
