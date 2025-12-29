@@ -52,9 +52,12 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
         }
         else
         {
-            if (!VoteKickService.StartVoteKick(player, targetPlayer))
+            string startingMessage = $"A vote to kick {targetPlayer.PlayerName} has been started.";
+            Action action = () => Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
+
+            if (!VoteService.StartVote(player, startingMessage, action))
             {
-                ChatService.SendPrivateChatMessage("Cannot start a new votekick, please wait for current votekick to expire.", player);
+                ChatService.SendPrivateChatMessage("Cannot start a new votekick, please wait for current vote to expire.", player);
                 return false;
             }
         }

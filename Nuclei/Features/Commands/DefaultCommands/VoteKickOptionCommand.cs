@@ -5,11 +5,12 @@ using Nuclei.Features.Commands;
 using VoteKick.Services;
 
 namespace VoteKick.Commands;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-public class VoteKickOptionCommand(ConfigFile config) : PermissionConfigurableCommand(config)
+public class VoteOptionCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {
     public override string Name { get; } = "vote";
-    public override string Description { get; } = "adds a vote to the current vote kick";
+    public override string Description { get; } = "adds a vote to the current vote";
     public override string Usage { get; } = "vote";
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
     
@@ -20,7 +21,7 @@ public class VoteKickOptionCommand(ConfigFile config) : PermissionConfigurableCo
 
     public override bool Execute(Player player, string[] args)
     {
-        VoteKickService.HandleVote(player);
+        VoteService.HandleVote(player);
         return false;
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Timers;
 using HarmonyLib;
 using Mirage.Serialization;
@@ -8,21 +9,27 @@ using Nuclei.Helpers;
 
 namespace VoteKick.Services;
 
-public static class VoteKickService
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+public static class VoteService
 {
-    private static VoteKickSession _activeVoteKick;
+    private static VoteSession _activeVote;
 
     /// <summary>
     /// start a vote-kick session for target player
     /// </summary>
     /// <param name="initiator"></param>
-    /// <param name="targetPlayer"></param>
+    /// <param name="startingMessage"></param>
+    /// <param name="action"></param>
     /// <returns></returns>
-    public static bool StartVoteKick(Player initiator, Player targetPlayer)
+    public static bool StartVote(Player initiator, String startingMessage, Action action)
     {
-        if (_activeVoteKick != null) return false; // vote in progress
-        _activeVoteKick = new VoteKickSession(initiator, targetPlayer);
-        _activeVoteKick.Start();
+        if (_activeVote != null)
+        {
+            return false; // vote in progress
+        }
+
+        _activeVote = new VoteSession(initiator, startingMessage, action);
+        _activeVote.Start();
         return true;
     }
 
@@ -32,46 +39,49 @@ public static class VoteKickService
     /// <param name="voter"></param>
     public static void HandleVote(Player voter)
     {
-        if (_activeVoteKick == null)
+        if (_activeVote == null)
         {
             var commandPrefix = (char) AccessTools.Property(typeof(NucleiConfig), "CommandPrefixChar").GetValue(null);
-            ChatService.SendPrivateChatMessage($"A vote kick session has not been started, use {commandPrefix}\"votekick\" command to start one.", voter);
-            return;
+            ChatService.SendPrivateChatMessage($"A vote session has not been started, use a vote command to start one.", voter);
         }
-        _activeVoteKick.AddVote(voter);
+        else _activeVote.AddVote(voter);
     }
 
     public static void StopVoteKick()
     {
-        _activeVoteKick = null;
+        _activeVote = null;
     }
 }
 
-public class VoteKickSession
+public class VoteSession
 {
-    private readonly Player _targetPlayer;
     private readonly Timer _timer;
     private HashSet<ulong> _voters;
+    private readonly String _startingMessage;
     private int _timeLeft;
     private int _voteThreshold; // don't want threshold changing as players leave or join
-    
-    private readonly int DEFAULT_VOTING_WINDOW = NucleiConfig.KickTimeout!.Value; 
 
-    public VoteKickSession(Player initiator, Player targetPlayer)
+    // Function to call when vote succeeds
+    private Action _action;
+    
+    private static readonly int DEFAULT_VOTING_WINDOW = NucleiConfig.KickTimeout!.Value; 
+
+    public VoteSession(Player initiator, String startingMessage, Action action)
     {
-        _targetPlayer = targetPlayer;
         _voteThreshold = VoteThreshold();
         _timeLeft = DEFAULT_VOTING_WINDOW;
         _timer = new Timer(1000);
         _timer.Elapsed += OnTimerTick;
         _voters = [];
+        _startingMessage = startingMessage;
+        _action = action;
         AddVote(initiator);
     }
 
     public void Start()
     {
         var commandPrefix = "/";
-        MissionMessages.ShowMessage($"A vote to kick {_targetPlayer.PlayerName} has been started.", false, null, true);
+        ChatService.SendChatMessage(_startingMessage);
         MissionMessages.ShowMessage($"Use {commandPrefix}vote to join. You have {_timeLeft} seconds to cast your vote. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
         _timer.Start();
     }
@@ -84,8 +94,8 @@ public class VoteKickSession
     {
         if (_voters.Add(voter.SteamID))
         {
-            MissionMessages.ShowMessage("Voter's steamID added successfully", false, null, true);
-            MissionMessages.ShowMessage($"{voter.PlayerName} has voted to kick {_targetPlayer.PlayerName}. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
+            ChatService.SendChatMessage("Voter's steamID added successfully");
+            ChatService.SendChatMessage($"{voter.PlayerName} has voted. ({_voters.Count}/{_voteThreshold} votes)");
 
             if (_voters.Count >= _voteThreshold)
             {
@@ -109,7 +119,7 @@ public class VoteKickSession
 
         if ((_timeLeft % 10 == 0 && _timeLeft > 0) || _timeLeft < 10) // every ten seconds or below 10 seconds every tick
         {
-            MissionMessages.ShowMessage($"Vote to kick {_targetPlayer.PlayerName} ends in {_timeLeft} seconds. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
+            MissionMessages.ShowMessage($"Vote ends in {_timeLeft} seconds. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
         }
         
         if (_timeLeft <= 0)
@@ -118,6 +128,11 @@ public class VoteKickSession
         }
     }
     
+    
+    /// <summary>
+    /// Checks if vote threshold is met, then calls the action function associated
+    /// </summary>
+    /// <param name="sender"></param>
     private void FinaliseVote(bool thresholdMet)
     {
         _timer.Stop();
@@ -125,14 +140,15 @@ public class VoteKickSession
         
         if (thresholdMet)
         {
-            MissionMessages.ShowMessage($"The vote to kick {_targetPlayer.PlayerName} has passed!", false, null, true);
-            Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(_targetPlayer);
+            ChatService.SendChatMessage($"The vote has passed!");
+            _action();
         }
         else
         {
-            MissionMessages.ShowMessage($"The vote to kick {_targetPlayer.PlayerName} has failed. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
+            ChatService.SendChatMessage($"The vote has failed. ({_voters.Count}/{_voteThreshold} votes)");
+
         }
-        VoteKickService.StopVoteKick();
+        VoteService.StopVoteKick();
     }
 
     private int VoteThreshold()
