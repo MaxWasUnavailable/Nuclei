@@ -10,7 +10,7 @@ namespace Nuclei.Features;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class VoteService
 {
-    private static VoteSession _activeVote;
+    private static VoteSession? _activeVote;
 
     /// <summary>
     /// start a vote-kick session for target player
