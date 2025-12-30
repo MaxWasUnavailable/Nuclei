@@ -7,9 +7,15 @@ public class RankCatchUpService
 {
     public static void CatchUpPlayer(Player player)
     {
+        if (player.PlayerRank != 0) 
+        {
+            Nuclei.Logger?.LogDebug($"Player {player.PlayerName} already has rank {player.PlayerRank}, skipping catch-up.");
+            return;
+        }
         var currentMissionTime = Time.timeSinceLevelLoad;
         var maxMissionTime = Globals.DedicatedServerManagerInstance.CurrentMissionOption.MaxTime;
         var percentComplete = currentMissionTime / maxMissionTime;
+
 
         if (percentComplete < .20) return;
         else if (percentComplete >= .80) 
