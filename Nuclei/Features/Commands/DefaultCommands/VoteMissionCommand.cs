@@ -20,8 +20,8 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
     
     public override bool Validate(Player player, string[] args)
     {
-        if (args.Length >= 1) return true;
-        
+        if (args.Length > 1 || !int.TryParse(args[0], out _))
+            return false;
         var sb = new StringBuilder();
         sb.AppendLine("Choose from the following missions: ");
         _fetchedMissions = Globals.DedicatedServerManagerInstance.missionRotation.allMissions;
@@ -32,7 +32,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
             sb.AppendLine($"{(i + 1).ToString()}: {_fetchedMissions[i].Key.Name}");
         }
         ChatService.SendPrivateChatMessage(sb.ToString(), player);
-        return false;
+        return true;
     }
 
     public override bool Execute(Player player, string[] args)
