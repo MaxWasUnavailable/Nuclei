@@ -4,7 +4,6 @@ using BepInEx.Configuration;
 using Nuclei.Enums;
 using Nuclei.Helpers;
 using Steamworks;
-using VoteKick.Services;
 
 namespace Nuclei.Features;
 
