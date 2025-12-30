@@ -65,6 +65,8 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new StopCommand(Config));
         CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
         CommandService.RegisterCommand(new HelpCommand(Config));
+        CommandService.RegisterCommand(new VoteSkipCommand(Config));
+        CommandService.RegisterCommand(new VoteMissionCommand(Config));
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
