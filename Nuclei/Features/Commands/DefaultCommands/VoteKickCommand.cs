@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using BepInEx.Configuration;
 using NuclearOption.Networking;
 using Nuclei.Enums;
-using Nuclei.Features;
-using Nuclei.Features.Commands;
 using Nuclei.Helpers;
-using VoteKick.Services;
 
-namespace VoteKick.Commands;
+namespace Nuclei.Features.Commands.DefaultCommands;
 
 public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {

@@ -1,11 +1,9 @@
 ﻿using BepInEx.Configuration;
 using NuclearOption.Networking;
 using Nuclei.Enums;
-using Nuclei.Features.Commands;
-using VoteKick.Services;
 
-namespace VoteKick.Commands;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+namespace Nuclei.Features.Commands.DefaultCommands;
 
 public class VoteOptionCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Timers;
 using HarmonyLib;
-using Mirage.Serialization;
 using NuclearOption.Networking;
-using Nuclei.Features;
 using Nuclei.Helpers;
 
-namespace VoteKick.Services;
+namespace Nuclei.Features;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class VoteService
@@ -21,7 +19,7 @@ public static class VoteService
     /// <param name="startingMessage"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    public static bool StartVote(Player initiator, String startingMessage, Action action)
+    public static bool StartVote(Player initiator, string startingMessage, Action action)
     {
         if (_activeVote != null)
         {
@@ -57,7 +55,7 @@ public class VoteSession
 {
     private readonly Timer _timer;
     private HashSet<ulong> _voters;
-    private readonly String _startingMessage;
+    private readonly string _startingMessage;
     private int _timeLeft;
     private int _voteThreshold; // don't want threshold changing as players leave or join
 
@@ -66,7 +64,7 @@ public class VoteSession
     
     private static readonly int DEFAULT_VOTING_WINDOW = NucleiConfig.KickTimeout!.Value; 
 
-    public VoteSession(Player initiator, String startingMessage, Action action)
+    public VoteSession(Player initiator, string startingMessage, Action action)
     {
         _voteThreshold = VoteThreshold();
         _timeLeft = DEFAULT_VOTING_WINDOW;
