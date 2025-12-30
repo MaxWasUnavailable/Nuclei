@@ -20,7 +20,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
     
     public override bool Validate(Player player, string[] args)
     {
-        if (args.Length > 1 || !int.TryParse(args[0], out _))
+        if (args.Length > 1 || (args[0] != null && !int.TryParse(args[0], out _)))
             return false;
         var sb = new StringBuilder();
         sb.AppendLine("Choose from the following missions: ");
@@ -50,7 +50,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
 
             Action a = () => Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions[i]);
 
-            if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[i].Key} has been started", a))
+            if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[i].Key.Name} has been started", a))
             {
                 ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
                 return false;
