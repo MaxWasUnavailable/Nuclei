@@ -28,7 +28,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
         // Get missions
         for (int i = 0; i < _fetchedMissions.Count; i++)
         {
-            ChatService.SendPrivateChatMessage($"{_fetchedMissions[i].Key.Name}", player);
+            ChatService.SendPrivateChatMessage($"{i + 1}: {_fetchedMissions[i].Key.Name}", player);
         }
         return true;
     }
