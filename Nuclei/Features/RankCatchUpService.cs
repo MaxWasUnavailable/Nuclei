@@ -7,10 +7,9 @@ public class RankCatchUpService
 {
     public static void CatchUpPlayer(Player player)
     {
-        if (player.PlayerRank != 0) 
+        if (player.GetAuthData().SaveData.Faction != null)
         {
-            Nuclei.Logger?.LogDebug($"Player {player.PlayerName} already has rank {player.PlayerRank}, skipping catch-up.");
-            return;
+            return; // Means that they already joined the server. No double-dipping!
         }
         var currentMissionTime = Time.timeSinceLevelLoad;
         var maxMissionTime = Globals.DedicatedServerManagerInstance.CurrentMissionOption.MaxTime;
@@ -41,7 +40,7 @@ public class RankCatchUpService
         else if (percentComplete >= .20) 
         {
             player.SetRank(1, false);
-            player.SetAllocation(player.Allocation + 100);
+            player.SetAllocation(player.Allocation + 100f);
         }
     }
 }
