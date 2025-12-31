@@ -24,7 +24,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
             return false;
         _fetchedMissions = Globals.DedicatedServerManagerInstance.missionRotation.allMissions;
 
-        ChatService.SendPrivateChatMessage("Choose from the following missions:", player);
+        ChatService.SendPrivateChatMessage($"Choose from the following missions ({NucleiConfig.CommandPrefixChar}votemission <number>):", player);
         // Get missions
         for (int i = 0; i < _fetchedMissions.Count; i++)
         {
@@ -53,6 +53,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
                 ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
                 return false;
             }
+            
             return true;
         }
         catch (FormatException)
