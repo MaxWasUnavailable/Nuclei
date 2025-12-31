@@ -137,6 +137,7 @@ public class VoteSession
     {
         _timer.Stop();
         _timer.Dispose();
+        VoteService.StopVoteKick();
         
         if (thresholdMet)
         {
@@ -148,7 +149,6 @@ public class VoteSession
             ChatService.SendChatMessage($"The vote has failed. ({_voters.Count}/{_voteThreshold} votes)");
 
         }
-        VoteService.StopVoteKick();
     }
 
     private int VoteThreshold()
