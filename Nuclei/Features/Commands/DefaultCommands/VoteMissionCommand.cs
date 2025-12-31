@@ -22,16 +22,14 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
     {
         if (args.Length > 1 || (args.Length != 0 && !int.TryParse(args[0], out _)))
             return false;
-        var sb = new StringBuilder();
-        sb.AppendLine("Choose from the following missions: ");
         _fetchedMissions = Globals.DedicatedServerManagerInstance.missionRotation.allMissions;
 
+        ChatService.SendPrivateChatMessage("Choose from the following missions:", player);
         // Get missions
         for (int i = 0; i < _fetchedMissions.Count; i++)
         {
-            sb.AppendLine($"{(i + 1).ToString()}: {_fetchedMissions[i].Key.Name}");
+            ChatService.SendPrivateChatMessage($"{_fetchedMissions[i].Key.Name}", player);
         }
-        ChatService.SendPrivateChatMessage(sb.ToString(), player);
         return true;
     }
 
