@@ -53,6 +53,7 @@ public static class VoteService
 
 public class VoteSession
 {
+    private readonly Player _initiator;
     private readonly Timer _timer;
     private HashSet<ulong> _voters;
     private readonly string _startingMessage;
@@ -66,6 +67,7 @@ public class VoteSession
 
     public VoteSession(Player initiator, string startingMessage, Action action)
     {
+        _initiator = initiator;
         _voteThreshold = VoteThreshold();
         _timeLeft = DEFAULT_VOTING_WINDOW;
         _timer = new Timer(1000);
@@ -73,7 +75,6 @@ public class VoteSession
         _voters = [];
         _startingMessage = startingMessage;
         _action = action;
-        AddVote(initiator);
     }
 
     public void Start()
@@ -82,6 +83,7 @@ public class VoteSession
         ChatService.SendChatMessage(_startingMessage);
         MissionMessages.ShowMessage($"Use {commandPrefix}vote to join. You have {_timeLeft} seconds to cast your vote. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
         _timer.Start();
+        AddVote(_initiator);
     }
     
     /// <summary>
