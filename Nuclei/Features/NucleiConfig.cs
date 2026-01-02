@@ -83,6 +83,8 @@ public static class NucleiConfig
 
     internal static ConfigEntry<string>? CommandPrefix;
     internal const string DefaultCommandPrefix = "/";
+    internal static ConfigEntry<bool>? RankCatchUp;
+    internal const bool DefaultRankCatchUp = true;
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -164,6 +166,9 @@ public static class NucleiConfig
 
         CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the character at the start of a command).");
         Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
+
+        RankCatchUp = config.Bind(GeneralSection, "RankCatchUp", DefaultRankCatchUp, "Whether to enable the rank catch-up system, which gives players a rank and allocation boost based on how far into the mission they join.");
+        Nuclei.Logger?.LogDebug($"RankCatchUp: {RankCatchUp.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }

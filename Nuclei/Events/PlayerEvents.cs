@@ -17,7 +17,7 @@ public static class PlayerEvents
     internal static void OnPlayerJoined(Player e)
     {
         PlayerJoined?.Invoke(e);
-        RankCatchUpService.CatchUpPlayer(e);
+        if (NucleiConfig.RankCatchUp!.Value) RankCatchUpService.CatchUpPlayer(e);
     }
 
     /// <summary>
