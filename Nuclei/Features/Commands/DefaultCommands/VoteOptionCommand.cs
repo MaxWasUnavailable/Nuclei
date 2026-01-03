@@ -20,7 +20,7 @@ public class VoteOptionCommand(ConfigFile config) : PermissionConfigurableComman
     public override bool Execute(Player player, string[] args)
     {
         VoteService.HandleVote(player);
-        return false;
+        return true;
     }
 
     public override bool Execute(string[] args)
