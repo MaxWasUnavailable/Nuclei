@@ -50,7 +50,7 @@ public static class PlayerUtils
         if (string.IsNullOrEmpty(playerName))
             return playerName;
 
-        var pattern = $@"^{Regex.Escape(NucleiConfig.StaffPrefix!.Value)}\s*";
+        var pattern = $@"^\[\d*\]\s{Regex.Escape(NucleiConfig.StaffPrefix!.Value)}\s*";
         var cleanName = Regex.Replace(playerName, pattern, "", RegexOptions.IgnoreCase);
 
         return cleanName;
