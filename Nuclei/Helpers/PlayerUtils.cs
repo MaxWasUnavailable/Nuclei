@@ -69,4 +69,11 @@ public static class PlayerUtils
         var newName = $"{NucleiConfig.StaffPrefix!.Value} {playerObject.PlayerName}";
         playerObject.PlayerName = newName;
     }
+
+    private static int ID = 1;
+    public static void ApplyID(Player player)
+    {
+        var newName = $"[{ID++}] {player.PlayerName}";
+        player.PlayerName = newName;
+    }
 }

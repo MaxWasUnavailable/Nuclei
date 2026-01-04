@@ -13,23 +13,15 @@ namespace Nuclei.Features.Commands.DefaultCommands;
 
 public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {
-    private static Player? _lastPlayer;
-    private static DateTime? _lastPlayerTime;
-    private static List<INetworkPlayer>? _playerList;
     public override string Name { get; } = "votekick";
     public override string Description { get; } = "lets you vote to kick a user from a list";
-    public override string Usage { get; } = $"{NucleiConfig.CommandPrefixChar}votekick to get list | {NucleiConfig.CommandPrefixChar}votekick <number> to select player";
+    public override string Usage { get; } = $"{NucleiConfig.CommandPrefixChar}votekick <[number] in their name from the Scoreboard> to select player";
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
 
     public override bool Validate(Player player, string[] args)
     {
-        // Prevents multiple people from trying to initiate votekicks at the same time. Prevents race conditions when
-        // a player leaves in between the times multiple players view the votekick player list
-        
-        // AddYears(1) is just random so that lastPlayerTime can be set to non-nullable, which is guaranteed
-        if (_lastPlayer != player && _lastPlayer != null && DateTime.Now.Subtract(_lastPlayerTime ?? DateTime.Now.AddYears(1)).TotalSeconds < 30)
+        if (args.Length == 0)
         {
-            ChatService.SendPrivateChatMessage("Player currently starting a votekick. Please wait", player);
             return false;
         }
         if (args.Length > 1) return false;
@@ -43,39 +35,26 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
 
     public override bool Execute(Player player, string[] args)
     {
-        if (args.Length == 0)
-        {
-            _lastPlayer = player;
-            _lastPlayerTime = DateTime.Now;
-            _playerList = new List<INetworkPlayer>(Globals.AuthenticatedPlayers).Where(p => PlayerHelper.TryGetPlayer(p, out Player _)).ToList();
-            ChatService.SendPrivateChatMessage($"Choose from the following players to kick ({NucleiConfig.CommandPrefixChar}votekick <number>):", player);
-            // Get players
-            for (int i = 0; i < _playerList.Count; i++)
-            {
-                if (_playerList[i].TryGetPlayer(out var p))
-                    ChatService.SendPrivateChatMessage($"{i + 1}: {PlayerUtils.StripStaffPrefix(p!.PlayerName)}", player);
-            }
-            return true;
-        }
-        if (_playerList == null)
-        {
-            ChatService.SendPrivateChatMessage($"Please type '{NucleiConfig.CommandPrefixChar}votekick' without arguments to fetch the player list first.", player);
-            return false;
-        }
-
         int idx = int.Parse(args[0]);
-        if (idx > _playerList.Count)
+        var playerList = new List<INetworkPlayer>(Globals.AuthenticatedPlayers).Where(ip => PlayerHelper.TryGetPlayer(ip, out Player _)).Select(ip =>
         {
-            ChatService.SendPrivateChatMessage("Number invalid. Please Try again.", player);
-            return false;
-        }
-
-        if (!_playerList[idx - 1].TryGetPlayer(out var targetPlayer))
+            ip.TryGetPlayer(out var p);
+            return p;
+        }).ToList();
+        List<Player> l = playerList.Where(p => p.PlayerName.StartsWith($"[{idx}]")).ToList();
+        if (l.Count == 0)
         {
             Nuclei.Logger?.LogError("Target player for votekick not found.");
+            ChatService.SendPrivateChatMessage("Target player for votekick not found.", player);
             return false;
         }
-        string startingMessage = $"A vote to kick {targetPlayer!.PlayerName} has been started.";
+        if (l.Count > 1)
+        {
+            Nuclei.Logger?.LogError("Not supposed to happen: Player with identical IDs");
+            return false;
+        }
+        Player targetPlayer = l[0];
+        string startingMessage = $"A vote to kick {targetPlayer.PlayerName} has been started.";
 
         void Action()
         {
@@ -87,7 +66,7 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
             ChatService.SendPrivateChatMessage("Cannot start a new votekick, please wait for current vote to expire.", player);
             return false;
         }
-        _playerList = null;
+        playerList = null;
         return true;
     }
 
