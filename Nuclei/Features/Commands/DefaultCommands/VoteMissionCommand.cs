@@ -47,7 +47,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
 
         if (_fetchedMissions == null)
         {
-            ChatService.SendPrivateChatMessage("Please use votemission without arguments to fetch the mission list first.", player);
+            ChatService.SendPrivateChatMessage($"Please type '{NucleiConfig.CommandPrefixChar}votemission' without arguments to fetch the mission list first.", player);
             return false;
         }
 
