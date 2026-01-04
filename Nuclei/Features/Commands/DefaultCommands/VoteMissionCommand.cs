@@ -61,7 +61,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
 
         void Action()
         {
-            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx]);
+            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx - 1]);
         }
 
         if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started", Action))
