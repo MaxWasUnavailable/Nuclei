@@ -17,50 +17,60 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
     public override string Description { get; } = "lets you vote the next mission";
     public override string Usage { get; } = "votemission to get list of missions. votemission <number> to start a vote for that mission";
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
-    
+
     public override bool Validate(Player player, string[] args)
     {
-        if (args.Length > 1 || (args.Length != 0 && !int.TryParse(args[0], out _)))
+        if (args.Length > 1)
             return false;
-        _fetchedMissions = Globals.DedicatedServerManagerInstance.missionRotation.allMissions;
-
-        ChatService.SendPrivateChatMessage($"Choose from the following missions ({NucleiConfig.CommandPrefixChar}votemission <number>):", player);
-        // Get missions
-        for (int i = 0; i < _fetchedMissions.Count; i++)
+        if ((args.Length == 1 && !int.TryParse(args[0], out _)) || (args.Length == 1 && int.Parse(args[0]) <= 0))
         {
-            ChatService.SendPrivateChatMessage($"{i + 1}: {_fetchedMissions[i].Key.Name}", player);
+            ChatService.SendPrivateChatMessage("Number invalid. Please Try again.", player);
+            return false;
         }
         return true;
     }
 
     public override bool Execute(Player player, string[] args)
     {
-        try
+        if (args.Length == 0)
         {
-            if (_fetchedMissions == null)
+            _fetchedMissions = Globals.DedicatedServerManagerInstance.missionRotation.allMissions;
+
+            ChatService.SendPrivateChatMessage($"Choose from the following missions ({NucleiConfig.CommandPrefixChar}votemission <number>):", player);
+            // Get missions
+            for (int i = 0; i < _fetchedMissions.Count; i++)
             {
-                ChatService.SendPrivateChatMessage("Please use votemission without arguments to fetch the mission list first.", player);
-                return false;
+                ChatService.SendPrivateChatMessage($"{i + 1}: {_fetchedMissions[i].Key.Name}", player);
             }
-
-            int i = int.Parse(args[0]);
-            if (i <= 0 || i > _fetchedMissions.Count) throw new FormatException();
-
-            Action a = () => Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions[i]);
-
-            if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[i - 1].Key.Name} has been started", a))
-            {
-                ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
-                return false;
-            }
-            
             return true;
         }
-        catch (FormatException)
+
+        if (_fetchedMissions == null)
         {
-            ChatService.SendPrivateChatMessage("That was not a valid number. Please try again.", player);
+            ChatService.SendPrivateChatMessage("Please use votemission without arguments to fetch the mission list first.", player);
             return false;
         }
+
+        int idx = int.Parse(args[0]);
+
+        if (idx > _fetchedMissions.Count)
+        {
+            ChatService.SendPrivateChatMessage("Number invalid. Please Try again.", player);
+            return false;
+        }
+
+        Action a = () =>
+        {
+            _fetchedMissions = null;
+            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions[idx]);
+        };
+
+        if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started", a))
+        {
+            ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
+            return false;
+        }
+        return true;
     }
 
     public override bool Execute(string[] args)
