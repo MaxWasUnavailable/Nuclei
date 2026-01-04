@@ -15,7 +15,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
     private static List<MissionOptions>? _fetchedMissions;
     public override string Name { get; } = "votemission";
     public override string Description { get; } = "lets you vote the next mission";
-    public override string Usage { get; } = "votemission to get list of missions. votemission <number> to start a vote for that mission";
+    public override string Usage { get; } = $"{NucleiConfig.CommandPrefixChar}votemission to get list of missions. {NucleiConfig.CommandPrefixChar}votemission <number> to start a vote for that mission";
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
 
     public override bool Validate(Player player, string[] args)
@@ -59,22 +59,22 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
             return false;
         }
 
-        Action a = () =>
+        void Action()
         {
-            _fetchedMissions = null;
-            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions[idx]);
-        };
+            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx]);
+        }
 
-        if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started", a))
+        if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started", Action))
         {
             ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
             return false;
         }
+        _fetchedMissions = null;
         return true;
     }
 
     public override bool Execute(string[] args)
     {
-        throw new System.Exception("Requires Player object");
+        throw new Exception("Requires Player object");
     }
 }
