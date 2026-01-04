@@ -36,25 +36,11 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
     public override bool Execute(Player player, string[] args)
     {
         int idx = int.Parse(args[0]);
-        var playerList = new List<INetworkPlayer>(Globals.AuthenticatedPlayers).Where(ip => PlayerHelper.TryGetPlayer(ip, out Player _)).Select(ip =>
+        if (!PlayerUtils.TryFindPlayerbyID(idx, out Player? targetPlayer))
         {
-            ip.TryGetPlayer(out var p);
-            return p;
-        }).ToList();
-        List<Player> l = playerList.Where(p => p.PlayerName.StartsWith($"[{idx}]")).ToList();
-        if (l.Count == 0)
-        {
-            Nuclei.Logger?.LogError("Target player for votekick not found.");
-            ChatService.SendPrivateChatMessage("Target player for votekick not found.", player);
-            return false;
+            ChatService.SendPrivateChatMessage("Could not find player to votekick.", player);
         }
-        if (l.Count > 1)
-        {
-            Nuclei.Logger?.LogError("Not supposed to happen: Player with identical IDs");
-            return false;
-        }
-        Player targetPlayer = l[0];
-        string startingMessage = $"A vote to kick {targetPlayer.PlayerName} has been started.";
+        string startingMessage = $"A vote to kick {targetPlayer!.PlayerName} has been started.";
 
         void Action()
         {
@@ -66,7 +52,6 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
             ChatService.SendPrivateChatMessage("Cannot start a new votekick, please wait for current vote to expire.", player);
             return false;
         }
-        playerList = null;
         return true;
     }
 

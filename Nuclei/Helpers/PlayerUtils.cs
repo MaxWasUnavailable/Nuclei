@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Mirage;
@@ -75,5 +76,29 @@ public static class PlayerUtils
     {
         var newName = $"[{ID++}] {player.PlayerName}";
         player.PlayerName = newName;
+    }
+
+    public static bool TryFindPlayerbyID(int i, out Player? player)
+    {
+        var playerList = new List<INetworkPlayer>(Globals.AuthenticatedPlayers).Where(ip => PlayerHelper.TryGetPlayer(ip, out Player _)).Select(ip =>
+        {
+            ip.TryGetPlayer(out var p);
+            return p;
+        }).ToList();
+        List<Player> l = playerList.Where(p => p.PlayerName.StartsWith($"[{i}]")).ToList();
+        if (l.Count == 0)
+        {
+            Nuclei.Logger?.LogError("Player couldn't be found by ID.");
+            player = null;
+            return false;
+        }
+        if (l.Count > 1)
+        {
+            Nuclei.Logger?.LogError("Not supposed to happen: Player with identical IDs");
+            player = null;
+            return false;
+        }
+        player = l[0];
+        return true;
     }
 }
