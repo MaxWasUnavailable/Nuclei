@@ -15,7 +15,7 @@ public class VoteKickCommand(ConfigFile config) : PermissionConfigurableCommand(
 {
     public override string Name { get; } = "votekick";
     public override string Description { get; } = "lets you vote to kick a user from a list";
-    public override string Usage { get; } = $"{NucleiConfig.CommandPrefixChar}votekick <[number] in their name from the Scoreboard> to select player";
+    public override string Usage { get; } = $"{NucleiConfig.CommandPrefixChar}votekick <ID in their name from the Scoreboard> to select player";
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
 
     public override bool Validate(Player player, string[] args)
