@@ -17,6 +17,7 @@ internal static class MissionRotationPatches
     [HarmonyPatch(nameof(MissionRotation.GetNext))]
     private static void GetNextPrefix()
     {
+        if (!NucleiConfig.RandomizeWeather!.Value) return;
         MissionOptions nextMission = Globals.DedicatedServerManagerInstance.missionRotation.PeakNext();
         WeatherRandomizerService.RandomizeWeather(nextMission.Key.Name);
     }

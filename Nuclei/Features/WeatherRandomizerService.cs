@@ -7,10 +7,10 @@ using System.Text.Json;
  
  public class WeatherRandomizerService
  {
-     public const string MissionFolderSource = "NuclearOption-Missions";
+     internal static string MissionDir = null!;
      public static void RandomizeWeather(string missionName)
      {
-         var currentMissionDir = Directory.GetDirectories(MissionFolderSource).First(x => x.Contains(missionName));
+         var currentMissionDir = Directory.GetDirectories(MissionDir).First(x => x.Contains(missionName));
          Nuclei.Logger?.LogInfo($"currentMissionDir: {currentMissionDir} ");
          var currentMissionFile = $"{currentMissionDir}/{missionName}.json";
          Nuclei.Logger?.LogInfo($"currentMissionFile: {currentMissionFile} ");
