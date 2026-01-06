@@ -43,6 +43,7 @@ public class HelpCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         }
         
         ChatService.SendPrivateChatMessage($"Command '{command.Name}': {command.Description}", player);
+        ChatService.SendPrivateChatMessage($"Usage: {command.Usage}", player);
         return true;
     }
     
