@@ -52,6 +52,7 @@
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.Core" Version="5.*"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
+        <PackageReference Include="System.Text.Json" Version="10.0.1" />
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->

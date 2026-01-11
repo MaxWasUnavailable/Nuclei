@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json.Nodes;
 using BepInEx.Configuration;
 using Nuclei.Enums;
 using Nuclei.Helpers;
@@ -62,6 +65,9 @@ public static class NucleiConfig
     
     internal static ConfigEntry<bool>? RefreshServerNamePeriodically;
     internal const bool DefaultRefreshServerNamePeriodically = true;
+
+    internal static ConfigEntry<bool>? RandomizeWeather;
+    internal const bool DefaultRandomizeWeather = false;
     
     internal static ConfigEntry<short>? TargetFrameRate;
     internal const short DefaultTargetFrameRate = 120;
@@ -163,6 +169,31 @@ public static class NucleiConfig
         //Nuclei.Logger?.LogDebug($"UseAllMissions: {UseAllMissions.Value}");
 
         CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the character at the start of a command).");
+        Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
+
+        RandomizeWeather = config.Bind(GeneralSection, "RandomizeWeather", DefaultRandomizeWeather,
+            "Randomize weather by modifying the .json mission file directly. This requires the missions to be in " +
+            "the mission folder you assigned in DedicatedServerConfig.json, meaning all missions' MissionGroup must be User, not BuiltIn");
+
+        if (RandomizeWeather.Value)
+        {
+            try
+            {
+                var json = File.ReadAllText("DedicatedServerConfig.json");
+                var parsedJson = JsonNode.Parse(json)!;
+
+                if (parsedJson["MissionDirectory"] == null)
+                    throw new Exception("MissionDirectory in DedicatedServerConfig.json does not exist. Please set it up " +
+                                        "before enabling Randomize Weather");
+                WeatherRandomizerService.MissionDir = (string)parsedJson["MissionDirectory"]!;
+            }
+            catch (FileNotFoundException e)
+            {
+                Nuclei.Logger?.LogError(e);
+                throw;
+            }
+        }
+
         Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
