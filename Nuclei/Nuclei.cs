@@ -119,4 +119,8 @@ public class Nuclei : BaseUnityPlugin
 
         Logger?.LogDebug("Unpatched!");
     }
+    private void OnPlayerJoin(Player player)
+    {
+        PlayerUtils.ApplyID(player);
+    }
 }
