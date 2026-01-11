@@ -65,6 +65,8 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new StopCommand(Config));
         CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
         CommandService.RegisterCommand(new HelpCommand(Config));
+        CommandService.RegisterCommand(new VoteKickCommand(Config));
+        CommandService.RegisterCommand(new VoteOptionCommand(Config));
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -116,5 +118,9 @@ public class Nuclei : BaseUnityPlugin
         IsPatched = false;
 
         Logger?.LogDebug("Unpatched!");
+    }
+    private void OnPlayerJoin(Player player)
+    {
+        PlayerUtils.ApplyID(player);
     }
 }
