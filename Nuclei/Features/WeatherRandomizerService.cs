@@ -16,7 +16,7 @@ using System.Text.Json;
          Nuclei.Logger?.LogInfo($"currentMissionFile: {currentMissionFile} ");
          
          string json = File.ReadAllText(currentMissionFile); 
-         var parsedJson = System.Text.Json.Nodes.JsonNode.Parse(json);
+         var parsedJson = System.Text.Json.Nodes.JsonNode.Parse(json)!;
         
          var writerOptions = new JsonSerializerOptions()
          {
@@ -24,14 +24,15 @@ using System.Text.Json;
          };
 
          Random rnd = new Random();
-         parsedJson["environment"]["timeOfDay"] = rnd.Next(3,13);
-         parsedJson["timeFactor"] = 2.0;
-         parsedJson["weatherIntensity"] = rnd.NextDouble() * 0.8;
-         parsedJson["cloudAltitude"] = 500 + rnd.NextDouble() * 1000;
-         parsedJson["cloudAltitude"] = 500 + rnd.NextDouble() * 1000;
-         parsedJson["windSpeed"] = rnd.NextDouble() * 4;
-         parsedJson["windTurbulence"] = rnd.NextDouble() * 1;
-         parsedJson["windHeading"] = rnd.Next(0, 360);
+         parsedJson["environment"]!["timeOfDay"] = rnd.Next(3,13);
+         parsedJson["environment"]!["timeFactor"] = 2.0;
+         parsedJson["environment"]!["weatherIntensity"] = rnd.NextDouble() * 0.9;
+         parsedJson["environment"]!["cloudAltitude"] = 500 + rnd.NextDouble() * 1000;
+         parsedJson["environment"]!["cloudAltitude"] = 500 + rnd.NextDouble() * 1000;
+         parsedJson["environment"]!["windSpeed"] = rnd.NextDouble() * 4;
+         parsedJson["environment"]!["windTurbulence"] = rnd.NextDouble() * 1;
+         parsedJson["environment"]!["windHeading"] = rnd.Next(0, 360);
+         parsedJson["environment"]!["windRandomHeading"] = rnd.Next(0, 91);
          File.WriteAllText(currentMissionFile, parsedJson.ToJsonString(writerOptions)); 
      }
  }
