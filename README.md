@@ -88,6 +88,8 @@ Code styling follows the default Rider/ReSharper settings.
 If you're interested in discussing the project, or need help, feel free to contact me on the Nuclear Option Discord. My
 username is `maxwasunavailable`.
 
+You may also contact me via my [personal modding server](https://discord.com/invite/8PJeFeMCsu).
+
 ## Credits
 
 - [Nuclear Option](https://store.steampowered.com/app/2168680/Nuclear_Option/), since without it, we couldn't make mods
