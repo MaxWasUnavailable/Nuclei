@@ -35,14 +35,14 @@ public static class VoteService
     /// handles a vote from the vote command
     /// </summary>
     /// <param name="voter"></param>
-    public static void HandleVote(Player voter)
+    public static void HandleVote(Player voter, bool votedYes)
     {
         if (_activeVote == null)
         {
             var commandPrefix = (char) AccessTools.Property(typeof(NucleiConfig), "CommandPrefixChar").GetValue(null);
             ChatService.SendPrivateChatMessage($"A vote session has not been started, use a vote command to start one.", voter);
         }
-        else _activeVote.AddVote(voter);
+        else _activeVote.AddVote(voter, votedYes);
     }
 
     public static void StopVoteKick()
@@ -55,7 +55,8 @@ public class VoteSession
 {
     private readonly Player _initiator;
     private readonly Timer _timer;
-    private HashSet<ulong> _voters;
+    private HashSet<ulong> _yesVoters;
+    private HashSet<ulong> _noVoters;
     private readonly string _startingMessage;
     private int _timeLeft;
     private int _voteThreshold; // don't want threshold changing as players leave or join
@@ -72,39 +73,61 @@ public class VoteSession
         _timeLeft = DEFAULT_VOTING_WINDOW;
         _timer = new Timer(1000);
         _timer.Elapsed += OnTimerTick;
-        _voters = [];
+        _yesVoters = [];
+        _noVoters = [];
         _startingMessage = startingMessage;
         _action = action;
     }
 
     public void Start()
     {
-        var commandPrefix = "/";
         ChatService.SendChatMessage(_startingMessage);
-        MissionMessages.ShowMessage($"Use {commandPrefix}vote to join. You have {_timeLeft} seconds to cast your vote. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
+        ChatService.SendChatMessage($"Type '{NucleiConfig.CommandPrefixChar}y' to vote yes, '{NucleiConfig.CommandPrefixChar}n' to vote no. You have {_timeLeft} seconds to cast your vote. ({_yesVoters.Count}/{_voteThreshold} YES votes, {_noVoters.Count}/{_voteThreshold} NO votes).");
         _timer.Start();
-        AddVote(_initiator);
+        AddVote(_initiator, true);
     }
-    
+
     /// <summary>
     /// Will add a vote to the vote kick if the player is not already in the hashset.
     /// </summary>
     /// <param name="voter"></param>
-    public void AddVote(Player voter)
+    public void AddVote(Player voter, bool votedYes)
     {
-        if (_voters.Add(voter.SteamID))
+        if (votedYes)
         {
-            ChatService.SendChatMessage("Voter's steamID added successfully");
-            ChatService.SendChatMessage($"{voter.PlayerName} has voted. ({_voters.Count}/{_voteThreshold} votes)");
-
-            if (_voters.Count >= _voteThreshold)
+            if (_yesVoters.Add(voter.SteamID))
             {
-                FinaliseVote(true);
+                ChatService.SendChatMessage(
+                    $"{voter.PlayerName} has voted. ({_yesVoters.Count}/{_voteThreshold} YES votes, {_noVoters.Count}/{_voteThreshold} NO votes).");
+
+                if (_yesVoters.Count >= _voteThreshold)
+                {
+                    ChatService.SendChatMessage("YES votes have reached a majority.");
+                    FinaliseVote(true);
+                }
+            }
+            else
+            {
+                ChatService.SendPrivateChatMessage("You have already voted.", voter);
             }
         }
         else
         {
-            ChatService.SendPrivateChatMessage("You have already voted.", voter);
+            if (_noVoters.Add(voter.SteamID))
+            {
+                ChatService.SendChatMessage(
+                    $"{voter.PlayerName} has voted. ({_yesVoters.Count}/{_voteThreshold} YES votes, {_noVoters.Count}/{_voteThreshold} NO votes).");
+
+                if (_noVoters.Count >= _voteThreshold)
+                {
+                    ChatService.SendChatMessage("NO votes have reached a majority.");
+                    FinaliseVote(false);
+                }
+            }
+            else
+            {
+                ChatService.SendPrivateChatMessage("You have already voted.", voter);
+            }
         }
     }
 
@@ -119,7 +142,7 @@ public class VoteSession
 
         if ((_timeLeft % 10 == 0 && _timeLeft > 0) || _timeLeft < 10) // every ten seconds or below 10 seconds every tick
         {
-            MissionMessages.ShowMessage($"Vote ends in {_timeLeft} seconds. ({_voters.Count}/{_voteThreshold} votes)", false, null, true);
+            ChatService.SendChatMessage($"Vote ends in {_timeLeft} seconds. Type `{NucleiConfig.CommandPrefixChar}y` to vote YES, '{NucleiConfig.CommandPrefixChar}n' for NO. ({_yesVoters.Count}/{_voteThreshold} YES votes, {_noVoters.Count}/{_voteThreshold} NO votes).");
         }
         
         if (_timeLeft <= 0)
@@ -146,8 +169,7 @@ public class VoteSession
         }
         else
         {
-            ChatService.SendChatMessage($"The vote has failed. ({_voters.Count}/{_voteThreshold} votes)");
-
+            ChatService.SendChatMessage($"The vote has failed. ({_yesVoters.Count}/{_voteThreshold} YES votes, {_noVoters.Count}/{_voteThreshold} NO votes)");
         }
     }
 
