@@ -13,34 +13,39 @@ public class RankCatchUpService
         }
         var currentMissionTime = Time.timeSinceLevelLoad;
         var maxMissionTime = Globals.DedicatedServerManagerInstance.CurrentMissionOption.MaxTime;
-        var percentComplete = currentMissionTime / maxMissionTime;
+        var percentComplete = (currentMissionTime / maxMissionTime) * 2;
 
+        var rank = 0;
+        var allocation = 0f;
 
         if (percentComplete < .20) return;
-        else if (percentComplete >= .80) 
+        else if (percentComplete >= .80)
         {
-            player.SetRank(5, false);
-            player.SetAllocation(player.Allocation + 300f);
+            rank = 5;
+            allocation = 400f;
         }
         else if (percentComplete >= .60) 
         {
-            player.SetRank(4, false);
-            player.SetAllocation(player.Allocation + 250f);
+            rank = 4;
+            allocation = 350f;
         }
         else if (percentComplete >= .40) 
         {
-            player.SetRank(3, false);
-            player.SetAllocation(player.Allocation + 200f);
+            rank = 3;
+            allocation = 300f;
         }
         else if (percentComplete >= .40) 
         {
-            player.SetRank(2, false);
-            player.SetAllocation(player.Allocation + 150f);
+            rank = 2;
+            allocation = 250f;
         }
         else if (percentComplete >= .20) 
         {
-            player.SetRank(1, false);
-            player.SetAllocation(player.Allocation + 100f);
+            rank = 1;
+            allocation = 200f;
         }
+        player.SetRank(rank, false);
+        player.SetAllocation(player.Allocation + allocation);
+        ChatService.SendPrivateChatMessage($"Late join - You have been promoted to Rank {rank} with +${allocation}m", player);
     }
 }
