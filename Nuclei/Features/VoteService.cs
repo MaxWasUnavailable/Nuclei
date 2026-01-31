@@ -12,6 +12,11 @@ public static class VoteService
 {
     private static VoteSession? _activeVote;
 
+    public static bool CanStartVote()
+    {
+        return _activeVote == null;
+    }
+
     /// <summary>
     /// start a vote-kick session for target player
     /// </summary>
@@ -19,16 +24,10 @@ public static class VoteService
     /// <param name="startingMessage"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    public static bool StartVote(Player initiator, string startingMessage, Action action)
+    public static void StartVote(Player initiator, string startingMessage, Action action)
     {
-        if (_activeVote != null)
-        {
-            return false; // vote in progress
-        }
-
         _activeVote = new VoteSession(initiator, startingMessage, action);
         _activeVote.Start();
-        return true;
     }
 
     /// <summary>
