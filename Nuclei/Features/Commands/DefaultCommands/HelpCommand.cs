@@ -41,5 +41,26 @@ public class HelpCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         return true;
     }
     
+    public override bool Execute(string[] args)
+    {
+        if (args.Length == 0)
+        {
+            var accessibleCommands = CommandService.GetCommands().Where(c => c.PermissionLevel <= PermissionLevel.Owner).ToList();
+            var commandNames = accessibleCommands.Select(c => c.Name).ToList();
+            Nuclei.Logger?.LogInfo($"You have access to the following commands: {string.Join(", ", commandNames)}");
+            return true;
+        }
+        
+        var commandName = args[0];
+        if (!CommandService.TryGetCommand(commandName, out var command))
+        {
+            Nuclei.Logger?.LogInfo($"Command '{commandName}' not found.");
+            return true;
+        }
+        
+        Nuclei.Logger?.LogInfo($"Command '{command.Name}': {command.Description}");
+        return true;
+    }
+    
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Everyone;
 }
