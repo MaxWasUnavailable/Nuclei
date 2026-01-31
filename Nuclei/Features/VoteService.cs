@@ -39,7 +39,6 @@ public static class VoteService
     {
         if (_activeVote == null)
         {
-            var commandPrefix = (char) AccessTools.Property(typeof(NucleiConfig), "CommandPrefixChar").GetValue(null);
             ChatService.SendPrivateChatMessage($"A vote session has not been started, use a vote command to start one.", voter);
         }
         else _activeVote.AddVote(voter, votedYes);
