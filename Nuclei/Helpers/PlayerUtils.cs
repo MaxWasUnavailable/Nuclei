@@ -18,7 +18,8 @@ public static class PlayerUtils
     ///     Get the Player object from an INetworkPlayer object, if available.
     /// </summary>
     /// <param name="networkPlayer"> The INetworkPlayer object. </param>
-    /// <returns> The Player object, if available. </returns>
+    /// <param name="player"> The Player component, if available. </param>
+    /// <returns> The true or false, if player was found or not. </returns>
     public static bool TryGetPlayer(this INetworkPlayer networkPlayer, out Player? player)
     {
         return PlayerHelper.TryGetPlayer(networkPlayer, out player);
