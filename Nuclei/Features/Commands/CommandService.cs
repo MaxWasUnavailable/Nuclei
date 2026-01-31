@@ -119,4 +119,30 @@ public static class CommandService
         
         return TryExecuteCommand(player, commandName, args);
     }
+    
+    /// <summary>
+    ///     Try to execute a command from the console.
+    /// </summary>
+    /// <param name="commandName"> The name of the command to execute. </param>
+    /// <param name="args"> The command arguments </param>
+    /// <returns> Whether the command was executed successfully. </returns>
+    public static bool TryExecuteCommand(string commandName, string[] args)
+    {
+        if (!TryGetCommand(commandName, out var command))
+        {
+            Nuclei.Logger?.LogWarning($"Command {commandName} not found");
+            return false;
+        }
+
+        if (command.Execute(args))
+        {
+            Nuclei.Logger?.LogInfo($"Command {commandName} executed successfully by console with argument(s): {string.Join(", ", args)}");
+        }
+        else
+        {
+            Nuclei.Logger?.LogWarning($"Command {commandName} failed to execute by console with argument(s): {string.Join(", ", args)}");
+        }
+   
+        return true;
+    }
 }
