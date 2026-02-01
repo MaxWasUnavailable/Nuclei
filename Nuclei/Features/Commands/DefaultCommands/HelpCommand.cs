@@ -25,8 +25,13 @@ public class HelpCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         if (args.Length == 0)
         {
             var accessibleCommands = CommandService.GetCommands().Where(c => c.PermissionLevel <= CommandService.GetPlayerPermissionLevel(player)).ToList();
-            var commandNames = accessibleCommands.Select(c => c.Name).ToList();
-            ChatService.SendPrivateChatMessage($"You have access to the following commands: {string.Join(", ", commandNames)}", player);
+            var commands = accessibleCommands.ToList();
+            ChatService.SendPrivateChatMessage($"You have access to the following commands:", player);
+            ChatService.SendPrivateChatMessage($"(For more help, type {NucleiConfig.CommandPrefixChar}{Usage})", player);
+            foreach (var cmd in commands)
+            {
+                ChatService.SendPrivateChatMessage($"{cmd.Name} - {cmd.Description}", player);
+            }
             return true;
         }
         
@@ -38,6 +43,7 @@ public class HelpCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         }
         
         ChatService.SendPrivateChatMessage($"Command '{command.Name}': {command.Description}", player);
+        ChatService.SendPrivateChatMessage($"Usage: {command.Usage}", player);
         return true;
     }
     

@@ -99,6 +99,8 @@ public static class NucleiConfig
 
     internal static ConfigEntry<string>? ServerBroadcastName;
     internal const string DefaultServerBroadcastName = "<color=#99182e>[Nuclei]</color>";
+    internal static ConfigEntry<bool>? RankCatchUp;
+    internal const bool DefaultRankCatchUp = true;
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -198,6 +200,9 @@ public static class NucleiConfig
         ServerBroadcastName = config.Bind(GeneralSection, "ServerBroadcastName", DefaultServerBroadcastName,
             "The name that appears in the chat when the server broadcasts a message.");
         Nuclei.Logger?.LogDebug($"ServerBroadcastName: {ServerBroadcastName}");
+
+        RankCatchUp = config.Bind(GeneralSection, "RankCatchUp", DefaultRankCatchUp, "Whether to enable the rank catch-up system, which gives players a rank and allocation boost based on how far into the mission they join.");
+        Nuclei.Logger?.LogDebug($"RankCatchUp: {RankCatchUp.Value}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
