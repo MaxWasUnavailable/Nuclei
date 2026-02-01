@@ -1,4 +1,5 @@
 using System;
+using Nuclei.Features;
 
 namespace Nuclei.Events;
 
@@ -57,6 +58,7 @@ public static class TimeEvents
     internal static void OnEvery10Minutes()
     {
         Every10Minutes?.Invoke();
+        AutoBalanceService.BalanceTeams();
     }
 
     internal static void OnEvery30Minutes()
