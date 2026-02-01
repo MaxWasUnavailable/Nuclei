@@ -26,6 +26,11 @@ public class NewMissionCommand(ConfigFile config) : PermissionConfigurableComman
     {
         throw new NotImplementedException();
     }
+    
+    public override bool Execute(string[] args)
+    {
+        throw new NotImplementedException();
+    }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;
 }

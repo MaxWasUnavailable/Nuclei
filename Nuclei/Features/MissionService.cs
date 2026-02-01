@@ -213,10 +213,9 @@ public static class MissionService
     
     // TODO: Deconstruct this into smaller, reusable functions
     /// <summary>
-    ///     Starts the next mission in the mission rotation if m = null. If m is provided, it'll
-    ///     load that mission instead
+    ///     Starts the next mission in the mission rotation.
     /// </summary>
-    public static async void StartNextMission(Player? player, MissionOptions? m = null)
+    public static async void StartNextMission(Player? player)
     {
         
         try
@@ -235,7 +234,7 @@ public static class MissionService
                 return;
             }
 
-            var nextOpt = m ?? mr.GetNext();
+            var nextOpt = mr.GetNext();
             if (!nextOpt.Key.TryGetKey(out var key))
             {
                 Nuclei.Logger?.LogWarning("Error: could not resolve mission key.");

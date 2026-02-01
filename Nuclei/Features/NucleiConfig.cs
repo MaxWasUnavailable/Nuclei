@@ -15,8 +15,15 @@ namespace Nuclei.Features;
 public static class NucleiConfig
 {
     internal const string GeneralSection = "General";
+    internal const string VotekickSection = "Votekick";
     internal const string TechnicalSection = "Technical";
     internal const string ExperimentalSection = "Experimental";
+
+    internal static ConfigEntry<double>? KickThreshold;
+    internal const double DefaultKickThreshold = 0.5;
+
+    internal static ConfigEntry<int>? KickTimeout;
+    internal const int DefaultKickTimeout = 20;
 
     internal static ConfigEntry<ushort>? MaxPlayers;
     internal const ushort DefaultMaxPlayers = 16;
@@ -83,6 +90,15 @@ public static class NucleiConfig
 
     internal static ConfigEntry<string>? CommandPrefix;
     internal const string DefaultCommandPrefix = "/";
+
+    internal static ConfigEntry<bool>? UseStaffPrefix;
+    internal const bool DefaultUseStaffPrefix = true;
+
+    internal static ConfigEntry<string>? StaffPrefix;
+    internal const string DefaultStaffPrefix = "<color=#FFD700>[Staff]</color>";
+
+    internal static ConfigEntry<string>? ServerBroadcastName;
+    internal const string DefaultServerBroadcastName = "<color=#99182e>[Nuclei]</color>";
     
     internal static List<string> ModeratorsList => Moderators!.Value.Split(';').Where(m => !string.IsNullOrWhiteSpace(m)).ToList();
     
@@ -98,6 +114,12 @@ public static class NucleiConfig
     internal static void InitSettings(ConfigFile config)
     {
         Nuclei.Logger?.LogDebug("Loading settings...");
+
+        KickThreshold = config.Bind(VotekickSection, "KickThreshold", DefaultKickThreshold, "The percentage of the lobby that needs to agree to kick the player.");
+        Nuclei.Logger?.LogDebug($"KickThreshold: {KickThreshold.Value}");
+
+        KickTimeout = config.Bind(VotekickSection, "KickTimeout", DefaultKickTimeout, "The time it takes before the votekick expires.");
+        Nuclei.Logger?.LogDebug($"KickTimeout: {KickTimeout.Value}");
         
         //MaxPlayers = config.Bind(GeneralSection, "MaxPlayers", DefaultMaxPlayers, "The maximum number of players allowed in the server.");
         //Nuclei.Logger?.LogDebug($"MaxPlayers: {MaxPlayers.Value}");
@@ -164,6 +186,18 @@ public static class NucleiConfig
 
         CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "What to use as the command prefix (the character at the start of a command).");
         Nuclei.Logger?.LogDebug($"CommandPrefix: {CommandPrefix.Value}");
+
+        UseStaffPrefix = config.Bind(GeneralSection, "UseStaffPrefix", DefaultUseStaffPrefix,
+            "Whether to use staff prefix or not.");
+        Nuclei.Logger?.LogDebug($"UseStaffPrefix: {UseStaffPrefix.Value}");
+
+        StaffPrefix = config.Bind(GeneralSection, "StaffPrefix", DefaultStaffPrefix,
+            "The prefix added in-front of the usernames of Moderators, Admins and the Owner.");
+        Nuclei.Logger?.LogDebug($"StaffTag: {StaffPrefix.Value}");
+
+        ServerBroadcastName = config.Bind(GeneralSection, "ServerBroadcastName", DefaultServerBroadcastName,
+            "The name that appears in the chat when the server broadcasts a message.");
+        Nuclei.Logger?.LogDebug($"ServerBroadcastName: {ServerBroadcastName}");
         
         Nuclei.Logger?.LogDebug("Loaded settings!");
     }
@@ -212,6 +246,18 @@ public static class NucleiConfig
         {
             Nuclei.Logger?.LogWarning("CommandPrefix must be a single character! Resetting to default value.");
             CommandPrefix.Value = DefaultCommandPrefix;
+        }
+
+        if (UseStaffPrefix!.Value && StaffPrefix!.Value.Length == 0)
+        {
+            Nuclei.Logger?.LogWarning("UseStaffPrefix is enabled, however no StaffPrefix has been set. Resetting to default value.");
+            StaffPrefix.Value = DefaultStaffPrefix;
+        }
+
+        if (ServerBroadcastName!.Value.Length == 0)
+        {
+            Nuclei.Logger?.LogWarning("No ServerBroadcastName has been set. Resetting to default value.");
+            ServerBroadcastName.Value = DefaultServerBroadcastName;
         }
         
         ValidateForUserErrors();

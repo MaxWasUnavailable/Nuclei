@@ -7,7 +7,7 @@ using Nuclei.Helpers;
 namespace Nuclei.Features.Commands.DefaultCommands;
 
 /// <summary>
-///     Command to kick a player from the server.
+///     Command to ban a player from the server.
 /// </summary>
 public class BanCommand(ConfigFile config) : PermissionConfigurableCommand(config)
 {
@@ -42,6 +42,24 @@ public class BanCommand(ConfigFile config) : PermissionConfigurableCommand(confi
         Nuclei.Logger?.LogWarning($"Player {target} not found.");
         return false;
     }
-    
+
+    public override bool Execute(string[] args)
+    {
+        var target = args[0];
+
+        if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
+        {
+
+            NucleiConfig.AddBannedPlayer(targetPlayer!.SteamID.ToString());
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
+            Nuclei.Logger?.LogInfo($"Player {target} banned from the server.");
+            return true;
+        }
+
+        Nuclei.Logger?.LogWarning($"Player {target} not found.");
+        return false;
+    }
+
+
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }

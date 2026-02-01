@@ -43,6 +43,22 @@ public class KickCommand(ConfigFile config) : PermissionConfigurableCommand(conf
         Nuclei.Logger?.LogWarning($"Player {target} not found.");
         return false;
     }
+    
+    public override bool Execute(string[] args)
+    {
+        var target = args[0];
+
+        if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
+        {
+            _ = Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(targetPlayer);
+            Nuclei.Logger?.LogInfo($"Player {target} was kicked from the server.");
+            ChatService.SendChatMessage($"Player {target} was kicked from the server.");
+            return true;
+        }
+
+        Nuclei.Logger?.LogWarning($"Player {target} not found.");
+        return false;
+    }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Moderator;
 }
