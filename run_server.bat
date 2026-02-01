@@ -1,1 +1,0 @@
-start NuclearOption.exe -batchmode -nographics

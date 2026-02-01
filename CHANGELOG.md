@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Merged PR's #28, #30, #32, and #36
+  - These add various fixes & refactors, some new commands (vote kick & vote mission), and an STDIN console reader.
+  Many thanks to the contributors.
 - Ported to new official dedicated server (credits go to bekkos)
 
 ## 1.3.3 - 2025-05-18
