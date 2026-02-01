@@ -67,7 +67,10 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new NextMissionCommand(Config));
         CommandService.RegisterCommand(new BanSteamIDCommand(Config));
         CommandService.RegisterCommand(new ListCommand(Config));
-
+        CommandService.RegisterCommand(new VoteKickCommand(Config));
+        CommandService.RegisterCommand(new VoteYesCommand(Config));
+        CommandService.RegisterCommand(new VoteNoCommand(Config));
+        
         PlayerEvents.PlayerJoined += OnPlayerJoin;
 
         if (IsPatched)
@@ -136,5 +139,6 @@ public class Nuclei : BaseUnityPlugin
     {
         BanService.VerifyNotBanned(player);
         PlayerUtils.ApplyOrRemoveStaffTag(player);
+        PlayerUtils.ApplyID(player);
     }
 }
