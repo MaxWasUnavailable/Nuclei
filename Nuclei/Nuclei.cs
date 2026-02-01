@@ -70,6 +70,8 @@ public class Nuclei : BaseUnityPlugin
         CommandService.RegisterCommand(new VoteKickCommand(Config));
         CommandService.RegisterCommand(new VoteYesCommand(Config));
         CommandService.RegisterCommand(new VoteNoCommand(Config));
+        CommandService.RegisterCommand(new VoteSkipCommand(Config));
+        CommandService.RegisterCommand(new VoteMissionCommand(Config));
         
         PlayerEvents.PlayerJoined += OnPlayerJoin;
 

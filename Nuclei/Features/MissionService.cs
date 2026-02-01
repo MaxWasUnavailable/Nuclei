@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using NuclearOption.DedicatedServer;
 using NuclearOption.Networking;
 using NuclearOption.Networking.Lobbies;
 using NuclearOption.SavedMission;
