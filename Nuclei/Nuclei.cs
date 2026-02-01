@@ -10,7 +10,6 @@ using Nuclei.Features;
 using Nuclei.Features.Commands;
 using Nuclei.Features.Commands.DefaultCommands;
 using Nuclei.Helpers;
-using UnityEngine;
 
 namespace Nuclei;
 
@@ -31,7 +30,8 @@ public class Nuclei : BaseUnityPlugin
         Instance = this;
         
         Logger = base.Logger;
-        var unityCtx = SynchronizationContext.Current ?? new SynchronizationContext(); 
+
+        var unityCtx = SynchronizationContext.Current ?? new SynchronizationContext();
         _console = new ConsoleManager(unityCtx, HandleConsoleCommand);
         _console.Start();
         
@@ -56,24 +56,8 @@ public class Nuclei : BaseUnityPlugin
         }
 
         PatchAll();
-        
-        CommandService.RegisterCommand(new SayCommand(Config));
-        CommandService.RegisterCommand(new NewMissionCommand(Config));
-        CommandService.RegisterCommand(new KickCommand(Config));
-        CommandService.RegisterCommand(new BanCommand(Config));
-        CommandService.RegisterCommand(new StopCommand(Config));
-        CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
-        CommandService.RegisterCommand(new HelpCommand(Config));
-        CommandService.RegisterCommand(new NextMissionCommand(Config));
-        CommandService.RegisterCommand(new BanSteamIDCommand(Config));
-        CommandService.RegisterCommand(new ListCommand(Config));
-        CommandService.RegisterCommand(new VoteKickCommand(Config));
-        CommandService.RegisterCommand(new VoteYesCommand(Config));
-        CommandService.RegisterCommand(new VoteNoCommand(Config));
-        CommandService.RegisterCommand(new VoteSkipCommand(Config));
-        CommandService.RegisterCommand(new VoteMissionCommand(Config));
-        
-        PlayerEvents.PlayerJoined += OnPlayerJoin;
+        RegisterCommands();
+        SubscribeToEvents();
 
         if (IsPatched)
             Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -126,7 +110,37 @@ public class Nuclei : BaseUnityPlugin
 
         Logger?.LogDebug("Unpatched!");
     }
-    
+
+    private void RegisterCommands()
+    {
+        CommandService.RegisterCommand(new SayCommand(Config));
+        CommandService.RegisterCommand(new NewMissionCommand(Config));
+        CommandService.RegisterCommand(new KickCommand(Config));
+        CommandService.RegisterCommand(new BanCommand(Config));
+        CommandService.RegisterCommand(new StopCommand(Config));
+        CommandService.RegisterCommand(new SetPermissionLevelCommand(Config));
+        CommandService.RegisterCommand(new HelpCommand(Config));
+        CommandService.RegisterCommand(new NextMissionCommand(Config));
+        CommandService.RegisterCommand(new BanSteamIDCommand(Config));
+        CommandService.RegisterCommand(new ListCommand(Config));
+        CommandService.RegisterCommand(new VoteKickCommand(Config));
+        CommandService.RegisterCommand(new VoteYesCommand(Config));
+        CommandService.RegisterCommand(new VoteNoCommand(Config));
+        CommandService.RegisterCommand(new VoteSkipCommand(Config));
+        CommandService.RegisterCommand(new VoteMissionCommand(Config));
+    }
+
+    private void SubscribeToEvents()
+    {
+        PlayerEvents.PlayerJoined += OnPlayerJoin;
+    }
+
+    private void OnDestroy()
+    {
+        UnpatchSelf();
+        _console?.Stop();
+    }
+
     // TODO: Move these somewhere else?
     private static void HandleConsoleCommand(string rawLine, string[] args)
     {

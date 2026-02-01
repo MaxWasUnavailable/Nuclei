@@ -1,12 +1,9 @@
-
-
 using System;
 using System.Collections.Generic;
 using BepInEx.Configuration;
 using NuclearOption.DedicatedServer;
 using NuclearOption.Networking;
 using Nuclei.Enums;
-using Nuclei.Helpers;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Nuclei.Features.Commands.DefaultCommands;
@@ -27,18 +24,25 @@ public class VoteSkipCommand(ConfigFile config) : PermissionConfigurableCommand(
 
     public override bool Execute(Player player, string[] args)
     {
-        Action a = () => MissionService.StartNextMission(player);
-
-        if (!VoteService.StartVote(player, $"A vote to skip the current mission has been started", a))
+        if (VoteService.CanStartVote())
+        {
+            VoteService.StartVote(player, "A vote to skip the current mission has been started", Action);
+        }
+        else
         {
             ChatService.SendPrivateChatMessage("Cannot start a new mission skip vote, please wait for current vote to expire.", player);
             return false;
         }
         return true;
+
+        void Action()
+        {
+            MissionService.StartNextMission(player);
+        }
     }
 
     public override bool Execute(string[] args)
     {
-        throw new System.Exception("Requires Player object");
+        throw new Exception("Requires Player object");
     }
 }

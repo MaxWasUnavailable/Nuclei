@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using BepInEx.Configuration;
 using NuclearOption.DedicatedServer;
 using NuclearOption.Networking;
@@ -38,10 +37,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
 
             ChatService.SendPrivateChatMessage($"Choose from the following missions ({NucleiConfig.CommandPrefixChar}votemission <number>):", player);
             // Get missions
-            for (int i = 0; i < _fetchedMissions.Count; i++)
-            {
-                ChatService.SendPrivateChatMessage($"{i + 1}: {_fetchedMissions[i].Key.Name}", player);
-            }
+            for (var i = 0; i < _fetchedMissions.Count; i++) ChatService.SendPrivateChatMessage($"{i + 1}: {_fetchedMissions[i].Key.Name}", player);
             return true;
         }
 
@@ -51,7 +47,7 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
             return false;
         }
 
-        int idx = int.Parse(args[0]);
+        var idx = int.Parse(args[0]);
 
         if (idx > _fetchedMissions.Count)
         {
@@ -59,18 +55,26 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
             return false;
         }
 
-        void Action()
+        if (VoteService.CanStartVote())
         {
-            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx - 1]);
+            VoteService.StartVote(
+                player,
+                $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started",
+                Action
+            );
         }
-
-        if (!VoteService.StartVote(player, $"Mission vote for {_fetchedMissions[idx - 1].Key.Name} has been started", Action))
+        else
         {
             ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
             return false;
         }
         _fetchedMissions = null;
         return true;
+
+        void Action()
+        {
+            Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx - 1]);
+        }
     }
 
     public override bool Execute(string[] args)
