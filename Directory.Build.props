@@ -1,4 +1,6 @@
 ﻿<Project>
+  <Import Project="Directory.Build.user.props" Condition="Exists('Directory.Build.user.props')" />
+
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>

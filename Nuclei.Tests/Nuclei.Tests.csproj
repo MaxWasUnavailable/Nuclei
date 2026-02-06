@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <NoWarn>1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="NUnit" />
+        <PackageReference Include="NUnit.Analyzers" />
+        <PackageReference Include="NUnit3TestAdapter" />
+        <PackageReference Include="Moq" />
+        <PackageReference Include="FluentAssertions" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nuclei.Adapters\Nuclei.Adapters.csproj" />
+        <ProjectReference Include="..\Nuclei.Abstractions\Nuclei.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="NUnit.Framework" />
+    </ItemGroup>
+
+    <!-- Nuclear Option-specific Assembly References -->
+    <Import Project="..\build\GameReferences.props" />
+
+    <ItemGroup>
+        <Reference Update="Assembly-CSharp" Private="True" />
+        <Reference Update="Assembly-CSharp-firstpass" Private="True" />
+        <Reference Update="UnityEngine" Private="True" />
+        <Reference Update="UnityEngine.CoreModule" Private="True" />
+        <Reference Update="UnityEngine.AudioModule" Private="True" />
+        <Reference Update="UnityEngine.PhysicsModule" Private="True" />
+        <Reference Update="UniTask" Private="True" />
+        <Reference Update="Mirage" Private="True" />
+        <Reference Update="Mirage.SocketLayer" Private="True" />
+        <Reference Update="Mirage.Sockets.Udp" Private="True" />
+        <Reference Update="Mirage.SteamworksSocket" Private="True" />
+        <Reference Update="Mirage.Authenticators" Private="True" />
+        <Reference Update="Mirage.Components" Private="True" />
+        <Reference Update="com.rlabrecque.steamworks.net" Private="True" />
+    </ItemGroup>
+</Project>

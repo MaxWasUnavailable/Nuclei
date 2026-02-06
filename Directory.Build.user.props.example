@@ -1,0 +1,7 @@
+﻿<Project>
+  <PropertyGroup>
+    <!-- Path to the Nuclear Option dedicated server references (DLL folder). -->
+    <NUCLEAR_OPTION_SERVER_REFERENCES>C:\Path\To\NuclearOption\DedicatedServer\NuclearOptionServer_Data\Managed</NUCLEAR_OPTION_SERVER_REFERENCES>
+  </PropertyGroup>
+</Project>
+

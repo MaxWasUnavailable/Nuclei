@@ -1,9 +1,20 @@
 ﻿<Project>
   <ItemGroup>
+    <!-- Main modding dependencies -->
     <PackageVersion Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3"/>
     <PackageVersion Include="BepInEx.Analyzers" Version="1.*"/>
     <PackageVersion Include="BepInEx.Core" Version="5.*"/>
     <PackageVersion Include="BepInEx.PluginInfoProps" Version="1.*"/>
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2"/>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Testing dependencies -->
+    <PackageVersion Include="coverlet.collector" Version="6.0.4"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0"/>
+    <PackageVersion Include="NUnit" Version="4.3.2"/>
+    <PackageVersion Include="NUnit.Analyzers" Version="4.7.0"/>
+    <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0"/>
+    <PackageVersion Include="Moq" Version="4.20.70"/>
+    <PackageVersion Include="FluentAssertions" Version="6.12.0"/>
   </ItemGroup>
 </Project>
