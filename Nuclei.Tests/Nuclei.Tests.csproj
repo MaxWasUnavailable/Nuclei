@@ -17,6 +17,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Nuclei.Adapters\Nuclei.Adapters.csproj" />
         <ProjectReference Include="..\Nuclei.Abstractions\Nuclei.Abstractions.csproj" />
+        <ProjectReference Include="..\Nuclei.Core\Nuclei.Core.csproj" />
+        <ProjectReference Include="..\Nuclei.Events\Nuclei.Events.csproj" />
     </ItemGroup>
 
     <ItemGroup>
