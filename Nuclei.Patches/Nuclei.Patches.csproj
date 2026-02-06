@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Nuclei.Events\Nuclei.Events.csproj" />
+      <ProjectReference Include="..\Nuclei.Adapters\Nuclei.Adapters.csproj" />
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->
