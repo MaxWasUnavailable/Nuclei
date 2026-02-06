@@ -27,6 +27,16 @@ public static class MissionEvents
     /// </summary>
     public static event Action? PostMissionEnded;
 
+    /// <summary>
+    ///     Event handler fired before a mission completes.
+    /// </summary>
+    public static event Action? PreMissionCompleted;
+
+    /// <summary>
+    ///     Event handler fired after a mission completes.
+    /// </summary>
+    public static event Action? PostMissionCompleted;
+
     internal static void OnPreMissionStarted()
     {
         PreMissionStarted?.Invoke();
@@ -45,5 +55,15 @@ public static class MissionEvents
     internal static void OnPostMissionEnded()
     {
         PostMissionEnded?.Invoke();
+    }
+
+    internal static void OnPreMissionCompleted()
+    {
+        PreMissionCompleted?.Invoke();
+    }
+
+    internal static void OnPostMissionCompleted()
+    {
+        PostMissionCompleted?.Invoke();
     }
 }
