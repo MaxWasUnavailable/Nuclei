@@ -6,10 +6,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS0436</NoWarn>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://nuget.bepinex.dev/v3/index.json
-    </RestoreAdditionalProjectSources>
     <ModDestination>$(NUCLEAR_OPTION_SERVER_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
     <ModName>MaxWasUnavailable.Nuclei</ModName>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
