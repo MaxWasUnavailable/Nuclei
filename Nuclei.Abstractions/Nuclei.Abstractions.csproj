@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- General Project Information -->
+        <AssemblyName>MaxWasUnavailable.Nuclei.Abstractions</AssemblyName>
+        <PackageId>MaxWasUnavailable.Nuclei.Abstractions</PackageId>
+        <Title>Nuclei.Abstractions</Title>
+        <Description>Abstraction layer for Nuclear Option systems and objects.</Description>
+        <Version>1.0.0</Version>
+        <Authors>MaxWasUnavailable</Authors>
+        <PackageTags>nuclear;option;bepinex</PackageTags>
+
+        <!-- Package Information -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/MaxWasUnavailable/Nuclei</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/MaxWasUnavailable/Nuclei</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <!-- Nuclear Option-specific Assembly References -->
+    <Import Project="..\build\GameReferences.props" />
+</Project>

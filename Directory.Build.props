@@ -1,0 +1,29 @@
+﻿<Project>
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
+    <RestoreAdditionalProjectSources>
+      https://api.nuget.org/v3/index.json;
+      https://nuget.bepinex.dev/v3/index.json
+    </RestoreAdditionalProjectSources>
+    <ModDestination>$(NUCLEAR_OPTION_SERVER_REFERENCES)\..\..\BepInEx\plugins</ModDestination>
+    <ModName>MaxWasUnavailable.Nuclei</ModName>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" PrivateAssets="all" ExcludeAssets="runtime"/>
+    <PackageReference Include="BepInEx.Analyzers" PrivateAssets="all"/>
+    <PackageReference Include="BepInEx.Core"/>
+    <PackageReference Include="BepInEx.PluginInfoProps"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all"/>
+  </ItemGroup>
+</Project>

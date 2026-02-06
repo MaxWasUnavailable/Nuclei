@@ -1,0 +1,16 @@
+﻿<Project>
+  <Target Name="PostBuild" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' AND '$(ModDestination)' != '' AND '$(CopyToBepInEx)' == 'true'">
+    <CreateItem Include="$(OutDir)*.dll">
+      <Output TaskParameter="Include" ItemName="DllFiles"/>
+    </CreateItem>
+
+    <Message Text="Copying build output assemblies from $(OutDir)*.dll to $(ModDestination)\$(ModName)" Importance="high"/>
+    <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(ModDestination)\$(ModName)"/>
+
+    <Message Text="Copying README from $(ProjectDir)..\README.md to $(ModDestination)\$(ModName)" Importance="high"/>
+    <Copy SourceFiles="$(ProjectDir)..\README.md" DestinationFolder="$(ModDestination)\$(ModName)"/>
+
+    <Message Text="Copying CHANGELOG from $(ProjectDir)..\CHANGELOG.md to $(ModDestination)\$(ModName)" Importance="high"/>
+    <Copy SourceFiles="$(ProjectDir)..\CHANGELOG.md" DestinationFolder="$(ModDestination)\$(ModName)"/>
+  </Target>
+</Project>

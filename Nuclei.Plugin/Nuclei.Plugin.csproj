@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- General Project Information -->
+        <AssemblyName>MaxWasUnavailable.Nuclei.Plugin</AssemblyName>
+        <PackageId>MaxWasUnavailable.Nuclei.Plugin</PackageId>
+        <Title>Nuclei.Plugin</Title>
+        <Description>A flexible and powerful dedicated server solution for Nuclear Option.</Description>
+        <Version>2.0.0</Version>
+        <Authors>MaxWasUnavailable</Authors>
+        <PackageTags>nuclear;option;bepinex</PackageTags>
+
+        <!-- Package Information -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/MaxWasUnavailable/Nuclei</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/MaxWasUnavailable/Nuclei</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+
+        <!-- Mod Destination -->
+        <CopyToBepInEx>true</CopyToBepInEx>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nuclei.Core\Nuclei.Core.csproj" />
+        <ProjectReference Include="..\Nuclei.Abstractions\Nuclei.Abstractions.csproj" />
+    </ItemGroup>
+
+    <!-- Nuclear Option-specific Assembly References -->
+    <Import Project="..\build\GameReferences.props" />
+</Project>

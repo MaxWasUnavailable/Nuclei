@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- General clean-up & refactor of Nuclei in order to improve maintainability, and prepare for future features.
 - Merged PR's #28, #30, #32, and #36
   - These add various fixes & refactors, some new commands (vote kick & vote mission), and an STDIN console reader.
   Many thanks to the contributors.

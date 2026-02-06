@@ -1,0 +1,9 @@
+﻿<Project>
+  <ItemGroup>
+    <PackageVersion Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3"/>
+    <PackageVersion Include="BepInEx.Analyzers" Version="1.*"/>
+    <PackageVersion Include="BepInEx.Core" Version="5.*"/>
+    <PackageVersion Include="BepInEx.PluginInfoProps" Version="1.*"/>
+    <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2"/>
+  </ItemGroup>
+</Project>
