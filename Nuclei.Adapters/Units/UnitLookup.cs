@@ -15,7 +15,6 @@ public sealed class UnitLookup : IUnitLookup
 
         var name = unit.unitName ?? unit.name;
         return new UnitInfo(id.ToString(), name);
-
     }
 }
 
