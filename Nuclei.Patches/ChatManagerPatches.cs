@@ -19,12 +19,15 @@ internal static class ChatManagerPatches
     [HarmonyPrefix]
     [HarmonyPatch(nameof(ChatManager.CmdSendChatMessage))]
     [HarmonyPatch([typeof(string), typeof(bool), typeof(INetworkPlayer)])]
-    private static void CmdSendChatMessagePrefix(string message, bool allChat, INetworkPlayer sender, ref ChatMessageEvent? __state)
+    private static bool CmdSendChatMessagePrefix(string message, bool allChat, INetworkPlayer sender, ref ChatMessageEvent? __state)
     {
-        var playerInfo = Lookup.FromNetworkPlayer(sender);
-        var chatMessage = new ChatMessage(playerInfo, message, allChat);
-        __state = new ChatMessageEvent(chatMessage);
-        ChatEvents.OnPreChatMessageSent(__state);
+        var payload = new ChatMessageEvent(new ChatMessage(Lookup.FromNetworkPlayer(sender), message, allChat));
+        var shouldSend = true;
+
+        ChatEvents.OnPreChatMessageSent(ref payload, ref shouldSend);
+
+        __state = shouldSend ? payload : null;
+        return shouldSend;
     }
 
     [HarmonyPostfix]
