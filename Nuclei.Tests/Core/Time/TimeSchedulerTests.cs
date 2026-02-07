@@ -3,7 +3,7 @@ using FluentAssertions;
 using Nuclei.Core.Time;
 using Nuclei.Events.Events;
 
-namespace Nuclei.Tests.Time;
+namespace Nuclei.Tests.Core.Time;
 
 /// <summary>
 ///     Tests for <see cref="TimeScheduler" />.
