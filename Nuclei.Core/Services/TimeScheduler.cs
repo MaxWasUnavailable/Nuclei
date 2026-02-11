@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nuclei.Abstractions.BepInEx.Logging;
 using Nuclei.Events.Events;
 
 namespace Nuclei.Core.Services;
@@ -12,15 +13,18 @@ public sealed class TimeScheduler
 {
     private static readonly TimeSpan Second = TimeSpan.FromSeconds(1);
 
+    private TimeSpan _accumulatedTime;
     private readonly object _sync = new();
     private readonly List<IntervalEntry> _intervals = [];
     private long _elapsedSeconds;
+    private readonly ILogger? _logger;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="TimeScheduler" /> class and registers the default time events.
     /// </summary>
-    public TimeScheduler()
+    public TimeScheduler(ILogger? logger = null)
     {
+        _logger = logger;
         RegisterInterval(TimeSpan.FromMinutes(1), TimeEvents.OnEveryMinute);
         RegisterInterval(TimeSpan.FromMinutes(30), TimeEvents.OnEvery30Minutes);
         RegisterInterval(TimeSpan.FromHours(1), TimeEvents.OnEveryHour);
@@ -54,10 +58,20 @@ public sealed class TimeScheduler
     /// </summary>
     public void Tick(TimeSpan delta)
     {
-        if (delta < Second)
+        if (delta < TimeSpan.Zero)
+        {
+            _logger?.Warn($"Received negative delta time ({delta}). This is not expected and may cause issues with time-based events. Ignoring this tick.");
+            return;
+        }
+
+        _accumulatedTime += delta;
+
+        if (_accumulatedTime < Second)
             return;
 
-        var secondsToProcess = (long)delta.TotalSeconds;
+        var secondsToProcess = (long)_accumulatedTime.TotalSeconds;
+        _accumulatedTime -= TimeSpan.FromSeconds(secondsToProcess);
+
         for (var i = 0; i < secondsToProcess; i++)
             TickSecond();
     }
@@ -69,9 +83,7 @@ public sealed class TimeScheduler
         lock (_sync)
         {
             _elapsedSeconds++;
-            var totalSeconds = _elapsedSeconds;
-
-            foreach (var entry in _intervals.Where(entry => totalSeconds >= entry.NextDueSecond))
+            foreach (var entry in _intervals.Where(entry => _elapsedSeconds >= entry.NextDueSecond))
             {
                 entry.NextDueSecond += entry.IntervalSeconds;
                 callbacks ??= [];
