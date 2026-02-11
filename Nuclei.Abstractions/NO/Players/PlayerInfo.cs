@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Players;
+﻿namespace Nuclei.Abstractions.NO.Players;
 
 /// <summary>
 ///     Default implementation of <see cref="IPlayerInfo"/>.

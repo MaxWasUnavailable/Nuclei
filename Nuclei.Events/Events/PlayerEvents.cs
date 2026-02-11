@@ -1,5 +1,5 @@
 using System;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Events.Events;
 

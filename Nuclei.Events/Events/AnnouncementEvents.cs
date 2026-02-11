@@ -1,6 +1,6 @@
 ﻿using System;
-using Nuclei.Abstractions.Factions;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Factions;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Events.Events;
 

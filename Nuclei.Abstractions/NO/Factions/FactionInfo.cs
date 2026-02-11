@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Factions;
+﻿namespace Nuclei.Abstractions.NO.Factions;
 
 /// <summary>
 ///     Defines a faction.

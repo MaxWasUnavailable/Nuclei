@@ -1,11 +1,11 @@
 ﻿using HarmonyLib;
 using Mirage;
 using NuclearOption;
-using Nuclei.Abstractions.Airbases;
-using Nuclei.Abstractions.Factions;
-using Nuclei.Abstractions.Positions;
-using Nuclei.Abstractions.Units;
-using Nuclei.Abstractions.Zones;
+using Nuclei.Abstractions.NO.Airbases;
+using Nuclei.Abstractions.NO.Factions;
+using Nuclei.Abstractions.NO.Positions;
+using Nuclei.Abstractions.NO.Units;
+using Nuclei.Abstractions.NO.Zones;
 using Nuclei.Adapters.Units;
 using Nuclei.Events.Events;
 

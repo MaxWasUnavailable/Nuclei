@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Config;
+﻿namespace Nuclei.Abstractions.BepInEx.Config;
 
 /// <summary>
 ///     Defines a provider for configuration entries.

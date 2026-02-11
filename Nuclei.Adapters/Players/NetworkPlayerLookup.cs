@@ -1,7 +1,7 @@
 ﻿using System;
 using Mirage;
 using NuclearOption.Networking;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Adapters.Players;
 

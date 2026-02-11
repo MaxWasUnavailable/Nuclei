@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Airbases;
+﻿namespace Nuclei.Abstractions.NO.Airbases;
 
 /// <summary>
 ///     Defines an airbase.

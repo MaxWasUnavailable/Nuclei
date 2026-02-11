@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclei.Abstractions.Logging;
+namespace Nuclei.Abstractions.BepInEx.Logging;
 
 /// <summary>
 ///     Defines the interface for a logger.

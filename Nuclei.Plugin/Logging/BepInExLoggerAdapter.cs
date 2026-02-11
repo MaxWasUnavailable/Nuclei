@@ -1,6 +1,6 @@
 ﻿using System;
 using BepInEx.Logging;
-using Nuclei.Abstractions.Logging;
+using Nuclei.Abstractions.BepInEx.Logging;
 
 namespace Nuclei.Plugin.Logging;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using Nuclei.Core.Time;
+using Nuclei.Core.Services;
 using Nuclei.Events.Events;
 
 namespace Nuclei.Tests.Core.Time;

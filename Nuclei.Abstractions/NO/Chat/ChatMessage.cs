@@ -1,6 +1,6 @@
-﻿using Nuclei.Abstractions.Players;
+﻿using Nuclei.Abstractions.NO.Players;
 
-namespace Nuclei.Abstractions.Chat;
+namespace Nuclei.Abstractions.NO.Chat;
 
 /// <summary>
 ///     Data for a chat message event.

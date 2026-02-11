@@ -1,5 +1,5 @@
 ﻿using System;
-using Nuclei.Abstractions.Chat;
+using Nuclei.Abstractions.NO.Chat;
 
 namespace Nuclei.Events.Events;
 
@@ -18,9 +18,9 @@ public static class ChatEvents
     /// </summary>
     public static event Action<ChatMessageEvent>? PostChatMessageSent;
 
-    internal static void OnPreChatMessageSent(ref ChatMessageEvent message, ref bool shouldSend)
+    internal static void OnPreChatMessageSent(ref ChatMessageEvent message, ref bool shouldSendOriginal)
     {
-        PreChatMessageSent?.Invoke(ref message, ref shouldSend);
+        PreChatMessageSent?.Invoke(ref message, ref shouldSendOriginal);
     }
 
     internal static void OnPostChatMessageSent(ChatMessageEvent message)
@@ -39,5 +39,7 @@ public sealed record ChatMessageEvent(ChatMessage Message);
 ///     Delegate for cancelable chat message events.
 /// </summary>
 /// <param name="message">The chat message associated with the event.</param>
-/// <param name="shouldSend">Whether the message should be sent.</param>
-public delegate void ChatMessageEventHandler(ref ChatMessageEvent message, ref bool shouldSend);
+/// <param name="shouldSendOriginal">
+///     Whether the original message should be sent. If False, prevent patched method from running.
+/// </param>
+public delegate void ChatMessageEventHandler(ref ChatMessageEvent message, ref bool shouldSendOriginal);

@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Units;
+﻿namespace Nuclei.Abstractions.NO.Units;
 
 /// <summary>
 ///     Defines a unit.

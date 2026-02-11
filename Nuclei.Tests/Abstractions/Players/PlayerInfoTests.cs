@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Tests.Abstractions.Players;
 

@@ -1,5 +1,5 @@
 ﻿using BepInEx.Configuration;
-using Nuclei.Abstractions.Config;
+using Nuclei.Abstractions.BepInEx.Config;
 
 namespace Nuclei.Plugin.Config;
 

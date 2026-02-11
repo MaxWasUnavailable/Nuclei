@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using Nuclei.Abstractions.Chat;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Chat;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Tests.Abstractions.Chat;
 

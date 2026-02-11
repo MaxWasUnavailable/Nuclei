@@ -1,5 +1,5 @@
 ﻿using Mirage;
-using Nuclei.Abstractions.Players;
+using Nuclei.Abstractions.NO.Players;
 
 namespace Nuclei.Adapters.Players;
 

@@ -1,7 +1,7 @@
 ﻿using System;
-using Nuclei.Abstractions.Airbases;
-using Nuclei.Abstractions.Factions;
-using Nuclei.Abstractions.Zones;
+using Nuclei.Abstractions.NO.Airbases;
+using Nuclei.Abstractions.NO.Factions;
+using Nuclei.Abstractions.NO.Zones;
 
 namespace Nuclei.Events.Events;
 

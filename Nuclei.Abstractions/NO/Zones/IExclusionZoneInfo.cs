@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Zones;
+﻿namespace Nuclei.Abstractions.NO.Zones;
 
 /// <summary>
 ///     Defines an exclusion zone.

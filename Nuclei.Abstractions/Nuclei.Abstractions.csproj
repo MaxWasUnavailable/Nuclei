@@ -18,6 +18,11 @@
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="BepInEx\" />
+      <Folder Include="NO\" />
+    </ItemGroup>
+
     <!-- Nuclear Option-specific Assembly References -->
     <Import Project="..\build\GameReferences.props" />
 </Project>

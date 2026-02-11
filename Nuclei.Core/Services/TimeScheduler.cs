@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nuclei.Events.Events;
 
-namespace Nuclei.Core.Time;
+namespace Nuclei.Core.Services;
 
 /// <summary>
 ///     Converts tick updates into time-based events.

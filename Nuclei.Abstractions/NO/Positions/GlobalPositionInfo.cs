@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Positions;
+﻿namespace Nuclei.Abstractions.NO.Positions;
 
 /// <summary>
 ///     Minimal global position payload.

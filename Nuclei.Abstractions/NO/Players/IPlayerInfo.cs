@@ -1,4 +1,4 @@
-﻿namespace Nuclei.Abstractions.Players;
+﻿namespace Nuclei.Abstractions.NO.Players;
 
 /// <summary>
 ///     Stable, game-agnostic player identity used across Nuclei APIs.
