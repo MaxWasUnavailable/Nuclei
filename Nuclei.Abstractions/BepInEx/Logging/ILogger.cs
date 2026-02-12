@@ -34,7 +34,7 @@ public interface ILogger
     /// <summary>
     ///     Logs an error message with an associated exception.
     /// </summary>
-    /// <param name="exception"> The exception to log. </param>
     /// <param name="message"> The message to log. </param>
-    void Error(Exception exception, string message);
+    /// <param name="exception"> The exception to log. </param>
+    void Error(string message, Exception exception);
 }

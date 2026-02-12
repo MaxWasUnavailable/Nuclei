@@ -50,8 +50,8 @@ public abstract class AbstractLoggerDecorator(ILogger innerLogger) : ILogger
     }
 
     /// <inheritdoc />
-    public void Error(Exception exception, string message)
+    public void Error(string message, Exception exception)
     {
-        InnerLogger.Error(exception, DecorateMessage(message));
+        InnerLogger.Error(DecorateMessage(message), exception);
     }
 }
