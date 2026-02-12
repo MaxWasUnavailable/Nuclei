@@ -22,10 +22,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Nuclei.Core\Nuclei.Core.csproj" />
-        <ProjectReference Include="..\Nuclei.Abstractions\Nuclei.Abstractions.csproj" />
+        <ProjectReference Include="..\Nuclei.Core\Nuclei.Core.csproj"/>
+        <ProjectReference Include="..\Nuclei.Patches\Nuclei.Patches.csproj"/>
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->
-    <Import Project="..\build\GameReferences.props" />
+    <Import Project="..\build\GameReferences.props"/>
 </Project>
