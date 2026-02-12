@@ -82,62 +82,62 @@ internal static class MessageManagerPatches
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(MessageManager.RpcHQMessage))]
-    private static void RpcHqPrefix(FactionHQ hq, string message, ref HqTextAnnouncementEvent __state)
+    private static void RpcHqPrefix(FactionHQ HQ, string message, ref HqTextAnnouncementEvent __state)
     {
-        __state = new HqTextAnnouncementEvent(ToFactionInfo(hq), message);
+        __state = new HqTextAnnouncementEvent(ToFactionInfo(HQ), message);
         AnnouncementEvents.OnPreHqAnnouncement(__state);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.RpcHQMessage))]
-    private static void RpcHqPostfix(FactionHQ hq, string message, HqTextAnnouncementEvent __state)
+    private static void RpcHqPostfix(FactionHQ HQ, string message, HqTextAnnouncementEvent __state)
     {
         AnnouncementEvents.OnPostHqAnnouncement(__state);
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(MessageManager.TargetCreditMessage))]
-    private static void TargetCreditMessagePrefix(INetworkPlayer player, PersistentID killedId, float creditAwarded, FactionHQ.RewardType actionType, ref CreditAwardedEvent __state)
+    private static void TargetCreditMessagePrefix(INetworkPlayer _, PersistentID killedID, float creditAwarded, FactionHQ.RewardType actionType, ref CreditAwardedEvent __state)
     {
-        var recipient = Lookup.FromNetworkPlayer(player);
-        var target = UnitLookup.FromPersistentId(killedId);
+        var recipient = Lookup.FromNetworkPlayer(_);
+        var target = UnitLookup.FromPersistentId(killedID);
         __state = new CreditAwardedEvent(recipient, target, creditAwarded, actionType.ToString());
         CombatEvents.OnPreCreditAwarded(__state);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.TargetCreditMessage))]
-    private static void TargetCreditMessagePostfix(INetworkPlayer player, PersistentID killedId, float creditAwarded, FactionHQ.RewardType actionType, CreditAwardedEvent __state)
+    private static void TargetCreditMessagePostfix(INetworkPlayer _, PersistentID killedID, float creditAwarded, FactionHQ.RewardType actionType, CreditAwardedEvent __state)
     {
         CombatEvents.OnPostCreditAwarded(__state);
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(MessageManager.RpcBombFailMessage))]
-    private static void BombFailPrefix(PersistentID bombId, float gForce, ref BombFailureEvent __state)
+    private static void BombFailPrefix(PersistentID bombID, float gForce, ref BombFailureEvent __state)
     {
-        __state = new BombFailureEvent(UnitLookup.FromPersistentId(bombId), gForce);
+        __state = new BombFailureEvent(UnitLookup.FromPersistentId(bombID), gForce);
         CombatEvents.OnPreBombFailed(__state);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.RpcBombFailMessage))]
-    private static void BombFailPostfix(PersistentID bombId, float gForce, BombFailureEvent __state)
+    private static void BombFailPostfix(PersistentID bombID, float gForce, BombFailureEvent __state)
     {
         CombatEvents.OnPostBombFailed(__state);
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(MessageManager.RpcKillMessage))]
-    private static void KillMessagePrefix(PersistentID killerId, PersistentID killedId, KillType killedType, ref KillFeedEvent __state)
+    private static void KillMessagePrefix(PersistentID killerID, PersistentID killedID, KillType killedType, ref KillFeedEvent __state)
     {
-        __state = new KillFeedEvent(UnitLookup.FromPersistentId(killerId), UnitLookup.FromPersistentId(killedId), killedType.ToString());
+        __state = new KillFeedEvent(UnitLookup.FromPersistentId(killerID), UnitLookup.FromPersistentId(killedID), killedType.ToString());
         CombatEvents.OnPreKillFeed(__state);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(MessageManager.RpcKillMessage))]
-    private static void KillMessagePostfix(PersistentID killerId, PersistentID killedId, KillType killedType, KillFeedEvent __state)
+    private static void KillMessagePostfix(PersistentID killerID, PersistentID killedID, KillType killedType, KillFeedEvent __state)
     {
         CombatEvents.OnPostKillFeed(__state);
     }
