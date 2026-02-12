@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nuclei.Abstractions.BepInEx.Logging;
+using Nuclei.Abstractions.Nuclei.Decorators;
 using Nuclei.Events.Events;
 
 namespace Nuclei.Core.Services;
@@ -24,10 +25,11 @@ public sealed class TimeScheduler
     /// </summary>
     public TimeScheduler(ILogger? logger = null)
     {
-        _logger = logger;
+        _logger = logger?.WithScope(nameof(TimeScheduler));
         RegisterInterval(TimeSpan.FromMinutes(1), TimeEvents.OnEveryMinute);
         RegisterInterval(TimeSpan.FromMinutes(30), TimeEvents.OnEvery30Minutes);
         RegisterInterval(TimeSpan.FromHours(1), TimeEvents.OnEveryHour);
+        _logger?.Info("TimeScheduler initialized and default time events registered.");
     }
 
     /// <summary>
