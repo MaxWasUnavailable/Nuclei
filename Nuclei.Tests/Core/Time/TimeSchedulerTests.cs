@@ -33,6 +33,56 @@ public sealed class TimeSchedulerTests
     }
 
     [Test]
+    public void Tick_WithMultipleSubSecondDeltas_FiresEverySecondOnlyOnce()
+    {
+        var scheduler = new TimeScheduler();
+        var secondsFired = 0;
+
+        TimeEvents.EverySecond += Handler;
+        try
+        {
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+        }
+        finally
+        {
+            TimeEvents.EverySecond -= Handler;
+        }
+
+        secondsFired.Should().Be(1);
+        return;
+
+        void Handler() => secondsFired++;
+    }
+
+    [Test]
+    public void Tick_WithMultipleSubSecondDeltas_RollsOverProperly_AndFiresEverySecondTwice()
+    {
+        var scheduler = new TimeScheduler();
+        var secondsFired = 0;
+
+        TimeEvents.EverySecond += Handler;
+        try
+        {
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+            scheduler.Tick(TimeSpan.FromMilliseconds(500));
+        }
+        finally
+        {
+            TimeEvents.EverySecond -= Handler;
+        }
+
+        secondsFired.Should().Be(2);
+        return;
+
+        void Handler() => secondsFired++;
+    }
+
+    [Test]
     public void Tick_WithMultipleSeconds_FiresEverySecondAndIntervalCallbacks()
     {
         var scheduler = new TimeScheduler();
