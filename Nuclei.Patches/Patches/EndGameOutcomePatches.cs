@@ -2,7 +2,7 @@ using HarmonyLib;
 using NuclearOption.SavedMission.ObjectiveV2.Outcomes;
 using Nuclei.Events.Events;
 
-namespace Nuclei.Patches;
+namespace Nuclei.Patches.Patches;
 
 [HarmonyPatch(typeof(EndGameOutcome))]
 [HarmonyPriority(Priority.First)]

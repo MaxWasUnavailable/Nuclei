@@ -7,7 +7,7 @@ using Nuclei.Events.Events;
 
 // ReSharper disable InconsistentNaming
 
-namespace Nuclei.Patches;
+namespace Nuclei.Patches.Patches;
 
 [HarmonyPatch(typeof(ChatManager))]
 [HarmonyPriority(Priority.First)]

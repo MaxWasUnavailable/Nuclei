@@ -10,7 +10,7 @@ using Nuclei.Events.Events;
 
 // ReSharper disable InconsistentNaming
 
-namespace Nuclei.Patches;
+namespace Nuclei.Patches.Patches;
 
 [HarmonyPatch(typeof(MessageManager))]
 [HarmonyPriority(Priority.First)]

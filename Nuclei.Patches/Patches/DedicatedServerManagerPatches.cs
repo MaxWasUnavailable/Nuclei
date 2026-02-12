@@ -3,7 +3,7 @@ using NuclearOption.DedicatedServer;
 using NuclearOption.SavedMission;
 using Nuclei.Events.Events;
 
-namespace Nuclei.Patches;
+namespace Nuclei.Patches.Patches;
 
 [HarmonyPatch(typeof(DedicatedServerManager))]
 [HarmonyPriority(Priority.First)]

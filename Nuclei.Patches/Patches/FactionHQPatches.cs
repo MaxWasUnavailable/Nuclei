@@ -11,7 +11,7 @@ using Nuclei.Events.Events;
 
 // ReSharper disable InconsistentNaming
 
-namespace Nuclei.Patches;
+namespace Nuclei.Patches.Patches;
 
 [HarmonyPatch(typeof(FactionHQ))]
 [HarmonyPriority(Priority.First)]
