@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclei.Abstractions.BepInEx.Logging;
+using Nuclei.Abstractions.Nuclei;
 using Nuclei.Abstractions.Nuclei.Decorators;
 using Nuclei.Events.Events;
+using ILogger = Nuclei.Abstractions.BepInEx.Logging.ILogger;
 
 namespace Nuclei.Core.Services;
 
 /// <summary>
 ///     Converts tick updates into time-based events.
 /// </summary>
-public sealed class TimeScheduler
+public sealed class TimeSchedulerService : INucleiService
 {
     private static readonly TimeSpan Second = TimeSpan.FromSeconds(1);
 
@@ -18,18 +19,29 @@ public sealed class TimeScheduler
     private readonly object _sync = new();
     private readonly List<IntervalEntry> _intervals = [];
     private long _elapsedSeconds;
-    private readonly ILogger? _logger;
+    private ILogger? _logger;
 
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="TimeScheduler" /> class and registers the default time events.
-    /// </summary>
-    public TimeScheduler(ILogger? logger = null)
+    /// <inheritdoc />
+    public void Initialize(INucleiContext context)
     {
-        _logger = logger?.WithScope(nameof(TimeScheduler));
+        _logger = context.Logger.WithScope(nameof(TimeSchedulerService));
+
         RegisterInterval(TimeSpan.FromMinutes(1), TimeEvents.OnEveryMinute);
         RegisterInterval(TimeSpan.FromMinutes(30), TimeEvents.OnEvery30Minutes);
         RegisterInterval(TimeSpan.FromHours(1), TimeEvents.OnEveryHour);
+
         _logger?.Info("TimeScheduler initialized and default time events registered.");
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _logger?.Info("TimeScheduler is being disposed. Clearing all registered intervals.");
+        lock (_sync)
+        {
+            _intervals.Clear();
+        }
+        _logger?.Info("TimeScheduler disposed and all intervals cleared.");
     }
 
     /// <summary>
@@ -111,7 +123,7 @@ public sealed class TimeScheduler
         public Action Callback { get; } = callback;
     }
 
-    private sealed class IntervalRegistration(TimeScheduler scheduler, IntervalEntry entry) : IDisposable
+    private sealed class IntervalRegistration(TimeSchedulerService scheduler, IntervalEntry entry) : IDisposable
     {
         private bool _disposed;
 
