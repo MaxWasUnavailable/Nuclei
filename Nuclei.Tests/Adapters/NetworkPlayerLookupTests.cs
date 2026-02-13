@@ -1,8 +1,10 @@
 ﻿using System;
-using Moq;
-using Nuclei.Adapters.Players;
 using FluentAssertions;
 using Mirage;
+using Moq;
+using Nuclei.Adapters.Players;
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 
 namespace Nuclei.Tests.Adapters;
 
