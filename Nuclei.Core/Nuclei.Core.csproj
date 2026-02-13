@@ -21,7 +21,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Nuclei.Abstractions\Nuclei.Abstractions.csproj" />
         <ProjectReference Include="..\Nuclei.Events\Nuclei.Events.csproj" />
-        <ProjectReference Include="..\Nuclei.Patches\Nuclei.Patches.csproj"/>
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->

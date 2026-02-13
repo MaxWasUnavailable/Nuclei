@@ -23,6 +23,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Nuclei.Core\Nuclei.Core.csproj"/>
+        <ProjectReference Include="..\Nuclei.Patches\Nuclei.Patches.csproj"/>
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->
