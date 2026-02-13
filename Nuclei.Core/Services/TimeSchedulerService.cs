@@ -28,13 +28,13 @@ public sealed class TimeSchedulerService : INucleiService
     /// <inheritdoc />
     public void Initialize(INucleiContext context)
     {
-        _logger = context.Logger.WithScope(nameof(TimeSchedulerService));
+        _logger = context.Logger.WithTimestamp().WithScope(nameof(TimeSchedulerService));
 
         RegisterInterval(TimeSpan.FromMinutes(1), TimeEvents.OnEveryMinute);
         RegisterInterval(TimeSpan.FromMinutes(30), TimeEvents.OnEvery30Minutes);
         RegisterInterval(TimeSpan.FromHours(1), TimeEvents.OnEveryHour);
 
-        _tickerGameObject = Ticker.Create(this);
+        _tickerGameObject = TimeSchedulerTicker.Create(this);
 
         _logger?.Info("TimeScheduler initialized, default time events registered, and Ticker GameObject created.");
     }
@@ -152,32 +152,44 @@ public sealed class TimeSchedulerService : INucleiService
             _disposed = true;
         }
     }
+}
 
-    private sealed class Ticker : MonoBehaviour
+/// <summary>
+///     MonoBehaviour responsible for ticking the TimeSchedulerService on Unity's FixedUpdate loop.
+/// </summary>
+[DisallowMultipleComponent]
+internal sealed class TimeSchedulerTicker : MonoBehaviour
+{
+    private TimeSchedulerService? _scheduler;
+
+    /// <summary>
+    ///     Creates a new GameObject with the TimeSchedulerTicker component and initializes it with the provided scheduler.
+    /// </summary>
+    /// <param name="scheduler"> The TimeSchedulerService instance to tick. </param>
+    /// <returns> The created GameObject containing the TimeSchedulerTicker. </returns>
+    internal static GameObject Create(TimeSchedulerService scheduler)
     {
-        private TimeSchedulerService? _scheduler;
-
-        public static GameObject Create(TimeSchedulerService scheduler)
+        var gameObject = new GameObject(nameof(TimeSchedulerService))
         {
-            var gameObject = new GameObject(nameof(TimeSchedulerService));
+            hideFlags = HideFlags.DontSave
+        };
 
-            DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
 
-            var ticker = gameObject.AddComponent<Ticker>();
+        var ticker = gameObject.AddComponent<TimeSchedulerTicker>();
+        ticker.Initialize(scheduler);
 
-            ticker.Initialize(scheduler);
+        return gameObject;
+    }
 
-            return gameObject;
-        }
+    private void Initialize(TimeSchedulerService scheduler)
+    {
+        _scheduler = scheduler;
+        enabled = true;
+    }
 
-        public void Initialize(TimeSchedulerService scheduler)
-        {
-            _scheduler = scheduler;
-        }
-
-        private void FixedUpdate()
-        {
-            _scheduler?.Tick(TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime));
-        }
+    private void FixedUpdate()
+    {
+        _scheduler?.Tick(TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime));
     }
 }
