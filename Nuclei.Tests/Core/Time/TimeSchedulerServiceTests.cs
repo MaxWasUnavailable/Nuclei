@@ -6,14 +6,14 @@ using Nuclei.Events.Events;
 namespace Nuclei.Tests.Core.Time;
 
 /// <summary>
-///     Tests for <see cref="TimeScheduler" />.
+///     Tests for <see cref="TimeSchedulerService" />.
 /// </summary>
-public sealed class TimeSchedulerTests
+public sealed class TimeSchedulerServiceTests
 {
     [Test]
     public void Tick_WithSubSecondDelta_DoesNotFireEverySecond()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
         var secondsFired = 0;
 
         TimeEvents.EverySecond += Handler;
@@ -35,7 +35,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void Tick_WithMultipleSubSecondDeltas_FiresEverySecondOnlyOnce()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
         var secondsFired = 0;
 
         TimeEvents.EverySecond += Handler;
@@ -59,7 +59,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void Tick_WithMultipleSubSecondDeltas_RollsOverProperly_AndFiresEverySecondTwice()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
         var secondsFired = 0;
 
         TimeEvents.EverySecond += Handler;
@@ -85,7 +85,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void Tick_WithMultipleSeconds_FiresEverySecondAndIntervalCallbacks()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
         var secondsFired = 0;
         var intervalFired = 0;
 
@@ -110,7 +110,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void RegisterInterval_DisposeStopsFurtherCallbacks()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
         var intervalFired = 0;
 
         var registration = scheduler.RegisterInterval(TimeSpan.FromSeconds(2), () => intervalFired++);
@@ -124,7 +124,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void RegisterInterval_WithTooSmallInterval_Throws()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
 
         var act = () => scheduler.RegisterInterval(TimeSpan.FromMilliseconds(500), () => { });
 
@@ -134,7 +134,7 @@ public sealed class TimeSchedulerTests
     [Test]
     public void RegisterInterval_WithNullCallback_Throws()
     {
-        var scheduler = new TimeScheduler();
+        var scheduler = new TimeSchedulerService();
 
         var act = () => scheduler.RegisterInterval(TimeSpan.FromSeconds(1), null!);
 

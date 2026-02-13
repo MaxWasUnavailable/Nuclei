@@ -44,8 +44,4 @@
         <Reference Update="Mirage.Components" Private="True" />
         <Reference Update="com.rlabrecque.steamworks.net" Private="True" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Core\" />
-    </ItemGroup>
 </Project>
