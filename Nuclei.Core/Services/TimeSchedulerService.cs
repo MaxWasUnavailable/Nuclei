@@ -4,7 +4,9 @@ using System.Linq;
 using Nuclei.Abstractions.Nuclei;
 using Nuclei.Abstractions.Nuclei.Decorators;
 using Nuclei.Events.Events;
+using UnityEngine;
 using ILogger = Nuclei.Abstractions.BepInEx.Logging.ILogger;
+using Object = UnityEngine.Object;
 
 namespace Nuclei.Core.Services;
 
@@ -21,6 +23,8 @@ public sealed class TimeSchedulerService : INucleiService
     private long _elapsedSeconds;
     private ILogger? _logger;
 
+    private GameObject? _tickerGameObject;
+
     /// <inheritdoc />
     public void Initialize(INucleiContext context)
     {
@@ -30,17 +34,26 @@ public sealed class TimeSchedulerService : INucleiService
         RegisterInterval(TimeSpan.FromMinutes(30), TimeEvents.OnEvery30Minutes);
         RegisterInterval(TimeSpan.FromHours(1), TimeEvents.OnEveryHour);
 
-        _logger?.Info("TimeScheduler initialized and default time events registered.");
+        _tickerGameObject = Ticker.Create(this);
+
+        _logger?.Info("TimeScheduler initialized, default time events registered, and Ticker GameObject created.");
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        _logger?.Info("TimeScheduler is being disposed. Clearing all registered intervals.");
+        _logger?.Info("TimeScheduler is being disposed. Clearing all registered intervals and destroying ticker GameObject.");
         lock (_sync)
         {
             _intervals.Clear();
         }
+
+        if (_tickerGameObject)
+        {
+            Object.Destroy(_tickerGameObject);
+            _tickerGameObject = null;
+        }
+
         _logger?.Info("TimeScheduler disposed and all intervals cleared.");
     }
 
@@ -70,7 +83,7 @@ public sealed class TimeSchedulerService : INucleiService
     /// <summary>
     ///     Advances the scheduler using a delta time.
     /// </summary>
-    public void Tick(TimeSpan delta)
+    internal void Tick(TimeSpan delta)
     {
         if (delta < TimeSpan.Zero)
         {
@@ -137,6 +150,34 @@ public sealed class TimeSchedulerService : INucleiService
             }
 
             _disposed = true;
+        }
+    }
+
+    private sealed class Ticker : MonoBehaviour
+    {
+        private TimeSchedulerService? _scheduler;
+
+        public static GameObject Create(TimeSchedulerService scheduler)
+        {
+            var gameObject = new GameObject(nameof(TimeSchedulerService));
+
+            DontDestroyOnLoad(gameObject);
+
+            var ticker = gameObject.AddComponent<Ticker>();
+
+            ticker.Initialize(scheduler);
+
+            return gameObject;
+        }
+
+        public void Initialize(TimeSchedulerService scheduler)
+        {
+            _scheduler = scheduler;
+        }
+
+        private void FixedUpdate()
+        {
+            _scheduler?.Tick(TimeSpan.FromSeconds(Time.fixedUnscaledDeltaTime));
         }
     }
 }

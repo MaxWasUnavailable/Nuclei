@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <AssemblyName>MaxWasUnavailable.Nuclei.Tests</AssemblyName>
+        <PackageId>MaxWasUnavailable.Nuclei.Tests</PackageId>
+        <Title>Nuclei.Tests</Title>
         <NoWarn>1591</NoWarn>
     </PropertyGroup>
 
