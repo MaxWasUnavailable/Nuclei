@@ -17,6 +17,7 @@ namespace Nuclei;
 ///     Main plugin class for Nuclei.
 /// </summary>
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[Obsolete("This project will be removed once the new multi-project Nuclei v2 is finished.")]
 public class Nuclei : BaseUnityPlugin
 {
     internal static Nuclei? Instance { get; private set; }
