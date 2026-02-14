@@ -24,7 +24,7 @@ public static class CoreBootstrap
         bootstrapLogger.Debug("Starting Nuclei bootstrap process...");
 
         bootstrapLogger.Debug("Initializing Nuclei config.");
-        NucleiConfig.Initialize(config, logger); // TODO: rework config stuff
+        NucleiConfig.Initialize(config, logger);
         NucleiConfig.ValidateSettings();
         bootstrapLogger.Debug("Nuclei config initialized successfully.");
 
