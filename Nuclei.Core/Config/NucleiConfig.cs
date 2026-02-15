@@ -1,5 +1,7 @@
 ﻿using Nuclei.Abstractions.BepInEx.Config;
 using Nuclei.Abstractions.BepInEx.Logging;
+using Nuclei.Abstractions.Nuclei.Decorators;
+using Nuclei.Core.Config.Datasources;
 
 namespace Nuclei.Core.Config;
 
@@ -30,7 +32,7 @@ public static class NucleiConfig
 
     public static void Initialize(IConfigProvider config, ILogger logger)
     {
-        Logger = logger;
+        Logger = logger.WithTimestamp().WithScope(nameof(NucleiConfig));
         Logger.Debug("Loading settings...");
 
         CommandPrefix = config.Bind(GeneralSection, "CommandPrefix", DefaultCommandPrefix, "The prefix used to identify commands. Must be a single character.");
@@ -44,6 +46,8 @@ public static class NucleiConfig
 
         WelcomeMessage = config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. See the readme for placeholders.");
         Logger.Debug($"WelcomeMessage: {WelcomeMessage.Value}");
+
+        DatasourceConfigLoader.Load(config, Logger);    // TODO: temporary for testing
 
         Logger.Debug("Loaded settings!");
     }

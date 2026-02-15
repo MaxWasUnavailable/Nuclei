@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Text.Json" PrivateAssets="All" />
+        <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
     <!-- Nuclear Option-specific Assembly References -->

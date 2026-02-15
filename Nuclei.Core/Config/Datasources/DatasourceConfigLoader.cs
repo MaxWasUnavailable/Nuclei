@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Nuclei.Abstractions.BepInEx.Config;
 using Nuclei.Abstractions.BepInEx.Logging;
 using Nuclei.Abstractions.Nuclei.Decorators;
@@ -11,17 +12,25 @@ namespace Nuclei.Core.Config.Datasources;
 public static class DatasourceConfigLoader
 {
     private const string SectionName = "General";
-    private const string KeyName = "Datasources";
+    private const string FileKeyName = "DatasourcesFile";
 
     private const string DefaultJson =
         "{\n" +
-        "  \"*\": {\n" +
-        "    \"host\": \"sqlite://nuclei.db\",\n" +
-        "    \"pooling\": true,\n" +
-        "    \"timeoutMillis\": 30000,\n" +
-        "    \"connectTimeoutMillis\": 5000,\n" +
-        "    \"readOnly\": false,\n" +
-        "    \"options\": {}\n" +
+        "  \"bindings\": {\n" +
+        "    \"*\": {\n" +
+        "      \"write\": \"default\",\n" +
+        "      \"read\": \"default\"\n" +
+        "    }\n" +
+        "  },\n" +
+        "  \"sources\": {\n" +
+        "    \"default\": {\n" +
+        "      \"host\": \"sqlite://nuclei.db\",\n" +
+        "      \"pooling\": true,\n" +
+        "      \"timeoutMillis\": 30000,\n" +
+        "      \"connectTimeoutMillis\": 5000,\n" +
+        "      \"readOnly\": false,\n" +
+        "      \"options\": {}\n" +
+        "    }\n" +
         "  }\n" +
         "}";
 
@@ -30,20 +39,21 @@ public static class DatasourceConfigLoader
     /// </summary>
     public static DatasourceConfigSet Load(IConfigProvider configProvider, ILogger logger)
     {
-        var datasourceLogger = logger.WithTimestamp().WithScope(nameof(DatasourceConfigLoader));
+        var datasourceLogger = logger.WithScope(nameof(DatasourceConfigLoader));
 
-        var entry = configProvider.Bind(
+        var fileEntry = configProvider.Bind(
             SectionName,
-            KeyName,
-            DefaultJson,
-            "JSON map of datasource definitions. Keys are datasource names; '*' is the default datasource.");
+            FileKeyName,
+            "datasources.json",
+            "Path to a datasource JSON file. Relative paths are resolved against the config directory.");
 
         datasourceLogger.Debug("Loading datasource configuration...");
 
         try
         {
-            var result = DatasourceConfigParser.Parse(entry.Value);
-            datasourceLogger.Debug($"Loaded {result.Datasources.Count} datasource configuration(s).");
+            var json = ResolveDatasourceJson(fileEntry.Value, configProvider.ConfigDirectory, datasourceLogger);
+            var result = DatasourceConfigParser.Parse(json);
+            datasourceLogger.Debug($"Loaded {result.Bindings.Count} binding(s) and {result.Sources.Count} source(s).");
             return result;
         }
         catch (Exception exception)
@@ -52,5 +62,23 @@ public static class DatasourceConfigLoader
             throw;
         }
     }
-}
 
+    private static string ResolveDatasourceJson(string filePath, string configDirectory, ILogger logger)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new FormatException("Datasource file path cannot be empty.");
+
+        var resolvedPath = Path.IsPathRooted(filePath)
+            ? filePath
+            : Path.Combine(configDirectory, filePath);
+
+        if (File.Exists(resolvedPath))
+            return File.ReadAllText(resolvedPath);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(resolvedPath) ?? configDirectory);
+        File.WriteAllText(resolvedPath, DefaultJson);
+        logger.Warn($"Datasource config file not found. Created default file at '{resolvedPath}'.");
+        return DefaultJson;
+
+    }
+}

@@ -20,4 +20,9 @@ public interface IConfigProvider
     ///     Reloads the configuration from the underlying source.
     /// </summary>
     void Reload();
+
+    /// <summary>
+    ///     Gets the directory that contains the underlying config file.
+    /// </summary>
+    string ConfigDirectory { get; }
 }

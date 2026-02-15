@@ -13,6 +13,8 @@ public static class DatasourceConfigParser
     ///     The name of the default datasource configuration.
     /// </summary>
     private const string DefaultName = "*";
+    private const string BindingsProperty = "bindings";
+    private const string SourcesProperty = "sources";
 
     /// <summary>
     ///     Parses the given JSON string into a <see cref="DatasourceConfigSet" /> containing all datasource configurations.
@@ -31,18 +33,126 @@ public static class DatasourceConfigParser
         if (document.RootElement.ValueKind != JsonValueKind.Object)
             throw new FormatException("Datasource configuration must be a JSON object.");
 
-        var configs = new Dictionary<string, DatasourceConfig>(StringComparer.OrdinalIgnoreCase);
+        var root = document.RootElement;
 
-        foreach (var property in document.RootElement.EnumerateObject())
+        var sourcesElement = GetRequiredObject(root, SourcesProperty);
+        var sources = ParseSources(sourcesElement);
+
+        var bindingsElement = GetRequiredObject(root, BindingsProperty);
+        var bindings = ParseBindings(bindingsElement, sources);
+
+        return new DatasourceConfigSet(bindings, sources, DefaultName);
+    }
+
+    private static IReadOnlyDictionary<string, DatasourceConfig> ParseSources(JsonElement sourcesElement)
+    {
+        var sources = new Dictionary<string, DatasourceConfig>(StringComparer.OrdinalIgnoreCase);
+        foreach (var property in sourcesElement.EnumerateObject())
         {
             var name = property.Name;
             if (property.Value.ValueKind != JsonValueKind.Object)
-                throw new FormatException($"Datasource '{name}' must be a JSON object.");
+                throw new FormatException($"Datasource source '{name}' must be a JSON object.");
 
-            configs[name] = ParseDatasource(name, property.Value);
+            sources[name] = ParseDatasource(name, property.Value);
         }
 
-        return new DatasourceConfigSet(configs, DefaultName);
+        return sources;
+    }
+
+    private static IReadOnlyDictionary<string, DatasourceBindingConfig> ParseBindings(
+        JsonElement bindingsElement,
+        IReadOnlyDictionary<string, DatasourceConfig> sources)
+    {
+        var bindings = new Dictionary<string, DatasourceBindingConfig>(StringComparer.OrdinalIgnoreCase);
+        foreach (var property in bindingsElement.EnumerateObject())
+        {
+            var name = property.Name;
+            if (property.Value.ValueKind != JsonValueKind.Object)
+                throw new FormatException($"Datasource binding '{name}' must be a JSON object.");
+
+            var binding = ParseBinding(name, property.Value, sources);
+            bindings[name] = binding;
+        }
+
+        return bindings;
+    }
+
+    private static DatasourceBindingConfig ParseBinding(
+        string name,
+        JsonElement element,
+        IReadOnlyDictionary<string, DatasourceConfig> sources)
+    {
+        var writeSources = ParseBindingSources(element, "write", sources, name, true, null);
+        var readSources = ParseBindingSources(element, "read", sources, name, false, writeSources);
+        return new DatasourceBindingConfig(name, writeSources, readSources);
+    }
+
+    private static IReadOnlyList<string> ParseBindingSources(
+        JsonElement element,
+        string propertyName,
+        IReadOnlyDictionary<string, DatasourceConfig> sources,
+        string bindingName,
+        bool required,
+        IReadOnlyList<string>? fallback)
+    {
+        if (!element.TryGetProperty(propertyName, out var propertyElement))
+        {
+            if (required)
+                throw new FormatException($"Datasource binding '{bindingName}' must define a {propertyName} source.");
+
+            return fallback is null ? Array.Empty<string>() : new List<string>(fallback);
+        }
+
+        var result = new List<string>();
+        switch (propertyElement.ValueKind)
+        {
+            case JsonValueKind.String:
+                AddBindingSource(result, propertyElement.GetString(), sources, bindingName, propertyName);
+                break;
+            case JsonValueKind.Array:
+                foreach (var item in propertyElement.EnumerateArray())
+                {
+                    if (item.ValueKind != JsonValueKind.String)
+                        throw new FormatException($"Datasource binding '{bindingName}' {propertyName} sources must be strings.");
+
+                    AddBindingSource(result, item.GetString(), sources, bindingName, propertyName);
+                }
+                break;
+            default:
+                throw new FormatException($"Datasource binding '{bindingName}' {propertyName} sources must be a string or array.");
+        }
+
+        if (result.Count != 0)
+            return result;
+
+        if (required)
+            throw new FormatException($"Datasource binding '{bindingName}' must define at least one {propertyName} source.");
+
+        return fallback ?? [];
+    }
+
+    private static void AddBindingSource(
+        ICollection<string> result,
+        string? sourceName,
+        IReadOnlyDictionary<string, DatasourceConfig> sources,
+        string bindingName,
+        string role)
+    {
+        if (string.IsNullOrWhiteSpace(sourceName))
+            throw new FormatException($"Datasource binding '{bindingName}' {role} source cannot be empty.");
+
+        if (!sources.ContainsKey(sourceName!))
+            throw new FormatException($"Datasource binding '{bindingName}' references unknown {role} source '{sourceName}'.");
+
+        result.Add(sourceName!);
+    }
+
+    private static JsonElement GetRequiredObject(JsonElement root, string property)
+    {
+        if (!root.TryGetProperty(property, out var element) || element.ValueKind != JsonValueKind.Object)
+            throw new FormatException($"Datasource configuration must contain a '{property}' object.");
+
+        return element;
     }
 
     private static DatasourceConfig ParseDatasource(string name, JsonElement element)

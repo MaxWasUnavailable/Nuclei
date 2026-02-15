@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using Nuclei.Abstractions.BepInEx.Config;
+using System.IO;
 
 namespace Nuclei.Plugin.Config;
 
@@ -20,4 +21,7 @@ internal sealed class BepInExConfigProvider(ConfigFile configFile) : IConfigProv
     {
         configFile.Reload();
     }
+
+    /// <inheritdoc />
+    public string ConfigDirectory => Path.GetDirectoryName(configFile.ConfigFilePath) ?? string.Empty;
 }
