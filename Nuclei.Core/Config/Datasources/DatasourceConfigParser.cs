@@ -17,14 +17,14 @@ public static class DatasourceConfigParser
     private const string SourcesProperty = "sources";
 
     /// <summary>
-    ///     Parses the given JSON string into a <see cref="DatasourceConfigCatalogue" /> containing all datasource configurations.
+    ///     Parses the given JSON string into a <see cref="DatasourceCatalogue" /> containing all datasource configurations.
     /// </summary>
     /// <param name="json">
     ///     The JSON string containing datasource configurations. Must be a JSON object where each property is
     ///     a datasource name and its value is the configuration object.
     /// </param>
-    /// <returns> A <see cref="DatasourceConfigCatalogue" /> containing all parsed datasource configurations.</returns>
-    public static DatasourceConfigCatalogue Parse(string json)
+    /// <returns> A <see cref="DatasourceCatalogue" /> containing all parsed datasource configurations.</returns>
+    public static DatasourceCatalogue Parse(string json)
     {
         if (string.IsNullOrWhiteSpace(json))
             throw new ArgumentException("Datasource configuration JSON cannot be empty.");
@@ -41,7 +41,7 @@ public static class DatasourceConfigParser
         var bindingsElement = GetRequiredObject(root, BindingsProperty);
         var bindings = ParseBindings(bindingsElement, sources);
 
-        return new DatasourceConfigCatalogue(bindings, sources, DefaultName);
+        return new DatasourceCatalogue(bindings, sources, DefaultName);
     }
 
     private static IReadOnlyDictionary<string, DatasourceConfig> ParseSources(JsonElement sourcesElement)

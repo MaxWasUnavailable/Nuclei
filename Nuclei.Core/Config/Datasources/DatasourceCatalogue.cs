@@ -6,7 +6,7 @@ namespace Nuclei.Core.Config.Datasources;
 /// <summary>
 ///     Represents a catalogue of datasource configurations, including both the logical bindings and the physical sources.
 /// </summary>
-public sealed class DatasourceConfigCatalogue(
+public sealed class DatasourceCatalogue(
     IReadOnlyDictionary<string, DatasourceBindingConfig> bindings,
     IReadOnlyDictionary<string, DatasourceConfig> sources,
     string defaultBindingName)

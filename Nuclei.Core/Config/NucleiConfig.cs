@@ -30,6 +30,8 @@ public static class NucleiConfig
 
     internal static char CommandPrefixChar => CommandPrefix!.Value[0];
 
+    internal static DatasourceCatalogue? DatasourceCatalogue { get; private set; }
+
     public static void Initialize(IConfigProvider config, ILogger logger)
     {
         Logger = logger.WithTimestamp().WithScope(nameof(NucleiConfig));
@@ -47,7 +49,7 @@ public static class NucleiConfig
         WelcomeMessage = config.Bind(GeneralSection, "WelcomeMessage", DefaultWelcomeMessage, "The message displayed to players when they join the server. See the readme for placeholders.");
         Logger.Debug($"WelcomeMessage: {WelcomeMessage.Value}");
 
-        DatasourceConfigLoader.Load(config, Logger);    // TODO: temporary for testing
+        DatasourceCatalogue = DatasourceConfigLoader.Load(config, Logger);
 
         Logger.Debug("Loaded settings!");
     }
