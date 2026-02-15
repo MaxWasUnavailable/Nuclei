@@ -21,6 +21,7 @@
         <PackageReference Include="NUnit3TestAdapter" />
         <PackageReference Include="Moq" />
         <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
     <ItemGroup>
