@@ -23,6 +23,10 @@
         <ProjectReference Include="..\Nuclei.Events\Nuclei.Events.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="System.Text.Json" PrivateAssets="All" />
+    </ItemGroup>
+
     <!-- Nuclear Option-specific Assembly References -->
     <Import Project="..\build\GameReferences.props" />
 </Project>
