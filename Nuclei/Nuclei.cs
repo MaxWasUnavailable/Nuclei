@@ -16,7 +16,7 @@ namespace Nuclei;
 /// <summary>
 ///     Main plugin class for Nuclei.
 /// </summary>
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 [Obsolete("This project will be removed once the new multi-project Nuclei v2 is finished.")]
 public class Nuclei : BaseUnityPlugin
 {
@@ -36,7 +36,7 @@ public class Nuclei : BaseUnityPlugin
         _console = new ConsoleManager(unityCtx, HandleConsoleCommand);
         _console.Start();
         
-        Logger?.LogInfo($"Loading {PluginInfo.PLUGIN_NAME} v{PluginInfo.PLUGIN_VERSION}...");
+        Logger?.LogInfo($"Loading {MyPluginInfo.PLUGIN_NAME} v{MyPluginInfo.PLUGIN_VERSION}...");
         
 
         try
@@ -61,9 +61,9 @@ public class Nuclei : BaseUnityPlugin
         SubscribeToEvents();
 
         if (IsPatched)
-            Logger?.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Logger?.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
         else
-            Logger?.LogError($"Plugin {PluginInfo.PLUGIN_GUID} failed to load correctly!");
+            Logger?.LogError($"Plugin {MyPluginInfo.PLUGIN_GUID} failed to load correctly!");
     }
 
     private static void PatchAll()
@@ -76,7 +76,7 @@ public class Nuclei : BaseUnityPlugin
 
         Logger?.LogDebug("Patching...");
 
-        Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
+        Harmony ??= new Harmony(MyPluginInfo.PLUGIN_GUID);
 
         try
         {
