@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Nuclei.Core.Config.Datasources;
 
 /// <summary>
-///     Holds a set of configured datasources.
+///     Represents a catalogue of datasource configurations, including both the logical bindings and the physical sources.
 /// </summary>
-public sealed class DatasourceConfigSet(
+public sealed class DatasourceConfigCatalogue(
     IReadOnlyDictionary<string, DatasourceBindingConfig> bindings,
     IReadOnlyDictionary<string, DatasourceConfig> sources,
     string defaultBindingName)

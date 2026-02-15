@@ -37,7 +37,7 @@ public static class DatasourceConfigLoader
     /// <summary>
     ///     Loads datasource configuration from the provided config provider and logger.
     /// </summary>
-    public static DatasourceConfigSet Load(IConfigProvider configProvider, ILogger logger)
+    public static DatasourceConfigCatalogue Load(IConfigProvider configProvider, ILogger logger)
     {
         var datasourceLogger = logger.WithScope(nameof(DatasourceConfigLoader));
 
