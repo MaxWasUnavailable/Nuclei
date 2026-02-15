@@ -1,7 +1,7 @@
 ﻿using Nuclei.Abstractions.BepInEx.Config;
 using Nuclei.Abstractions.BepInEx.Logging;
 using Nuclei.Abstractions.Nuclei.Decorators;
-using Nuclei.Core.Config.Datasources;
+using Nuclei.Core.Config.Datasource;
 
 namespace Nuclei.Core.Config;
 

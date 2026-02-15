@@ -4,7 +4,7 @@ using Nuclei.Abstractions.BepInEx.Config;
 using Nuclei.Abstractions.BepInEx.Logging;
 using Nuclei.Abstractions.Nuclei.Decorators;
 
-namespace Nuclei.Core.Config.Datasources;
+namespace Nuclei.Core.Config.Datasource;
 
 /// <summary>
 ///     Loads datasource configuration from the config system.

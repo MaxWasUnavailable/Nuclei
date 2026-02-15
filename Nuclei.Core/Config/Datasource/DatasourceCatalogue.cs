@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nuclei.Core.Config.Datasources;
+namespace Nuclei.Core.Config.Datasource;
 
 /// <summary>
 ///     Represents a catalogue of datasource configurations, including both the logical bindings and the physical sources.

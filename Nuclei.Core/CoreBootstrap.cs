@@ -4,6 +4,7 @@ using Nuclei.Abstractions.Nuclei;
 using Nuclei.Abstractions.Nuclei.Decorators;
 using Nuclei.Core.Config;
 using Nuclei.Core.Services;
+using Nuclei.Core.Services.TimeScheduler;
 using IServiceProvider = Nuclei.Abstractions.Nuclei.IServiceProvider;
 
 namespace Nuclei.Core;

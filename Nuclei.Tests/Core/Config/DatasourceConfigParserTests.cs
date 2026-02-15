@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using Nuclei.Core.Config.Datasources;
+using Nuclei.Core.Config.Datasource;
 
 namespace Nuclei.Tests.Core.Config;
 

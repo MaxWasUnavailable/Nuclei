@@ -1,9 +1,9 @@
 ﻿using System;
 using FluentAssertions;
-using Nuclei.Core.Services;
+using Nuclei.Core.Services.TimeScheduler;
 using Nuclei.Events.Events;
 
-namespace Nuclei.Tests.Core.Time;
+namespace Nuclei.Tests.Core.Services.TimeScheduler;
 
 /// <summary>
 ///     Tests for <see cref="TimeSchedulerService" />.
@@ -29,7 +29,10 @@ public sealed class TimeSchedulerServiceTests
         secondsFired.Should().Be(0);
         return;
 
-        void Handler() => secondsFired++;
+        void Handler()
+        {
+            secondsFired++;
+        }
     }
 
     [Test]
@@ -53,7 +56,10 @@ public sealed class TimeSchedulerServiceTests
         secondsFired.Should().Be(1);
         return;
 
-        void Handler() => secondsFired++;
+        void Handler()
+        {
+            secondsFired++;
+        }
     }
 
     [Test]
@@ -79,7 +85,10 @@ public sealed class TimeSchedulerServiceTests
         secondsFired.Should().Be(2);
         return;
 
-        void Handler() => secondsFired++;
+        void Handler()
+        {
+            secondsFired++;
+        }
     }
 
     [Test]
@@ -104,7 +113,10 @@ public sealed class TimeSchedulerServiceTests
         intervalFired.Should().Be(2);
         return;
 
-        void Handler() => secondsFired++;
+        void Handler()
+        {
+            secondsFired++;
+        }
     }
 
     [Test]

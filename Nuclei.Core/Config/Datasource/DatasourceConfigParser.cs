@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace Nuclei.Core.Config.Datasources;
+namespace Nuclei.Core.Config.Datasource;
 
 /// <summary>
 ///     Parses datasource configuration JSON into strongly typed definitions.

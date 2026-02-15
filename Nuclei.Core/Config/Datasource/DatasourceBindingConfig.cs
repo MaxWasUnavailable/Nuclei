@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nuclei.Core.Config.Datasources;
+namespace Nuclei.Core.Config.Datasource;
 
 /// <summary>
 ///     Represents a logical datasource binding to concrete datasource sources.

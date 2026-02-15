@@ -8,7 +8,7 @@ using UnityEngine;
 using ILogger = Nuclei.Abstractions.BepInEx.Logging.ILogger;
 using Object = UnityEngine.Object;
 
-namespace Nuclei.Core.Services;
+namespace Nuclei.Core.Services.TimeScheduler;
 
 /// <summary>
 ///     Converts tick updates into time-based events.
