@@ -44,7 +44,7 @@ public static class DatasourceConfigLoader
         var fileEntry = configProvider.Bind(
             SectionName,
             FileKeyName,
-            "datasources.json",
+            "Nuclei.datasources.json",
             "Path to a datasource JSON file. Relative paths are resolved against the config directory.");
 
         datasourceLogger.Debug("Loading datasource configuration...");
