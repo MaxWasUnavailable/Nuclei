@@ -1,6 +1,8 @@
-﻿using Nuclei.Abstractions.BepInEx.Config;
+﻿using System.Linq;
+using Nuclei.Abstractions.BepInEx.Config;
 using Nuclei.Abstractions.BepInEx.Logging;
 using Nuclei.Abstractions.Nuclei;
+using IServiceProvider = Nuclei.Abstractions.Nuclei.IServiceProvider;
 
 namespace Nuclei.Core;
 
@@ -23,7 +25,7 @@ public class NucleiContext(IServiceProvider serviceProvider, ILogger logger, ICo
     /// </summary>
     internal void InitializeServices()
     {
-        foreach (var service in ServiceProvider.GetAll())
+        foreach (var service in DependsOnAttribute.OrderServices(ServiceProvider.GetAll().ToList()))
             service.Initialize(this);
     }
 }
