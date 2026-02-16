@@ -42,9 +42,13 @@ public sealed class DatasourceCatalogue(
         if (string.IsNullOrWhiteSpace(name) || name == "*")
             name = _defaultBindingName;
 
-        return Bindings.TryGetValue(name, out var binding)
-            ? binding
-            : throw new KeyNotFoundException($"Datasource binding '{name}' is not configured.");
+        if (Bindings.TryGetValue(name, out var binding))
+            return binding;
+
+        return Bindings.TryGetValue(_defaultBindingName, out var fallback)
+            ? fallback
+            : throw new KeyNotFoundException(
+                $"Datasource binding '{name}' is not configured and no default binding '{_defaultBindingName}' is available.");
     }
 
     /// <summary>
@@ -95,7 +99,8 @@ public sealed class DatasourceCatalogue(
             if (Sources.TryGetValue(sourceName, out var source))
                 sources.Add(source);
             else
-                throw new KeyNotFoundException($"Datasource source '{sourceName}' referenced by binding '{bindingName}' is not configured.");
+                throw new KeyNotFoundException(
+                    $"Datasource source '{sourceName}' referenced by binding '{bindingName}' is not configured.");
         return sources;
     }
 }

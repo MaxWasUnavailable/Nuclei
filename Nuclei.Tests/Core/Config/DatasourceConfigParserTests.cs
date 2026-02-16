@@ -53,12 +53,12 @@ public sealed class DatasourceConfigParserTests
         result.Sources.Should().HaveCount(4);
         result.Bindings.Should().HaveCount(2);
         result.GetDefaultBinding().WriteSources.Should().ContainSingle("default");
-        result.GetBinding("bans").WriteSources.Should().Contain(new[] { "bans_local", "bans_secondary" });
+        result.GetBinding("bans").WriteSources.Should().Contain(["bans_local", "bans_secondary"]);
         result.GetSource("default").Host.Should().Be("sqlite://nuclei.db");
         result.GetSource("shared").Host.Should().Be("postgres://user:pass@localhost:5432/nuclei");
         result.GetSource("default").Options!["journalMode"].Should().Be("WAL");
         result.GetSource("default").Options!["foreignKeys"].Should().Be("true");
-        result.GetDefaultBinding().ReadSources.Should().Contain(new[] { "default", "shared" });
+        result.GetDefaultBinding().ReadSources.Should().Contain(["default", "shared"]);
     }
 
     [Test]
