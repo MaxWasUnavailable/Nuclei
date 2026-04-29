@@ -66,14 +66,16 @@ public class VoteMissionCommand(ConfigFile config) : PermissionConfigurableComma
         else
         {
             ChatService.SendPrivateChatMessage("Cannot start a new mission vote, please wait for current vote to expire.", player);
+            _fetchedMissions = null;
             return false;
         }
-        _fetchedMissions = null;
         return true;
 
         void Action()
         {
             Globals.DedicatedServerManagerInstance.missionRotation.OverrideNext(_fetchedMissions![idx - 1]);
+            _fetchedMissions = null;
+
         }
     }
 
