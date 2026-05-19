@@ -12,8 +12,8 @@ namespace Nuclei.Patches;
 internal static class ChatManagerPatches
 {
     [HarmonyPrefix]
-    [HarmonyPatch(nameof(ChatManager.UserCode_CmdSendChatMessage_1323305531))]
-    private static bool UserCode_CmdSendChatMessage_1323305531Prefix(string message, bool allChat, INetworkPlayer sender)
+    [HarmonyPatch("UserCode_CmdSendChatMessage_-456754112")]
+    private static bool UserCode_CmdSendChatMessagePrefix(string message, bool allChat, INetworkPlayer sender)
     {
         if (!sender.TryGetPlayer(out var player)) 
             Nuclei.Logger?.LogWarning("Player component is null");

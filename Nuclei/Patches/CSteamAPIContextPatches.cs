@@ -1,6 +1,4 @@
-using System;
 using HarmonyLib;
-using Nuclei.Features;
 using Steamworks;
 
 namespace Nuclei.Patches;
@@ -14,13 +12,6 @@ internal static class CSteamAPIContextPatches
     [HarmonyPatch(nameof(CSteamAPIContext.Init))]
     private static void InitPostfix()
     {
-        try
-        {
-            _ = Server.StartServer();
-        }
-        catch (Exception e)
-        {
-            Nuclei.Logger?.LogError($"Aborting server launch: Failed to start the server. For more information, see this error trace:\n{e}");
-        }
+        Nuclei.Logger?.LogInfo("Steam API context initialized; attaching Nuclei to the official dedicated server.");
     }
 }

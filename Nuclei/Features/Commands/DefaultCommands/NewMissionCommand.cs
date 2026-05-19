@@ -20,8 +20,8 @@ public class NewMissionCommand(ConfigFile config) : PermissionConfigurableComman
 
     public override bool Execute(Player player, string[] args)
     {
-        _ = Server.StartOrRestartLobby();
-        return true;
+        ChatService.SendPrivateChatMessage("The newmission command is disabled on the official dedicated server build.", player);
+        return false;
     }
 
     public override PermissionLevel DefaultPermissionLevel { get; } = PermissionLevel.Admin;

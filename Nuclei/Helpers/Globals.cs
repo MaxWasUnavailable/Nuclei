@@ -34,7 +34,7 @@ public static class Globals
     /// <summary>
     ///     Gets the local player. (The host / server)
     /// </summary>
-    public static Player LocalPlayer => GameManager.LocalPlayer ?? throw new NullReferenceException("Local player is null.");
+    public static Player LocalPlayer => GameManager.GetLocalPlayer<Player>(out var localPlayer) ? localPlayer : throw new NullReferenceException("Local player is null.");
 
     /// <summary>
     ///     Gets the instance of the <see cref="AudioMixerVolume" /> class.
@@ -49,7 +49,7 @@ public static class Globals
     /// <summary>
     ///     Gets the Steam ID of the lobby.
     /// </summary>
-    public static CSteamID LobbySteamID => SteamLobbyInstance._currentLobbyID;
+    public static CSteamID LobbySteamID => throw new NotSupportedException("Nuclei no longer manages Steam lobbies on the official dedicated server.");
 
     /// <summary>
     ///     Get a read-only list of all authenticated players.

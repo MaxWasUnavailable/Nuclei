@@ -47,7 +47,7 @@ public static class MissionService
     /// <summary>
     ///     The current mission time.
     /// </summary>
-    public static float CurrentMissionTime => Globals.MissionManagerInstance.missionTime;
+    public static float CurrentMissionTime => Globals.MissionManagerInstance.MissionTime;
 
     /// <summary>
     ///     Gets all Mission Keys as an IEnumerable.
